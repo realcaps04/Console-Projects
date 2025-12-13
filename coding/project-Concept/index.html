@@ -33,7 +33,6 @@
         <div class="login-mode-switch" role="tablist" aria-label="Login methods">
           <button class="mode-btn active" data-mode="email" role="tab" aria-selected="true">Email + Password</button>
           <button class="mode-btn" data-mode="username" role="tab" aria-selected="false">Username + PIN</button>
-          <button class="mode-btn" data-mode="fingerprint" role="tab" aria-selected="false">Fingerprint</button>
         </div>
 
         <section class="login-mode" data-mode="email">
@@ -56,6 +55,16 @@
                 <path d="M8 10V8a4 4 0 0 1 8 0v2" fill="none" stroke="currentColor" stroke-width="1.5"/>
               </svg>
               <input id="passwordInput" type="password" placeholder="••••••••" autocomplete="current-password" required />
+              <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              </button>
             </div>
           </label>
         </section>
@@ -80,21 +89,18 @@
                 <circle cx="12" cy="13" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
               </svg>
               <input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="••••" autocomplete="one-time-code" required />
+              <button type="button" class="password-toggle" aria-label="Toggle PIN visibility">
+                <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              </button>
             </div>
           </label>
-        </section>
-
-        <section class="login-mode hidden" data-mode="fingerprint">
-          <div class="fingerprint-box">
-            <svg viewBox="0 0 64 64" aria-hidden="true">
-              <path d="M18 28c0-8 6-14 14-14s14 6 14 14c0 9-3 17-6 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M23 30c0-5 4-9 9-9s9 4 9 9c0 6-2 12-4 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M28 32c0-3 2-6 5-6s5 3 5 6c0 3-1 7-2 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M33 33v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <p class="fingerprint-hint">Use your registered fingerprint to continue.</p>
-            <button class="cta ghost" type="button">Scan fingerprint</button>
-          </div>
         </section>
 
         <div class="meta">
@@ -117,7 +123,13 @@
 
   <!-- Inactive Admin Popup Modal -->
   <div id="inactivePopup" class="popup-overlay hidden">
-    <div class="popup-modal">
+    <div class="popup-modal activation-request-popup">
+      <button type="button" class="popup-close" id="closeInactivePopup" aria-label="Close popup">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
       <div class="popup-icon error-icon">
         <svg viewBox="0 0 64 64" aria-hidden="true">
           <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" stroke-width="3"/>
@@ -126,17 +138,102 @@
       </div>
       <h3 class="popup-title">Account Inactive</h3>
       <p class="popup-message">Your account status is currently inactive. Please contact your administrator to activate your account.</p>
-      <div class="popup-actions popup-actions-spaced">
-        <button type="button" class="cta" id="sendActivationRequestBtn">
-          <span>Send Activation Request</span>
-          <span class="glow"></span>
-        </button>
+      
+      <!-- Rejection Details Section -->
+      <div id="rejectionDetails" class="rejection-details hidden">
+        <h4 class="rejection-title">Previous Request Rejected</h4>
+        <p id="rejectionNotes" class="rejection-notes"></p>
+        <p class="rejection-date" id="rejectionDate"></p>
+        <div class="popup-actions popup-actions-spaced">
+          <button type="button" class="cta" id="requestAgainBtn">
+            <span>Request Again</span>
+            <span class="glow"></span>
+          </button>
+        </div>
       </div>
-      <p class="popup-submessage popup-submessage-spaced" id="activationMessage"></p>
+
+      <!-- Activation Request Form -->
+      <form id="activationRequestForm" class="activation-form hidden">
+        <div class="form-field">
+          <label>
+            Full Name <span class="required">*</span>
+          </label>
+          <input type="text" id="requestName" placeholder="Enter your full name" required />
+        </div>
+
+        <div class="form-field">
+          <label>
+            Phone Number <span class="required">*</span>
+          </label>
+          <input type="tel" id="requestPhone" placeholder="+1 (555) 123-4567" required />
+        </div>
+
+        <div class="form-field">
+          <label>
+            Address
+          </label>
+          <input type="text" id="requestAddress" placeholder="Street address" />
+        </div>
+
+        <div class="form-field-grid">
+          <div class="form-field">
+            <label>
+              City
+            </label>
+            <input type="text" id="requestCity" placeholder="City" />
+          </div>
+          <div class="form-field">
+            <label>
+              State/Province
+            </label>
+            <input type="text" id="requestState" placeholder="State" />
+          </div>
+        </div>
+
+        <div class="form-field-grid">
+          <div class="form-field">
+            <label>
+              Zip/Postal Code
+            </label>
+            <input type="text" id="requestZipCode" placeholder="Zip Code" />
+          </div>
+          <div class="form-field">
+            <label>
+              Country
+            </label>
+            <input type="text" id="requestCountry" placeholder="Country" />
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>
+            Identity Proof <span class="required">*</span>
+            <span class="field-hint">Upload a document to verify your identity (ID card, passport, etc.)</span>
+          </label>
+          <input type="file" id="identityProof" accept="image/*,.pdf" required />
+          <div id="filePreview" class="file-preview"></div>
+        </div>
+
+        <div class="form-field">
+          <label>
+            Additional Notes (Optional)
+          </label>
+          <textarea id="requestNotes" placeholder="Any additional information you'd like to provide..." rows="3"></textarea>
+        </div>
+
+        <div class="popup-actions popup-actions-spaced">
+          <button type="submit" class="cta" id="sendActivationRequestBtn">
+            <span>Send Activation Request</span>
+            <span class="glow"></span>
+          </button>
+        </div>
+        <p class="popup-submessage popup-submessage-spaced" id="activationMessage"></p>
+      </form>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/password-toggle.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

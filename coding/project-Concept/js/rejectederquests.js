@@ -71,6 +71,10 @@
         return;
       }
 
+      // Store request ID for updates
+      popup.dataset.requestId = requestId;
+      popup.dataset.adminEmail = data.admin_email;
+
       // Populate details
       document.getElementById('detailEmail').textContent = data.admin_email || '-';
       document.getElementById('detailName').textContent = data.admin_name || '-';
@@ -80,7 +84,8 @@
       document.getElementById('detailState').textContent = data.admin_state || '-';
       document.getElementById('detailZipCode').textContent = data.admin_zip_code || '-';
       document.getElementById('detailCountry').textContent = data.admin_country || '-';
-      document.getElementById('detailNotes').textContent = data.additional_notes || '-';
+      document.getElementById('detailNotes').value = data.notes || '';
+      document.getElementById('detailStatus').value = data.status || 'rejected';
       
       const requestedDate = data.requested_at 
         ? new Date(data.requested_at).toLocaleDateString('en-US', {
@@ -92,6 +97,17 @@
           })
         : '-';
       document.getElementById('detailRequestedAt').textContent = requestedDate;
+
+      const processedDate = data.processed_at 
+        ? new Date(data.processed_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        : 'Not processed yet';
+      document.getElementById('detailProcessedAt').textContent = processedDate;
 
       // Display identity proof
       const identityContainer = document.getElementById('identityProofContainer');
@@ -116,7 +132,6 @@
                 <polyline points="14 2 14 8 20 8" fill="none" stroke="currentColor" stroke-width="2"/>
                 <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/>
                 <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/>
-                <polyline points="10 9 9 9 8 9" fill="none" stroke="currentColor" stroke-width="2"/>
               </svg>
               <p style="margin: 0 0 12px 0; color: var(--text); font-weight: 600;">${data.identity_proof_filename || 'Document'}</p>
               <a href="${data.identity_proof_url}" target="_blank" 
@@ -148,19 +163,172 @@
     }
   };
 
-  // Load activation requests from Supabase
-  const loadActivationRequests = async () => {
+  // Handle reapprove and activate
+  const handleReapprove = async () => {
+    const popup = document.getElementById('viewDetailsPopup');
+    const messageEl = document.getElementById('detailMessage');
+    const requestId = popup?.dataset.requestId;
+    const email = popup?.dataset.adminEmail;
+
+    if (!requestId || !email) {
+      alert('Error: Request information not found.');
+      return;
+    }
+
+    if (!confirm(`Are you sure you want to reapprove and activate the account for: ${email}?`)) {
+      return;
+    }
+
+    if (messageEl) {
+      messageEl.textContent = 'Processing...';
+      messageEl.classList.remove('hidden', 'success', 'error');
+      messageEl.classList.add('success');
+    }
+
+    try {
+      const session = getSession();
+      
+      // Update request status to approved
+      const { error: updateError } = await supabase
+        .from('adminactivationrequests')
+        .update({ 
+          status: 'approved',
+          processed_at: new Date().toISOString(),
+          notes: document.getElementById('detailNotes').value || null,
+          processed_by: session?.id || null
+        })
+        .eq('id', requestId);
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      // Update admin status to active
+      const { error: adminError } = await supabase
+        .from('admin')
+        .update({ is_active: true })
+        .eq('email', email);
+
+      if (adminError) {
+        alert('Request approved but failed to activate admin: ' + adminError.message);
+        if (messageEl) {
+          messageEl.textContent = 'Request approved but failed to activate admin.';
+          messageEl.classList.remove('success');
+          messageEl.classList.add('error');
+        }
+        return;
+      }
+
+      if (messageEl) {
+        messageEl.textContent = 'Request reapproved and admin activated successfully!';
+        messageEl.classList.remove('error');
+        messageEl.classList.add('success');
+      }
+
+      setTimeout(() => {
+        hideViewDetailsPopup();
+        location.reload();
+      }, 1500);
+
+    } catch (err) {
+      console.error('Error reapproving:', err);
+      if (messageEl) {
+        messageEl.textContent = 'Error: ' + (err.message || 'Failed to reapprove request.');
+        messageEl.classList.remove('success');
+        messageEl.classList.add('error');
+      }
+    }
+  };
+
+  // Handle save changes
+  const handleSaveChanges = async () => {
+    const popup = document.getElementById('viewDetailsPopup');
+    const messageEl = document.getElementById('detailMessage');
+    const requestId = popup?.dataset.requestId;
+
+    if (!requestId) {
+      alert('Error: Request information not found.');
+      return;
+    }
+
+    const status = document.getElementById('detailStatus').value;
+    const notes = document.getElementById('detailNotes').value || null;
+
+    if (messageEl) {
+      messageEl.textContent = 'Saving changes...';
+      messageEl.classList.remove('hidden', 'success', 'error');
+      messageEl.classList.add('success');
+    }
+
+    try {
+      const session = getSession();
+      const updateData = {
+        status: status,
+        notes: notes
+      };
+
+      // If status changed to approved, activate the admin
+      if (status === 'approved') {
+        const email = popup.dataset.adminEmail;
+        if (email) {
+          const { error: adminError } = await supabase
+            .from('admin')
+            .update({ is_active: true })
+            .eq('email', email);
+
+          if (adminError) {
+            throw new Error('Failed to activate admin: ' + adminError.message);
+          }
+        }
+        updateData.processed_at = new Date().toISOString();
+        if (session?.id) {
+          updateData.processed_by = session.id;
+        }
+      }
+
+      const { error } = await supabase
+        .from('adminactivationrequests')
+        .update(updateData)
+        .eq('id', requestId);
+
+      if (error) {
+        throw error;
+      }
+
+      if (messageEl) {
+        messageEl.textContent = 'Changes saved successfully!';
+        messageEl.classList.remove('error');
+        messageEl.classList.add('success');
+      }
+
+      setTimeout(() => {
+        hideViewDetailsPopup();
+        location.reload();
+      }, 1500);
+
+    } catch (err) {
+      console.error('Error saving changes:', err);
+      if (messageEl) {
+        messageEl.textContent = 'Error: ' + (err.message || 'Failed to save changes.');
+        messageEl.classList.remove('success');
+        messageEl.classList.add('error');
+      }
+    }
+  };
+
+  // Load rejected activation requests from Supabase
+  const loadRejectedRequests = async () => {
     try {
       const { data, error } = await supabase
         .from('adminactivationrequests')
-        .select('id, admin_email, admin_name, status, requested_at')
-        .eq('status', 'pending')
-        .order('requested_at', { ascending: false });
+        .select('id, admin_email, admin_name, status, requested_at, processed_at, notes')
+        .eq('status', 'rejected')
+        .order('processed_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading activation requests:', error);
+        console.error('Error loading rejected requests:', error);
         if (loadingRow) {
-          loadingRow.innerHTML = '<span colspan="5">Error loading activation requests. Please try again.</span>';
+          loadingRow.innerHTML = '<span colspan="6">Error loading rejected requests. Please try again.</span>';
         }
         return;
       }
@@ -170,9 +338,6 @@
       }
 
       if (!data || data.length === 0) {
-        if (loadingRow) {
-          loadingRow.remove();
-        }
         const emptyState = document.createElement('div');
         emptyState.className = 'empty-state';
         emptyState.innerHTML = `
@@ -183,15 +348,15 @@
               <circle cx="55" cy="20" r="12" fill="none" stroke="currentColor" stroke-width="2.5" class="question-circle"/>
               <path d="M55 28v4M55 36v2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="question-dot"/>
             </svg>
-            <h3>No Activation Requests</h3>
-            <p>There are no pending activation requests at this time.</p>
+            <h3>No Rejected Requests</h3>
+            <p>There are no rejected activation requests at this time.</p>
           </div>
         `;
         requestsTable.appendChild(emptyState);
         return;
       }
 
-      // Render activation request rows
+      // Render rejected request rows
       data.forEach(request => {
         const row = document.createElement('div');
         row.className = 'table-row';
@@ -202,95 +367,28 @@
           hour: '2-digit',
           minute: '2-digit'
         });
+        const rejectedDate = request.processed_at 
+          ? new Date(request.processed_at).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })
+          : 'N/A';
+        const rejectionReason = request.notes || 'No reason provided';
+        
         row.innerHTML = `
           <span>${request.admin_email || 'N/A'}</span>
           <span>${request.admin_name || 'N/A'}</span>
           <span>${requestedDate}</span>
-          <span><span class="pill ${request.status === 'pending' ? 'neutral' : request.status === 'approved' ? 'success' : 'muted'}">${request.status || 'pending'}</span></span>
+          <span>${rejectedDate}</span>
+          <span style="max-width: 300px; word-wrap: break-word; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${rejectionReason}</span>
           <span>
-            <button class="action-btn edit-btn" data-id="${request.id}" data-email="${request.admin_email}">Approve</button>
-            <button class="action-btn delete-btn" data-id="${request.id}" data-email="${request.admin_email}">Reject</button>
             <button class="action-btn view-btn" data-id="${request.id}">View Details</button>
           </span>
         `;
         requestsTable.appendChild(row);
-      });
-
-      // Add event listeners for action buttons
-      document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          const id = e.target.getAttribute('data-id');
-          const email = e.target.getAttribute('data-email');
-          
-          if (confirm(`Are you sure you want to approve the activation request for: ${email}?`)) {
-            // Update request status to approved
-            const { error: updateError } = await supabase
-              .from('adminactivationrequests')
-              .update({ 
-                status: 'approved',
-                processed_at: new Date().toISOString()
-              })
-              .eq('id', id);
-
-            if (updateError) {
-              alert('Error approving request: ' + updateError.message);
-              return;
-            }
-
-            // Update admin status to active
-            const { error: adminError } = await supabase
-              .from('admin')
-              .update({ is_active: true })
-              .eq('email', email);
-
-            if (adminError) {
-              alert('Request approved but failed to activate admin: ' + adminError.message);
-            } else {
-              alert('Activation request approved and admin activated successfully!');
-              location.reload();
-            }
-          }
-        });
-      });
-
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          const id = e.target.getAttribute('data-id');
-          const email = e.target.getAttribute('data-email');
-          
-          if (confirm(`Are you sure you want to reject the activation request for: ${email}?`)) {
-            // Prompt for rejection reason/notes
-            const rejectionNotes = prompt('Please provide a reason for rejection (this will be shown to the admin):', '');
-            
-            // If user cancels the prompt, don't proceed with rejection
-            if (rejectionNotes === null) {
-              return;
-            }
-
-            const session = getSession();
-            const updateData = {
-              status: 'rejected',
-              processed_at: new Date().toISOString(),
-              notes: rejectionNotes || 'No reason provided'
-            };
-
-            if (session && session.id) {
-              updateData.processed_by = session.id;
-            }
-
-            const { error } = await supabase
-              .from('adminactivationrequests')
-              .update(updateData)
-              .eq('id', id);
-
-            if (error) {
-              alert('Error rejecting request: ' + error.message);
-            } else {
-              alert('Activation request rejected successfully!');
-              location.reload();
-            }
-          }
-        });
       });
 
       // Add event listeners for view details buttons
@@ -304,7 +402,7 @@
     } catch (err) {
       console.error('Error:', err);
       if (loadingRow) {
-        loadingRow.innerHTML = '<span colspan="5">Error loading activation requests. Please try again.</span>';
+        loadingRow.innerHTML = '<span colspan="6">Error loading rejected requests. Please try again.</span>';
       }
     }
   };
@@ -319,7 +417,7 @@
   (async () => {
     const isAuthenticated = await checkAuth();
     if (isAuthenticated) {
-      await loadActivationRequests();
+      await loadRejectedRequests();
     }
   })();
 
@@ -332,6 +430,23 @@
   const closeDetailsBtn = document.getElementById('closeDetailsPopup');
   if (closeDetailsBtn) {
     closeDetailsBtn.addEventListener('click', hideViewDetailsPopup);
+  }
+
+  const cancelDetailsBtn = document.getElementById('cancelDetailsBtn');
+  if (cancelDetailsBtn) {
+    cancelDetailsBtn.addEventListener('click', hideViewDetailsPopup);
+  }
+
+  // Reapprove button
+  const reapproveBtn = document.getElementById('reapproveBtn');
+  if (reapproveBtn) {
+    reapproveBtn.addEventListener('click', handleReapprove);
+  }
+
+  // Save changes button
+  const saveChangesBtn = document.getElementById('saveChangesBtn');
+  if (saveChangesBtn) {
+    saveChangesBtn.addEventListener('click', handleSaveChanges);
   }
 
   // Close popup when clicking outside

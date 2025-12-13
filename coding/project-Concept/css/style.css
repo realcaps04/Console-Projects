@@ -270,7 +270,7 @@ h1 {
 }
 
 #requestsTable .table-row {
-  grid-template-columns: 1.8fr 1.5fr 1.5fr 1fr 1.8fr;
+  grid-template-columns: 1.8fr 1.5fr 1.5fr 1.5fr 2fr 1fr;
 }
 
 .empty-state {
@@ -403,6 +403,17 @@ h1 {
   background: #fff5f5;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(230, 57, 70, 0.2);
+}
+
+.action-btn.view-btn {
+  border-color: #7b7bff;
+  color: #7b7bff;
+}
+
+.action-btn.view-btn:hover {
+  background: #f7f7ff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(123, 123, 255, 0.2);
 }
 
 .table-row:last-child {
@@ -574,6 +585,48 @@ h1 {
   font-weight: 500;
 }
 
+/* Password toggle button */
+.password-toggle {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7c8bb0;
+  transition: color 0.18s ease, transform 0.18s ease;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.password-toggle:hover {
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+.password-toggle:active {
+  transform: scale(0.95);
+}
+
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.password-toggle .eye-off {
+  display: none;
+}
+
+.password-toggle.show .eye-on {
+  display: none;
+}
+
+.password-toggle.show .eye-off {
+  display: block;
+}
+
 .input textarea {
   flex: 1;
   border: none;
@@ -599,6 +652,20 @@ h1 {
 
 .field-wide {
   grid-column: 1 / -1;
+}
+
+.field-separator {
+  grid-column: 1 / -1;
+  margin: 20px 0 10px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
 }
 
 .input textarea {
@@ -834,6 +901,7 @@ h1 {
   justify-content: center;
   z-index: 10000;
   animation: fadeIn 0.3s ease;
+  overflow: hidden;
 }
 
 .popup-overlay.hidden {
@@ -844,22 +912,46 @@ h1 {
   background: #ffffff;
   border-radius: 24px;
   padding: 40px;
-  max-width: 480px;
-  width: 90%;
+  width: auto;
+  min-width: 320px;
+  max-width: calc(100% - 40px);
+  max-height: calc(100vh - 40px);
+  height: auto;
+  margin: 20px;
   box-shadow: 0 24px 64px rgba(21, 41, 76, 0.3);
   text-align: center;
   animation: slideUp 0.4s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* Hide scrollbar but allow scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.popup-modal::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .popup-icon {
   width: 80px;
   height: 80px;
+  min-width: 80px;
+  min-height: 80px;
+  max-width: 80px;
+  max-height: 80px;
   margin: 0 auto 24px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   animation: scaleIn 0.5s ease;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .popup-icon.success-icon {
@@ -875,6 +967,12 @@ h1 {
 .popup-icon svg {
   width: 48px;
   height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  max-width: 48px;
+  max-height: 48px;
+  flex-shrink: 0;
+  display: block;
 }
 
 .popup-title {
@@ -938,11 +1036,28 @@ h1 {
 
 /* Edit Popup Styles */
 .edit-popup {
-  max-width: 700px;
-  width: 95%;
-  max-height: 90vh;
+  width: auto;
+  min-width: 500px;
+  max-width: calc(100% - 40px);
+  max-height: calc(100vh - 40px);
+  height: auto;
+  margin: 20px;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  border-radius: 24px;
+  align-items: stretch;
+  justify-content: flex-start;
+  /* Hide scrollbar but allow scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.edit-popup::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .popup-header {
@@ -1022,10 +1137,269 @@ h1 {
   transform: translateY(-1px);
 }
 
+/* Ensure popup content is scrollable */
+.popup-modal > * {
+  flex-shrink: 0;
+}
+
+.popup-modal .popup-icon {
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  min-height: 80px;
+  max-width: 80px;
+  max-height: 80px;
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.popup-modal .popup-title,
+.popup-modal .popup-message,
+.popup-modal .popup-submessage,
+.popup-modal .popup-actions-spaced {
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Activation request popup content alignment */
+.activation-request-popup .popup-title,
+.activation-request-popup .popup-message {
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+}
+
+.activation-request-popup .rejection-details,
+.activation-request-popup .activation-form {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Ensure popup content expands popup width when needed */
+.popup-modal:has(.popup-message:not(:empty)) {
+  min-width: 400px;
+}
+
+.popup-modal:has(#rejectionDetails:not(.hidden)),
+.popup-modal:has(#inactiveRejectionDetails:not(.hidden)) {
+  min-width: 500px;
+  max-width: calc(100% - 40px);
+}
+
+/* Activation Request Popup - Wider for form content */
+.activation-request-popup {
+  min-width: 800px;
+  max-width: calc(100% - 40px);
+  width: auto;
+  padding: 40px 48px;
+  position: relative;
+}
+
+/* Close button positioning for activation request popup */
+.activation-request-popup .popup-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 20;
+}
+
+/* Ensure error icon is clearly visible */
+.activation-request-popup .popup-icon {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+/* Activation Request Form Styles */
+.activation-form {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.activation-form .form-field {
+  margin-bottom: 20px;
+}
+
+.activation-form .form-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.activation-form .form-field .required {
+  color: #ef4444;
+}
+
+.activation-form .form-field .field-hint {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  display: block;
+  margin-top: 4px;
+}
+
+.activation-form .form-field input[type="text"],
+.activation-form .form-field input[type="tel"],
+.activation-form .form-field input[type="file"],
+.activation-form .form-field textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  background: #ffffff;
+  transition: border-color 0.2s ease;
+}
+
+.activation-form .form-field input[type="text"]:focus,
+.activation-form .form-field input[type="tel"]:focus,
+.activation-form .form-field textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.activation-form .form-field input[type="file"] {
+  cursor: pointer;
+}
+
+.activation-form .form-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.activation-form .form-field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.activation-form .file-preview {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Rejection Details Section */
+.rejection-details {
+  margin: 20px 0;
+  padding: 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  text-align: left;
+  width: 100%;
+  max-width: 100%;
+}
+
+.rejection-title {
+  margin: 0 0 8px 0;
+  color: #dc2626;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rejection-notes {
+  margin: 0;
+  color: #991b1b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.rejection-date {
+  margin: 8px 0 0 0;
+  color: #7f1d1d;
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* Responsive adjustments for activation form */
 @media (max-width: 768px) {
+  .activation-request-popup {
+    min-width: calc(100% - 40px);
+    padding: 32px 24px;
+  }
+  
+  .activation-form .form-field-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .activation-request-popup .popup-close {
+    top: 16px;
+    right: 16px;
+  }
+}
+
+.edit-popup .popup-header {
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 10;
+}
+
+.edit-popup .form-grid {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Expand edit popup width based on content */
+.edit-popup:has(.form-grid) {
+  min-width: 600px;
+}
+
+.edit-popup:has(.field-separator) {
+  min-width: 700px;
+  max-width: calc(100% - 40px);
+}
+
+/* View Details popup - wider layout for more content */
+.edit-popup:has(.details-grid) {
+  min-width: 900px;
+  max-width: calc(100% - 40px);
+}
+
+.details-grid {
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 16px !important;
+}
+
+.details-grid .field-full-width {
+  grid-column: 1 / -1;
+}
+
+/* For very wide screens, allow even more columns */
+@media (min-width: 1400px) {
+  .details-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .popup-modal {
+    width: auto;
+    min-width: calc(100% - 24px);
+    max-width: calc(100% - 24px);
+    max-height: calc(100vh - 24px);
+    height: auto;
+    margin: 12px;
+    padding: 24px;
+  }
+
   .edit-popup {
-    max-width: 95%;
-    max-height: 95vh;
+    min-width: calc(100% - 24px);
+    max-width: calc(100% - 24px);
+    max-height: calc(100vh - 24px);
+    height: auto;
+    margin: 12px;
   }
   
   .edit-popup .form-grid {
@@ -1052,6 +1426,12 @@ h1 {
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 16px;
   margin-top: 24px;
+}
+
+/* Console Grid - 6 columns for manage requests page */
+.console-grid-six {
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
 }
 
 .console-card {
@@ -1117,9 +1497,91 @@ h1 {
   color: var(--text);
 }
 
+/* Colored Console Cards */
+.console-card-red {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.console-card-red .console-card-icon,
+.console-card-red .console-card-title {
+  color: #ffffff !important;
+}
+
+.console-card-orange {
+  background: linear-gradient(135deg, #f97316, #ea580c) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.console-card-orange .console-card-icon,
+.console-card-orange .console-card-title {
+  color: #ffffff !important;
+}
+
+.console-card-blue {
+  background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.console-card-blue .console-card-icon,
+.console-card-blue .console-card-title {
+  color: #ffffff !important;
+}
+
+.console-card-yellow {
+  background: linear-gradient(135deg, #eab308, #ca8a04) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.console-card-yellow .console-card-icon,
+.console-card-yellow .console-card-title {
+  color: #ffffff !important;
+}
+
+.console-card-green {
+  background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.console-card-green .console-card-icon,
+.console-card-green .console-card-title {
+  color: #ffffff !important;
+}
+
+.console-card-purple {
+  background: linear-gradient(135deg, #a855f7, #9333ea) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.console-card-purple .console-card-icon,
+.console-card-purple .console-card-title {
+  color: #ffffff !important;
+}
+
+.console-card-red:hover,
+.console-card-orange:hover,
+.console-card-blue:hover,
+.console-card-yellow:hover,
+.console-card-green:hover,
+.console-card-purple:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  opacity: 0.95;
+}
+
 @media (max-width: 1024px) {
   .console-grid {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+  
+  .console-grid-six {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1127,6 +1589,10 @@ h1 {
   .console-grid {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 12px;
+  }
+  
+  .console-grid-six {
+    grid-template-columns: repeat(2, 1fr);
   }
   
   .console-card {
@@ -1147,6 +1613,10 @@ h1 {
 @media (max-width: 480px) {
   .console-grid {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  
+  .console-grid-six {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -173,6 +173,14 @@
     if (editPopup) {
       editPopup.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
+      // Re-initialize password toggles for dynamically loaded popup
+      setTimeout(() => {
+        if (window.initPasswordToggles) {
+          window.initPasswordToggles();
+        } else {
+          document.dispatchEvent(new Event('passwordTogglesInit'));
+        }
+      }, 100);
     }
   };
 

@@ -23,10 +23,37 @@
     messageEl.classList.remove('success', 'error');
   };
 
+  // Check for rejected activation requests
+  const checkRejectedRequest = async (email) => {
+    try {
+      const { data, error } = await supabase
+        .from('adminactivationrequests')
+        .select('id, notes, processed_at, status')
+        .eq('admin_email', email)
+        .eq('status', 'rejected')
+        .order('processed_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error || !data) {
+        return null;
+      }
+
+      return data;
+    } catch (err) {
+      console.error('Error checking rejected request:', err);
+      return null;
+    }
+  };
+
   // Show inactive admin popup
-  const showInactivePopup = (email, name) => {
+  const showInactivePopup = async (email, name) => {
     const inactivePopup = document.getElementById('inactivePopup');
     const activationMessage = document.getElementById('activationMessage');
+    const rejectionDetails = document.getElementById('rejectionDetails');
+    const rejectionNotes = document.getElementById('rejectionNotes');
+    const rejectionDate = document.getElementById('rejectionDate');
+    
     if (inactivePopup) {
       inactivePopup.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
@@ -36,6 +63,54 @@
       if (activationMessage) {
         activationMessage.textContent = '';
       }
+
+      // Check for rejected request
+      const rejectedRequest = await checkRejectedRequest(email);
+      const activationForm = document.getElementById('activationRequestForm');
+      
+      if (rejectedRequest && rejectedRequest.notes) {
+        // Show rejection details and hide form
+        if (rejectionDetails) {
+          rejectionDetails.classList.remove('hidden');
+        }
+        if (activationForm) {
+          activationForm.classList.add('hidden');
+        }
+        if (rejectionNotes) {
+          rejectionNotes.textContent = rejectedRequest.notes || 'No reason provided';
+        }
+        if (rejectionDate && rejectedRequest.processed_at) {
+          const processedDate = new Date(rejectedRequest.processed_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          rejectionDate.textContent = `Rejected on: ${processedDate}`;
+        }
+      } else {
+        // Hide rejection details and show form if no rejected request
+        if (rejectionDetails) {
+          rejectionDetails.classList.add('hidden');
+        }
+        if (activationForm) {
+          activationForm.classList.remove('hidden');
+        }
+      }
+    }
+  };
+
+  // Handle "Request Again" button click
+  const handleRequestAgain = () => {
+    const rejectionDetails = document.getElementById('rejectionDetails');
+    const activationForm = document.getElementById('activationRequestForm');
+    
+    if (rejectionDetails) {
+      rejectionDetails.classList.add('hidden');
+    }
+    if (activationForm) {
+      activationForm.classList.remove('hidden');
     }
   };
 
@@ -48,21 +123,88 @@
     }
   };
 
-  // Handle activation request
-  const handleActivationRequest = async () => {
+  // Close button event listener
+  const closeInactivePopupBtn = document.getElementById('closeInactivePopup');
+  if (closeInactivePopupBtn) {
+    closeInactivePopupBtn.addEventListener('click', hideInactivePopup);
+  }
+
+  // Upload file to Supabase Storage
+  const uploadIdentityProof = async (file, email) => {
+    try {
+      // Create a unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${email}_${Date.now()}.${fileExt}`;
+      const filePath = `identity-proofs/${fileName}`;
+
+      // Convert file to base64 for storage (alternative: use Supabase Storage bucket)
+      // For now, we'll store as base64 in the database
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve({
+            url: reader.result, // Base64 data URL
+            filename: fileName
+          });
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    } catch (err) {
+      console.error('Error uploading file:', err);
+      throw err;
+    }
+  };
+
+  // Handle activation request form submission
+  const handleActivationRequest = async (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+
     const inactivePopup = document.getElementById('inactivePopup');
     const activationMessage = document.getElementById('activationMessage');
     const sendBtn = document.getElementById('sendActivationRequestBtn');
+    const activationForm = document.getElementById('activationRequestForm');
     
     if (!inactivePopup) return;
 
     const email = inactivePopup.dataset.adminEmail;
-    const name = inactivePopup.dataset.adminName || '';
+    const name = document.getElementById('requestName')?.value?.trim() || inactivePopup.dataset.adminName || '';
+    const phone = document.getElementById('requestPhone')?.value?.trim() || null;
+    const address = document.getElementById('requestAddress')?.value?.trim() || null;
+    const city = document.getElementById('requestCity')?.value?.trim() || null;
+    const state = document.getElementById('requestState')?.value?.trim() || null;
+    const zipCode = document.getElementById('requestZipCode')?.value?.trim() || null;
+    const country = document.getElementById('requestCountry')?.value?.trim() || null;
+    const identityProof = document.getElementById('identityProof')?.files[0];
+    const additionalNotes = document.getElementById('requestNotes')?.value?.trim() || null;
 
     if (!email) {
       if (activationMessage) {
         activationMessage.textContent = 'Error: Email not found.';
         activationMessage.style.color = '#ef4444';
+        activationMessage.classList.remove('hidden');
+      }
+      return;
+    }
+
+    // Validate required fields
+    if (!name || !phone || !identityProof) {
+      if (activationMessage) {
+        activationMessage.textContent = 'Please fill all required fields (Name, Phone, and Identity Proof).';
+        activationMessage.style.color = '#ef4444';
+        activationMessage.classList.remove('hidden');
+      }
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (identityProof.size > 5 * 1024 * 1024) {
+      if (activationMessage) {
+        activationMessage.textContent = 'File size must be less than 5MB.';
+        activationMessage.style.color = '#ef4444';
+        activationMessage.classList.remove('hidden');
       }
       return;
     }
@@ -70,21 +212,41 @@
     // Disable button
     if (sendBtn) {
       sendBtn.disabled = true;
-      sendBtn.innerHTML = '<span>Sending Request...</span>';
+      sendBtn.innerHTML = '<span>Uploading & Sending Request...</span>';
     }
 
     if (activationMessage) {
-      activationMessage.textContent = 'Sending activation request...';
+      activationMessage.textContent = 'Uploading identity proof and sending request...';
       activationMessage.style.color = '#4a84e8';
+      activationMessage.classList.remove('hidden');
     }
 
     try {
+      // Upload identity proof
+      let identityProofUrl = null;
+      let identityProofFilename = null;
+      
+      if (identityProof) {
+        const uploadResult = await uploadIdentityProof(identityProof, email);
+        identityProofUrl = uploadResult.url;
+        identityProofFilename = uploadResult.filename;
+      }
+
       // Insert activation request into database
       const { data, error } = await supabase
         .from('adminactivationrequests')
         .insert([{
           admin_email: email,
           admin_name: name,
+          admin_phone: phone,
+          admin_address: address,
+          admin_city: city,
+          admin_state: state,
+          admin_zip_code: zipCode,
+          admin_country: country,
+          identity_proof_url: identityProofUrl,
+          identity_proof_filename: identityProofFilename,
+          additional_notes: additionalNotes,
           status: 'pending',
           requested_at: new Date().toISOString()
         }]);
@@ -112,10 +274,25 @@
         sendBtn.innerHTML = '<span>Request Sent</span>';
       }
 
+      // Hide rejection details and form since new request is sent
+      const rejectionDetails = document.getElementById('rejectionDetails');
+      if (rejectionDetails) {
+        rejectionDetails.classList.add('hidden');
+      }
+      if (activationForm) {
+        activationForm.classList.add('hidden');
+      }
+
+      // Reset form
+      if (activationForm) {
+        activationForm.reset();
+        document.getElementById('filePreview').textContent = '';
+      }
+
       // Auto-close popup after 3 seconds
       setTimeout(() => {
         hideInactivePopup();
-        // Clear form
+        // Clear login form
         document.getElementById('emailInput')?.value && (document.getElementById('emailInput').value = '');
         document.getElementById('passwordInput')?.value && (document.getElementById('passwordInput').value = '');
         document.getElementById('usernameInput')?.value && (document.getElementById('usernameInput').value = '');
@@ -132,6 +309,25 @@
         sendBtn.disabled = false;
         sendBtn.innerHTML = '<span>Send Activation Request</span><span class="glow"></span>';
       }
+    }
+  };
+
+  // Handle file preview
+  const handleFilePreview = () => {
+    const fileInput = document.getElementById('identityProof');
+    const filePreview = document.getElementById('filePreview');
+    
+    if (fileInput && filePreview) {
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const fileSize = (file.size / 1024 / 1024).toFixed(2);
+          filePreview.textContent = `Selected: ${file.name} (${fileSize} MB)`;
+          filePreview.style.color = '#10b981';
+        } else {
+          filePreview.textContent = '';
+        }
+      });
     }
   };
 
@@ -260,15 +456,10 @@
     }, 1000);
   };
 
-  const handleFingerprintLogin = () => {
-    showMessage('Fingerprint flow not implemented in web demo.', 'info');
-  };
-
   const handleLogin = () => {
     const mode = getActiveMode();
     if (mode === 'email') return handleEmailPasswordLogin();
     if (mode === 'username') return handleUsernamePinLogin();
-    if (mode === 'fingerprint') return handleFingerprintLogin();
   };
 
   if (signInButton) {
@@ -297,11 +488,20 @@
     });
   }
 
-  // Event listener for activation request button
-  const sendActivationRequestBtn = document.getElementById('sendActivationRequestBtn');
-  if (sendActivationRequestBtn) {
-    sendActivationRequestBtn.addEventListener('click', handleActivationRequest);
+  // Event listener for activation request form
+  const activationRequestForm = document.getElementById('activationRequestForm');
+  if (activationRequestForm) {
+    activationRequestForm.addEventListener('submit', handleActivationRequest);
   }
+
+  // Event listener for "Request Again" button
+  const requestAgainBtn = document.getElementById('requestAgainBtn');
+  if (requestAgainBtn) {
+    requestAgainBtn.addEventListener('click', handleRequestAgain);
+  }
+
+  // Initialize file preview
+  handleFilePreview();
 
   // Close inactive popup with ESC key
   document.addEventListener('keydown', (e) => {
