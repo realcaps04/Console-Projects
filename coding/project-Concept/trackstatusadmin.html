@@ -9,6 +9,36 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <style>
+    /* Hide scrollbar while keeping scrolling enabled */
+    html {
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    html::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
+
+    body {
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+      overflow-y: auto; /* Enable scrolling */
+    }
+
+    body::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
+
+    /* Hide scrollbar for track status container if it becomes scrollable */
+    .track-status-container {
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .track-status-container::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
+
     .track-status-page {
       min-height: 100vh;
       position: relative;
