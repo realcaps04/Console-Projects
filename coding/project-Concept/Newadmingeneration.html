@@ -229,6 +229,53 @@
       transform: translateX(-4px);
     }
 
+    .track-status-btn {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #5ba6ff, #7b7bff);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(91, 166, 255, 0.3);
+      border-radius: 12px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(91, 166, 255, 0.3);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 15px;
+    }
+
+    .track-status-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(91, 166, 255, 0.4);
+      background: linear-gradient(135deg, #4a95ff, #6a6aff);
+    }
+
+    .track-status-btn:active {
+      transform: translateY(0);
+    }
+
+    .track-status-btn svg {
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .track-status-btn {
+        top: 16px;
+        right: 16px;
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+    }
+
     .floating-shapes {
       position: fixed;
       top: 0;
@@ -360,13 +407,7 @@
       transform: scale(0.9) translateY(20px);
       transition: all 0.3s ease;
       position: relative;
-      /* Hide scrollbar but allow scrolling */
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE and Edge */
-    }
-
-    .request-popup::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
+      /* Hide scrollbar but allow scrolling - handled by class */
     }
 
     .request-popup-overlay.show .request-popup {
@@ -446,6 +487,33 @@
     .request-form-field select:focus {
       outline: none;
       border-color: var(--primary);
+    }
+
+    .request-form-field input:invalid:not(:placeholder-shown),
+    .request-form-field textarea:invalid:not(:placeholder-shown),
+    .request-form-field select:invalid:not(:placeholder-shown) {
+      border-color: #ef4444;
+      background-color: #fef2f2;
+    }
+
+    .request-form-field input:valid:not(:placeholder-shown),
+    .request-form-field textarea:valid:not(:placeholder-shown),
+    .request-form-field select:valid:not(:placeholder-shown) {
+      border-color: #10b981;
+      background-color: #f0fdf4;
+    }
+
+    .request-form-field .field-error {
+      color: #ef4444;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .request-form-field input:invalid:not(:placeholder-shown) ~ .field-error,
+    .request-form-field textarea:invalid:not(:placeholder-shown) ~ .field-error,
+    .request-form-field select:invalid:not(:placeholder-shown) ~ .field-error {
+      display: block;
     }
 
     .request-form-field textarea {
@@ -551,12 +619,6 @@
       transform: scale(0.9) translateY(20px);
       transition: all 0.3s ease;
       position: relative;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-
-    .features-popup::-webkit-scrollbar {
-      display: none;
     }
 
     .features-popup-overlay.show .features-popup {
@@ -728,6 +790,118 @@
       color: #ef4444;
     }
 
+    /* Styles for inline styles moved to CSS */
+    .back-link svg,
+    .track-status-btn svg,
+    .features-popup-close svg,
+    .success-popup-icon svg,
+    .track-status-popup-close svg,
+    .request-popup-close svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .cta-section h2 {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .cta-button svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    #newAdminOrgTypeOther,
+    .org-type-other-input {
+      margin-top: 8px;
+      display: none;
+    }
+
+    .request-form-field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .request-form-field-help-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+      display: block;
+      margin-top: 4px;
+    }
+
+    .features-input-group {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .features-input-group input {
+      flex: 1;
+    }
+
+    .features-select-btn {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #5ba6ff, #7b7bff);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .features-select-btn:hover {
+      background: linear-gradient(135deg, #4a95ff, #6a6aff);
+    }
+
+    #selectedFeaturesDisplay,
+    #newAdminFilePreview {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    #selectedFeaturesDisplay {
+      display: none;
+    }
+
+    #trackReferenceNumber {
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+
+    /* Hide scrollbars - Firefox, IE/Edge use properties below, webkit browsers use ::-webkit-scrollbar */
+    @supports (scrollbar-width: none) {
+      .request-popup,
+      .features-popup {
+        scrollbar-width: none; /* Firefox 64+ */
+      }
+    }
+    
+    .request-popup,
+    .features-popup {
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    /* Webkit browsers (Chrome, Safari, Opera) */
+    .request-popup::-webkit-scrollbar,
+    .features-popup::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
     @media (max-width: 768px) {
       .features-grid {
         grid-template-columns: 1fr;
@@ -755,6 +929,311 @@
         font-size: 24px;
       }
     }
+
+    /* Success Popup Styles */
+    .success-popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(21, 41, 76, 0.8);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2500;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .success-popup-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .success-popup {
+      background: white;
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 500px;
+      width: calc(100% - 40px);
+      box-shadow: 0 24px 64px rgba(21, 41, 76, 0.3);
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .success-popup-overlay.show .success-popup {
+      transform: scale(1) translateY(0);
+    }
+
+    .success-popup-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: scaleIn 0.3s ease;
+    }
+
+    .success-popup-icon svg {
+      width: 40px;
+      height: 40px;
+      color: white;
+    }
+
+    .success-popup-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .success-popup-message {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .success-popup-reference {
+      background: #f0f9ff;
+      border: 2px solid #5ba6ff;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 24px 0;
+      text-align: center;
+    }
+
+    .success-popup-reference-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .success-popup-reference-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .success-popup-reference-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: #5ba6ff;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+
+    .success-popup-reference-number:hover {
+      color: #4a95ff;
+    }
+
+    .success-popup-reference-copy {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: #5ba6ff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .success-popup-reference-copy:hover {
+      background: #4a95ff;
+      transform: scale(1.1);
+    }
+
+    .success-popup-reference-copy:active {
+      transform: scale(0.95);
+    }
+
+    .success-popup-reference-copy svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .success-popup-reference-copy.copied {
+      background: #10b981;
+    }
+
+    .success-popup-reference-copy.copied svg {
+      display: none;
+    }
+
+    .success-popup-reference-copy.copied::after {
+      content: '✓';
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .success-popup-note {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 16px;
+      font-style: italic;
+    }
+
+    .success-popup-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .success-popup-actions button {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .success-close-btn {
+      background: linear-gradient(135deg, #5ba6ff, #7b7bff);
+      color: white;
+    }
+
+    .success-close-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(91, 166, 255, 0.3);
+    }
+
+    .success-track-btn {
+      background: #f7faff;
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+
+    .success-track-btn:hover {
+      background: #e9f3ff;
+      border-color: var(--primary);
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+
+    /* Track Status Popup Styles */
+    .track-status-popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(21, 41, 76, 0.6);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .track-status-popup-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .track-status-popup {
+      background: white;
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 500px;
+      width: calc(100% - 40px);
+      box-shadow: 0 24px 64px rgba(21, 41, 76, 0.3);
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.3s ease;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    @supports (scrollbar-width: none) {
+      .track-status-popup {
+        scrollbar-width: none;
+      }
+    }
+    
+    .track-status-popup {
+      -ms-overflow-style: none;
+    }
+
+    .track-status-popup::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    .track-status-popup-overlay.show .track-status-popup {
+      transform: scale(1) translateY(0);
+    }
+
+    .track-status-popup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .track-status-popup-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .track-status-popup-close {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: #f7faff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--muted);
+    }
+
+    .track-status-popup-close:hover {
+      background: #e9f3ff;
+      color: var(--text);
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
@@ -768,11 +1247,19 @@
   </div>
 
   <a href="index.html" class="back-link">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     Back to Login
   </a>
+
+  <button type="button" class="track-status-btn" id="openTrackStatusBtn" aria-label="Track Request Status">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 6v6l4 2" stroke-linecap="round"/>
+    </svg>
+    Track Status
+  </button>
 
   <div class="features-page">
     <section class="hero-section">
@@ -863,10 +1350,10 @@
     </section>
 
     <section class="cta-section">
-      <h2 style="font-size: 36px; font-weight: 700; color: var(--text); margin-bottom: 16px;">Ready to Get Started?</h2>
-      <p style="font-size: 18px; color: var(--muted); margin-bottom: 32px;">Request your admin panel access today and join our secure platform.</p>
+      <h2>Ready to Get Started?</h2>
+      <p>Request your admin panel access today and join our secure platform.</p>
       <button type="button" class="cta-button" id="openRequestPopupBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 2v20M2 12h20"/>
         </svg>
         Request Admin Access
@@ -880,7 +1367,7 @@
       <div class="features-popup-header">
         <h3 class="features-popup-title">Select Features</h3>
         <button class="features-popup-close" id="closeFeaturesPopup" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
           </svg>
         </button>
@@ -955,7 +1442,7 @@
       <div class="request-popup-header">
         <h2 class="request-popup-title">Request Admin Access</h2>
         <button class="request-popup-close" id="closeRequestPopup" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
           </svg>
         </button>
@@ -966,28 +1453,28 @@
           <label>
             Full Name <span class="required">*</span>
           </label>
-          <input type="text" id="newAdminName" placeholder="Enter your full name" required />
+          <input type="text" id="newAdminName" placeholder="Enter your full name" required minlength="2" maxlength="100" pattern="[A-Za-z\s'-]+" title="Name should contain only letters, spaces, hyphens, and apostrophes" />
         </div>
 
         <div class="request-form-field">
           <label>
             Email Address <span class="required">*</span>
           </label>
-          <input type="email" id="newAdminEmail" placeholder="admin@example.com" required />
+          <input type="email" id="newAdminEmail" placeholder="admin@example.com" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Please enter a valid email address" />
         </div>
 
         <div class="request-form-field">
           <label>
             Phone Number <span class="required">*</span>
           </label>
-          <input type="tel" id="newAdminPhone" placeholder="+1 (555) 123-4567" required />
+          <input type="tel" id="newAdminPhone" placeholder="+1 (555) 123-4567 or 1234567890" required pattern="[\+]?[0-9\s\-\(\)]{10,15}" title="Please enter a valid phone number (10-15 digits)" />
         </div>
 
         <div class="request-form-field">
           <label>
-            Organization/Company
+            Organization/Company <span class="required">*</span>
           </label>
-          <input type="text" id="newAdminOrg" placeholder="Your organization name" />
+          <input type="text" id="newAdminOrg" placeholder="Your organization name" required minlength="2" maxlength="200" />
         </div>
 
         <div class="request-form-field">
@@ -1008,14 +1495,14 @@
             <option value="ngo">NGO</option>
             <option value="others">Others</option>
           </select>
-          <input type="text" id="newAdminOrgTypeOther" placeholder="Please specify organization type" style="margin-top: 8px; display: none;" />
+          <input type="text" id="newAdminOrgTypeOther" class="org-type-other-input" placeholder="Please specify organization type" required minlength="2" maxlength="100" />
         </div>
 
         <div class="request-form-field">
           <label>
-            Role/Position
+            Role/Position <span class="required">*</span>
           </label>
-          <select id="newAdminRole">
+          <select id="newAdminRole" required>
             <option value="">Select a role</option>
             <option value="admin">Admin</option>
           </select>
@@ -1023,80 +1510,80 @@
 
         <div class="request-form-field">
           <label>
-            Address
+            Address <span class="required">*</span>
           </label>
-          <input type="text" id="newAdminAddress" placeholder="Street address" />
+          <input type="text" id="newAdminAddress" placeholder="Street address" required minlength="5" maxlength="200" />
         </div>
 
-        <div class="request-form-field" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="request-form-field request-form-field-grid">
           <div>
             <label>
-              City
+              City <span class="required">*</span>
             </label>
-            <input type="text" id="newAdminCity" placeholder="City" />
+            <input type="text" id="newAdminCity" placeholder="City" required minlength="2" maxlength="100" pattern="[A-Za-z\s'-]+" title="City should contain only letters, spaces, hyphens, and apostrophes" />
           </div>
           <div>
             <label>
-              State/Province
+              State/Province <span class="required">*</span>
             </label>
-            <input type="text" id="newAdminState" placeholder="State" />
+            <input type="text" id="newAdminState" placeholder="State" required minlength="2" maxlength="100" pattern="[A-Za-z\s'-]+" title="State should contain only letters, spaces, hyphens, and apostrophes" />
           </div>
         </div>
 
-        <div class="request-form-field" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="request-form-field request-form-field-grid">
           <div>
             <label>
-              Zip/Postal Code
+              Zip/Postal Code <span class="required">*</span>
             </label>
-            <input type="text" id="newAdminZip" placeholder="Zip Code" />
+            <input type="text" id="newAdminZip" placeholder="Zip Code" required pattern="[A-Za-z0-9\s\-]{4,10}" title="Please enter a valid zip/postal code (4-10 alphanumeric characters)" />
           </div>
           <div>
             <label>
-              Country
+              Country <span class="required">*</span>
             </label>
-            <input type="text" id="newAdminCountry" placeholder="Country" />
+            <input type="text" id="newAdminCountry" placeholder="Country" required minlength="2" maxlength="100" pattern="[A-Za-z\s'-]+" title="Country should contain only letters, spaces, hyphens, and apostrophes" />
           </div>
         </div>
 
         <div class="request-form-field">
           <label>
             Features Needed <span class="required">*</span>
-            <span style="font-size: 12px; font-weight: 400; color: var(--muted); display: block; margin-top: 4px;">
+            <span class="request-form-field-help-text">
               Select features you need for the admin panel or enter manually
             </span>
           </label>
-          <div style="display: flex; gap: 8px; align-items: stretch;">
-            <input type="text" id="newAdminFeatures" placeholder="Select features or enter manually" required style="flex: 1;" readonly />
-            <button type="button" class="features-select-btn" id="openFeaturesPopupBtn" style="padding: 12px 20px; background: linear-gradient(135deg, #5ba6ff, #7b7bff); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">
+          <div class="features-input-group">
+            <input type="text" id="newAdminFeatures" placeholder="Select features or enter manually" required readonly />
+            <button type="button" class="features-select-btn" id="openFeaturesPopupBtn">
               Select Features
             </button>
           </div>
-          <div id="selectedFeaturesDisplay" style="margin-top: 8px; font-size: 12px; color: var(--muted); display: none;"></div>
+          <div id="selectedFeaturesDisplay"></div>
         </div>
 
         <div class="request-form-field">
           <label>
             Identity Proof <span class="required">*</span>
-            <span style="font-size: 12px; font-weight: 400; color: var(--muted); display: block; margin-top: 4px;">
+            <span class="request-form-field-help-text">
               Upload a document to verify your identity (ID card, passport, driver's license, etc.)
             </span>
           </label>
           <input type="file" id="newAdminIdProof" accept="image/*,.pdf" required />
-          <div id="newAdminFilePreview" style="margin-top: 8px; font-size: 12px; color: var(--muted);"></div>
+          <div id="newAdminFilePreview"></div>
         </div>
 
         <div class="request-form-field">
           <label>
             Reason for Access <span class="required">*</span>
           </label>
-          <textarea id="newAdminReason" placeholder="Please explain why you need admin access and what you plan to use it for..." required></textarea>
+          <textarea id="newAdminReason" placeholder="Please explain why you need admin access and what you plan to use it for..." required minlength="20" maxlength="1000"></textarea>
         </div>
 
         <div class="request-form-field">
           <label>
-            Additional Information
+            Additional Information <span class="required">*</span>
           </label>
-          <textarea id="newAdminNotes" placeholder="Any additional information you'd like to provide..."></textarea>
+          <textarea id="newAdminNotes" placeholder="Any additional information you'd like to provide..." required minlength="10" maxlength="500"></textarea>
         </div>
 
         <div class="request-form-actions">
@@ -1107,6 +1594,83 @@
         </div>
 
         <div class="request-message" id="requestMessage"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Popup with Reference Number -->
+  <div class="success-popup-overlay" id="successPopupOverlay">
+    <div class="success-popup">
+      <div class="success-popup-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2 class="success-popup-title">Request Submitted Successfully!</h2>
+      <p class="success-popup-message">Your admin access request has been submitted. We will review your request and get back to you soon.</p>
+      
+      <div class="success-popup-reference">
+        <div class="success-popup-reference-label">Reference Number</div>
+        <div class="success-popup-reference-container">
+          <div class="success-popup-reference-number" id="successReferenceNumber"></div>
+          <button type="button" class="success-popup-reference-copy" id="copyReferenceBtn" aria-label="Copy reference number">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <p class="success-popup-note">Please save this reference number to track your request status.</p>
+      
+      <div class="success-popup-actions">
+        <button type="button" class="success-track-btn" id="successTrackBtn">Track Status</button>
+        <button type="button" class="success-close-btn" id="successCloseBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Track Status Popup -->
+  <div class="track-status-popup-overlay" id="trackStatusPopupOverlay">
+    <div class="track-status-popup">
+      <div class="track-status-popup-header">
+        <h2 class="track-status-popup-title">Track Request Status</h2>
+        <button class="track-status-popup-close" id="closeTrackStatusPopup" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      
+      <form class="request-form" id="trackStatusForm">
+        <div class="request-form-field">
+          <label>
+            Customer Name <span class="required">*</span>
+          </label>
+          <input type="text" id="trackCustomerName" placeholder="Enter your full name" required minlength="2" maxlength="100" />
+        </div>
+
+        <div class="request-form-field">
+          <label>
+            Email Address <span class="required">*</span>
+          </label>
+          <input type="email" id="trackEmail" placeholder="admin@example.com" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" />
+        </div>
+
+        <div class="request-form-field">
+          <label>
+            Reference Number <span class="required">*</span>
+          </label>
+          <input type="text" id="trackReferenceNumber" placeholder="Enter your reference number" required pattern="[A-Z0-9-]+" />
+        </div>
+
+        <div class="request-form-actions">
+          <button type="button" class="request-cancel-btn" id="cancelTrackStatusBtn">Cancel</button>
+          <button type="submit" class="request-submit-btn" id="submitTrackStatusBtn">
+            Track Status
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -1170,11 +1734,119 @@
     const adminRequestForm = document.getElementById('adminRequestForm');
     const requestMessage = document.getElementById('requestMessage');
     const submitRequestBtn = document.getElementById('submitRequestBtn');
+    const featuresInput = document.getElementById('newAdminFeatures');
+    const selectedFeaturesDisplay = document.getElementById('selectedFeaturesDisplay');
+    const orgTypeOtherInput = document.getElementById('newAdminOrgTypeOther');
+    let selectedFeatures = [];
+
+    // Save form data to localStorage
+    const saveFormData = () => {
+      const formData = {
+        name: document.getElementById('newAdminName')?.value || '',
+        email: document.getElementById('newAdminEmail')?.value || '',
+        phone: document.getElementById('newAdminPhone')?.value || '',
+        org: document.getElementById('newAdminOrg')?.value || '',
+        orgType: document.getElementById('newAdminOrgType')?.value || '',
+        orgTypeOther: document.getElementById('newAdminOrgTypeOther')?.value || '',
+        role: document.getElementById('newAdminRole')?.value || '',
+        address: document.getElementById('newAdminAddress')?.value || '',
+        city: document.getElementById('newAdminCity')?.value || '',
+        state: document.getElementById('newAdminState')?.value || '',
+        zip: document.getElementById('newAdminZip')?.value || '',
+        country: document.getElementById('newAdminCountry')?.value || '',
+        features: featuresInput?.value || '',
+        reason: document.getElementById('newAdminReason')?.value || '',
+        notes: document.getElementById('newAdminNotes')?.value || '',
+        selectedFeatures: selectedFeatures || []
+      };
+      localStorage.setItem('newAdminRequestFormData', JSON.stringify(formData));
+    };
+
+    // Update features display
+    function updateFeaturesDisplay() {
+      if (selectedFeatures.length > 0) {
+        selectedFeaturesDisplay.style.display = 'block';
+        selectedFeaturesDisplay.innerHTML = '<div class="selected-features-tags"></div>';
+        const tagsContainer = selectedFeaturesDisplay.querySelector('.selected-features-tags');
+        
+        selectedFeatures.forEach((feature, index) => {
+          const tag = document.createElement('div');
+          tag.className = 'feature-tag';
+          tag.innerHTML = `
+            <span>${feature}</span>
+            <span class="feature-tag-remove" data-index="${index}">×</span>
+          `;
+          tagsContainer.appendChild(tag);
+        });
+
+        // Add remove functionality
+        tagsContainer.querySelectorAll('.feature-tag-remove').forEach(removeBtn => {
+          removeBtn.addEventListener('click', (e) => {
+            const index = parseInt(e.target.dataset.index);
+            selectedFeatures.splice(index, 1);
+            featuresInput.value = selectedFeatures.join(', ');
+            updateFeaturesDisplay();
+            // Save form data when feature is removed
+            if (requestPopupOverlay.classList.contains('show')) {
+              saveFormData();
+            }
+          });
+        });
+      } else {
+        selectedFeaturesDisplay.style.display = 'none';
+      }
+    }
+
+    // Load form data from localStorage
+    const loadFormData = () => {
+      const savedData = localStorage.getItem('newAdminRequestFormData');
+      if (savedData) {
+        try {
+          const formData = JSON.parse(savedData);
+          
+          if (formData.name) document.getElementById('newAdminName').value = formData.name;
+          if (formData.email) document.getElementById('newAdminEmail').value = formData.email;
+          if (formData.phone) document.getElementById('newAdminPhone').value = formData.phone;
+          if (formData.org) document.getElementById('newAdminOrg').value = formData.org;
+          if (formData.orgType) {
+            document.getElementById('newAdminOrgType').value = formData.orgType;
+            if (formData.orgType === 'others' && formData.orgTypeOther) {
+              orgTypeOtherInput.style.display = 'block';
+              orgTypeOtherInput.value = formData.orgTypeOther;
+            }
+          }
+          if (formData.role) document.getElementById('newAdminRole').value = formData.role;
+          if (formData.address) document.getElementById('newAdminAddress').value = formData.address;
+          if (formData.city) document.getElementById('newAdminCity').value = formData.city;
+          if (formData.state) document.getElementById('newAdminState').value = formData.state;
+          if (formData.zip) document.getElementById('newAdminZip').value = formData.zip;
+          if (formData.country) document.getElementById('newAdminCountry').value = formData.country;
+          if (formData.features) {
+            featuresInput.value = formData.features;
+            if (formData.selectedFeatures && formData.selectedFeatures.length > 0) {
+              selectedFeatures = formData.selectedFeatures;
+              updateFeaturesDisplay();
+            }
+          }
+          if (formData.reason) document.getElementById('newAdminReason').value = formData.reason;
+          if (formData.notes) document.getElementById('newAdminNotes').value = formData.notes;
+        } catch (err) {
+          console.error('Error loading saved form data:', err);
+        }
+      }
+    };
+
+    // Clear saved form data
+    const clearSavedFormData = () => {
+      localStorage.removeItem('newAdminRequestFormData');
+    };
 
     // Function to open popup
     const openPopup = () => {
       requestPopupOverlay.classList.add('show');
       document.body.style.overflow = 'hidden';
+      // Load saved form data when opening popup
+      loadFormData();
     };
 
     // Open popup from CTA button
@@ -1187,33 +1859,38 @@
       openRequestPopupBtnHero.addEventListener('click', openPopup);
     }
 
-    // Close popup
+    // Check if form has data
+    const hasFormData = () => {
+      const name = document.getElementById('newAdminName')?.value.trim();
+      const email = document.getElementById('newAdminEmail')?.value.trim();
+      const phone = document.getElementById('newAdminPhone')?.value.trim();
+      const org = document.getElementById('newAdminOrg')?.value.trim();
+      const orgType = document.getElementById('newAdminOrgType')?.value.trim();
+      const features = document.getElementById('newAdminFeatures')?.value.trim();
+      const address = document.getElementById('newAdminAddress')?.value.trim();
+      const city = document.getElementById('newAdminCity')?.value.trim();
+      const state = document.getElementById('newAdminState')?.value.trim();
+      const zip = document.getElementById('newAdminZip')?.value.trim();
+      const country = document.getElementById('newAdminCountry')?.value.trim();
+      const idProof = document.getElementById('newAdminIdProof')?.files[0];
+      const reason = document.getElementById('newAdminReason')?.value.trim();
+      const notes = document.getElementById('newAdminNotes')?.value.trim();
+      
+      return !!(name || email || phone || org || orgType || features || address || city || state || zip || country || idProof || reason || notes);
+    };
+
+    // Close popup - save data instead of clearing
     const closePopup = () => {
+      // Save form data before closing
+      if (hasFormData()) {
+        saveFormData();
+      }
+      
       requestPopupOverlay.classList.remove('show');
       document.body.style.overflow = '';
-      adminRequestForm.reset();
+      // Don't reset form - keep data for user
       requestMessage.classList.remove('show', 'success', 'error');
-      const filePreview = document.getElementById('newAdminFilePreview');
-      if (filePreview) {
-        filePreview.textContent = '';
-      }
-      selectedFeatures = [];
-      if (featuresInput) {
-        featuresInput.value = '';
-        featuresInput.readOnly = true;
-      }
-      if (selectedFeaturesDisplay) {
-        selectedFeaturesDisplay.style.display = 'none';
-      }
-      if (orgTypeOtherInput) {
-        orgTypeOtherInput.style.display = 'none';
-        orgTypeOtherInput.value = '';
-      }
-      // Reset feature checkboxes
-      document.querySelectorAll('#featuresList input[type="checkbox"]').forEach(cb => {
-        cb.checked = false;
-      });
-      document.getElementById('customFeaturesInput').value = '';
+      // Note: Form data is preserved in localStorage and will be restored when popup reopens
     };
 
     if (closeRequestPopupBtn) {
@@ -1224,23 +1901,83 @@
       cancelRequestBtn.addEventListener('click', closePopup);
     }
 
-    // Close on overlay click
+    // Prevent closing popup on overlay click
     requestPopupOverlay.addEventListener('click', (e) => {
       if (e.target === requestPopupOverlay) {
-        closePopup();
+        e.stopPropagation();
+        // Don't close - user must click close button
       }
     });
 
-    // Close on ESC key
+    // Prevent closing popup on ESC key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && requestPopupOverlay.classList.contains('show')) {
-        closePopup();
+        e.preventDefault();
+        e.stopPropagation();
+        // Don't close - user must click close button
+      }
+    });
+
+    // Save form data periodically while user is typing
+    const formInputs = [
+      'newAdminName', 'newAdminEmail', 'newAdminPhone', 'newAdminOrg', 
+      'newAdminOrgType', 'newAdminOrgTypeOther', 'newAdminRole',
+      'newAdminAddress', 'newAdminCity', 'newAdminState', 'newAdminZip', 
+      'newAdminCountry', 'newAdminReason', 'newAdminNotes'
+    ];
+
+    formInputs.forEach(inputId => {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.addEventListener('input', () => {
+          if (requestPopupOverlay.classList.contains('show')) {
+            saveFormData();
+          }
+        });
+        input.addEventListener('change', () => {
+          if (requestPopupOverlay.classList.contains('show')) {
+            saveFormData();
+          }
+        });
+      }
+    });
+
+    // Save features when they change
+    if (featuresInput) {
+      featuresInput.addEventListener('input', () => {
+        if (requestPopupOverlay.classList.contains('show')) {
+          saveFormData();
+        }
+      });
+    }
+
+    // Warn before page unload/refresh if form has data (even if popup is closed)
+    window.addEventListener('beforeunload', (e) => {
+      const savedData = localStorage.getItem('newAdminRequestFormData');
+      if (savedData) {
+        try {
+          const formData = JSON.parse(savedData);
+          const hasData = Object.values(formData).some(value => {
+            if (Array.isArray(value)) return value.length > 0;
+            return value && value.toString().trim() !== '';
+          });
+          
+          if (hasData) {
+            e.preventDefault();
+            e.returnValue = 'You have unsaved form data. Are you sure you want to leave? Your data will be saved for next time.';
+            return e.returnValue;
+          }
+        } catch (err) {
+          // If error parsing, still warn
+          e.preventDefault();
+          e.returnValue = 'You may have unsaved form data. Are you sure you want to leave?';
+          return e.returnValue;
+        }
       }
     });
 
     // Organization type handling
     const orgTypeSelect = document.getElementById('newAdminOrgType');
-    const orgTypeOtherInput = document.getElementById('newAdminOrgTypeOther');
     
     if (orgTypeSelect && orgTypeOtherInput) {
       orgTypeSelect.addEventListener('change', (e) => {
@@ -1252,6 +1989,10 @@
           orgTypeOtherInput.required = false;
           orgTypeOtherInput.value = '';
         }
+        // Save form data when organization type changes
+        if (requestPopupOverlay.classList.contains('show')) {
+          saveFormData();
+        }
       });
     }
 
@@ -1261,9 +2002,6 @@
     const closeFeaturesPopupBtn = document.getElementById('closeFeaturesPopup');
     const cancelFeaturesBtn = document.getElementById('cancelFeaturesBtn');
     const applyFeaturesBtn = document.getElementById('applyFeaturesBtn');
-    const featuresInput = document.getElementById('newAdminFeatures');
-    const selectedFeaturesDisplay = document.getElementById('selectedFeaturesDisplay');
-    let selectedFeatures = [];
 
     const openFeaturesPopup = () => {
       featuresPopupOverlay.classList.add('show');
@@ -1319,39 +2057,11 @@
         // Update display
         updateFeaturesDisplay();
         
+        // Save form data after updating features
+        saveFormData();
+        
         closeFeaturesPopup();
       });
-    }
-
-    // Update features display
-    function updateFeaturesDisplay() {
-      if (selectedFeatures.length > 0) {
-        selectedFeaturesDisplay.style.display = 'block';
-        selectedFeaturesDisplay.innerHTML = '<div class="selected-features-tags"></div>';
-        const tagsContainer = selectedFeaturesDisplay.querySelector('.selected-features-tags');
-        
-        selectedFeatures.forEach((feature, index) => {
-          const tag = document.createElement('div');
-          tag.className = 'feature-tag';
-          tag.innerHTML = `
-            <span>${feature}</span>
-            <span class="feature-tag-remove" data-index="${index}">×</span>
-          `;
-          tagsContainer.appendChild(tag);
-        });
-
-        // Add remove functionality
-        tagsContainer.querySelectorAll('.feature-tag-remove').forEach(removeBtn => {
-          removeBtn.addEventListener('click', (e) => {
-            const index = parseInt(e.target.dataset.index);
-            selectedFeatures.splice(index, 1);
-            featuresInput.value = selectedFeatures.join(', ');
-            updateFeaturesDisplay();
-          });
-        });
-      } else {
-        selectedFeaturesDisplay.style.display = 'none';
-      }
     }
 
     // Close features popup on overlay click
@@ -1363,21 +2073,6 @@
       });
     }
 
-    // File preview functionality
-    const idProofInput = document.getElementById('newAdminIdProof');
-    const filePreview = document.getElementById('newAdminFilePreview');
-    
-    if (idProofInput && filePreview) {
-      idProofInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const fileSize = (file.size / (1024 * 1024)).toFixed(2);
-          filePreview.textContent = `Selected: ${file.name} (${fileSize} MB)`;
-        } else {
-          filePreview.textContent = '';
-        }
-      });
-    }
 
     // Upload file to base64
     const uploadIdentityProof = async (file, email) => {
@@ -1424,9 +2119,9 @@
         const reason = document.getElementById('newAdminReason').value.trim();
         const notes = document.getElementById('newAdminNotes').value.trim();
 
-        // Validate required fields
-        if (!name || !email || !phone || !reason || !idProof || !orgType || !features) {
-          showMessage('Please fill all required fields (including Organization Type, Features, and Identity Proof).', 'error');
+        // Validate all required fields
+        if (!name || !email || !phone || !org || !role || !orgType || !features || !address || !city || !state || !zip || !country || !idProof || !reason || !notes) {
+          showMessage('Please fill all required fields.', 'error');
           return;
         }
 
@@ -1436,16 +2131,108 @@
           return;
         }
 
+        // Validate name (2-100 characters, letters, spaces, hyphens, apostrophes only)
+        const nameRegex = /^[A-Za-z\s'-]{2,100}$/;
+        if (!nameRegex.test(name)) {
+          showMessage('Name should contain only letters, spaces, hyphens, and apostrophes (2-100 characters).', 'error');
+          document.getElementById('newAdminName').focus();
+          return;
+        }
+
+        // Validate email format (more comprehensive)
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+          showMessage('Please enter a valid email address.', 'error');
+          document.getElementById('newAdminEmail').focus();
+          return;
+        }
+
+        // Validate phone number (10-15 digits, may include +, spaces, hyphens, parentheses)
+        const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,15}$/;
+        const phoneDigits = phone.replace(/[\s\-\(\)\+]/g, '');
+        if (!phoneRegex.test(phone) || phoneDigits.length < 10 || phoneDigits.length > 15) {
+          showMessage('Please enter a valid phone number (10-15 digits).', 'error');
+          document.getElementById('newAdminPhone').focus();
+          return;
+        }
+
+        // Validate organization name
+        if (org.length < 2 || org.length > 200) {
+          showMessage('Organization name must be between 2 and 200 characters.', 'error');
+          document.getElementById('newAdminOrg').focus();
+          return;
+        }
+
+        // Validate address
+        if (address.length < 5 || address.length > 200) {
+          showMessage('Address must be between 5 and 200 characters.', 'error');
+          document.getElementById('newAdminAddress').focus();
+          return;
+        }
+
+        // Validate city (letters, spaces, hyphens, apostrophes only)
+        const cityRegex = /^[A-Za-z\s'-]{2,100}$/;
+        if (!cityRegex.test(city)) {
+          showMessage('City should contain only letters, spaces, hyphens, and apostrophes (2-100 characters).', 'error');
+          document.getElementById('newAdminCity').focus();
+          return;
+        }
+
+        // Validate state (letters, spaces, hyphens, apostrophes only)
+        const stateRegex = /^[A-Za-z\s'-]{2,100}$/;
+        if (!stateRegex.test(state)) {
+          showMessage('State should contain only letters, spaces, hyphens, and apostrophes (2-100 characters).', 'error');
+          document.getElementById('newAdminState').focus();
+          return;
+        }
+
+        // Validate zip code (4-10 alphanumeric characters)
+        const zipRegex = /^[A-Za-z0-9\s\-]{4,10}$/;
+        if (!zipRegex.test(zip)) {
+          showMessage('Please enter a valid zip/postal code (4-10 alphanumeric characters).', 'error');
+          document.getElementById('newAdminZip').focus();
+          return;
+        }
+
+        // Validate country (letters, spaces, hyphens, apostrophes only)
+        const countryRegex = /^[A-Za-z\s'-]{2,100}$/;
+        if (!countryRegex.test(country)) {
+          showMessage('Country should contain only letters, spaces, hyphens, and apostrophes (2-100 characters).', 'error');
+          document.getElementById('newAdminCountry').focus();
+          return;
+        }
+
+        // Validate reason for access (minimum 20 characters)
+        if (reason.length < 20 || reason.length > 1000) {
+          showMessage('Reason for access must be between 20 and 1000 characters.', 'error');
+          document.getElementById('newAdminReason').focus();
+          return;
+        }
+
+        // Validate additional information (minimum 10 characters)
+        if (notes.length < 10 || notes.length > 500) {
+          showMessage('Additional information must be between 10 and 500 characters.', 'error');
+          document.getElementById('newAdminNotes').focus();
+          return;
+        }
+
+        // Validate features
+        if (!features || features.length < 3) {
+          showMessage('Please select or enter at least one feature for the admin panel.', 'error');
+          document.getElementById('newAdminFeatures').focus();
+          return;
+        }
+
         // Validate file size (max 5MB)
         if (idProof.size > 5 * 1024 * 1024) {
           showMessage('File size must be less than 5MB.', 'error');
           return;
         }
 
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          showMessage('Please enter a valid email address.', 'error');
+        // Validate file type (images and PDF only)
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+        if (!allowedTypes.includes(idProof.type)) {
+          showMessage('Please upload a valid file (JPEG, PNG, GIF, WebP, or PDF).', 'error');
           return;
         }
 
@@ -1486,7 +2273,7 @@
 
           // Check if there's already a pending request for this email
           const { data: existingRequest, error: requestCheckError } = await supabase
-            .from('adminactivationrequests')
+            .from('newadminrequests')
             .select('id, status')
             .eq('admin_email', email)
             .eq('status', 'pending')
@@ -1499,24 +2286,43 @@
             return;
           }
 
-          // Insert new admin request
+          // Generate reference number (format: REF-YYYYMMDD-XXXXXX)
+          const generateReferenceNumber = () => {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+            return `REF-${year}${month}${day}-${random}`;
+          };
+
+          const referenceNumber = generateReferenceNumber();
+
+          // Insert new admin request with reference number
           const { data, error } = await supabase
-            .from('adminactivationrequests')
+            .from('newadminrequests')
             .insert([{
-              admin_email: email,
               admin_name: name,
+              admin_email: email,
               admin_phone: phone,
-              admin_address: address || null,
-              admin_city: city || null,
-              admin_state: state || null,
-              admin_zip_code: zip || null,
-              admin_country: country || null,
+              organization_name: org || null,
+              organization_type: orgType,
+              organization_type_other: orgType === 'others' ? orgTypeOther : null,
+              role: role || null,
+              address: address || null,
+              city: city || null,
+              state: state || null,
+              zip_code: zip || null,
+              country: country || null,
+              features_needed: features,
               identity_proof_url: identityProofUrl,
               identity_proof_filename: identityProofFilename,
-              additional_notes: notes ? `${reason}\n\nOrganization: ${org || 'N/A'}\nOrganization Type: ${orgType === 'others' ? orgTypeOther : orgType}\nRole: ${role || 'N/A'}\nFeatures Needed: ${features}\n\nAdditional Notes: ${notes}` : `${reason}\n\nOrganization: ${org || 'N/A'}\nOrganization Type: ${orgType === 'others' ? orgTypeOther : orgType}\nRole: ${role || 'N/A'}\nFeatures Needed: ${features}`,
+              reason_for_access: reason,
+              additional_notes: notes || null,
               status: 'pending',
-              requested_at: new Date().toISOString()
-            }]);
+              reference_number: referenceNumber
+            }])
+            .select();
 
           if (error) {
             console.error('Error submitting request:', error);
@@ -1526,16 +2332,47 @@
             return;
           }
 
-          // Success
-          showMessage('Your admin access request has been submitted successfully! We will review your request and get back to you soon.', 'success');
+          // Store reference number with request ID if we have data
+          let storedReferenceNumber = referenceNumber;
+          if (data && data.length > 0) {
+            // Store reference number in localStorage with request ID for tracking
+            localStorage.setItem(`request_ref_${data[0].id}`, referenceNumber);
+            storedReferenceNumber = referenceNumber;
+          }
+
+          // Close request popup
+          closePopup();
           
-          // Reset form after 2 seconds
-          setTimeout(() => {
-            adminRequestForm.reset();
-            setTimeout(() => {
-              closePopup();
-            }, 1000);
-          }, 2000);
+          // Clear saved form data on successful submission
+          clearSavedFormData();
+          
+          // Reset form
+          adminRequestForm.reset();
+          selectedFeatures = [];
+          if (featuresInput) {
+            featuresInput.value = '';
+            featuresInput.readOnly = true;
+          }
+          if (selectedFeaturesDisplay) {
+            selectedFeaturesDisplay.style.display = 'none';
+          }
+          if (orgTypeOtherInput) {
+            orgTypeOtherInput.style.display = 'none';
+            orgTypeOtherInput.value = '';
+          }
+          const filePreview = document.getElementById('newAdminFilePreview');
+          if (filePreview) {
+            filePreview.textContent = '';
+          }
+          document.querySelectorAll('#featuresList input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+          });
+          document.getElementById('customFeaturesInput').value = '';
+
+          // Show success popup with reference number
+          document.getElementById('successReferenceNumber').textContent = storedReferenceNumber;
+          document.getElementById('successPopupOverlay').classList.add('show');
+          document.body.style.overflow = 'hidden';
 
         } catch (err) {
           console.error('Error:', err);
@@ -1552,6 +2389,315 @@
       requestMessage.className = `request-message show ${type}`;
       requestMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
+
+    // Success Popup Functionality
+    const successPopupOverlay = document.getElementById('successPopupOverlay');
+    const successCloseBtn = document.getElementById('successCloseBtn');
+    const successTrackBtn = document.getElementById('successTrackBtn');
+    const copyReferenceBtn = document.getElementById('copyReferenceBtn');
+    const successReferenceNumber = document.getElementById('successReferenceNumber');
+
+    // Copy reference number to clipboard
+    const copyReferenceToClipboard = async () => {
+      const referenceText = successReferenceNumber.textContent.trim();
+      
+      if (!referenceText) {
+        console.error('Reference number is empty');
+        return;
+      }
+
+      try {
+        // Use modern Clipboard API
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(referenceText);
+        } else {
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea');
+          textArea.value = referenceText;
+          textArea.style.position = 'fixed';
+          textArea.style.left = '-999999px';
+          textArea.style.top = '-999999px';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            document.execCommand('copy');
+          } catch (err) {
+            console.error('Fallback copy failed:', err);
+            return;
+          }
+          
+          document.body.removeChild(textArea);
+        }
+
+        // Visual feedback
+        if (copyReferenceBtn) {
+          copyReferenceBtn.classList.add('copied');
+          setTimeout(() => {
+            copyReferenceBtn.classList.remove('copied');
+          }, 2000);
+        }
+      } catch (err) {
+        console.error('Failed to copy reference number:', err);
+        alert('Failed to copy reference number. Please copy it manually: ' + referenceText);
+      }
+    };
+
+    // Copy button click handler
+    if (copyReferenceBtn) {
+      copyReferenceBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        copyReferenceToClipboard();
+      });
+    }
+
+    // Reference number click handler
+    if (successReferenceNumber) {
+      successReferenceNumber.addEventListener('click', (e) => {
+        e.preventDefault();
+        copyReferenceToClipboard();
+      });
+    }
+
+    const closeSuccessPopup = () => {
+      successPopupOverlay.classList.remove('show');
+      document.body.style.overflow = '';
+    };
+
+    if (successCloseBtn) {
+      successCloseBtn.addEventListener('click', closeSuccessPopup);
+    }
+
+    if (successTrackBtn) {
+      successTrackBtn.addEventListener('click', () => {
+        closeSuccessPopup();
+        // Pre-fill the reference number in track status popup
+        const refNumber = document.getElementById('successReferenceNumber').textContent;
+        document.getElementById('trackReferenceNumber').value = refNumber;
+        // Pre-fill email if available
+        const email = document.getElementById('newAdminEmail')?.value || '';
+        if (email) {
+          document.getElementById('trackEmail').value = email;
+        }
+        // Pre-fill name if available
+        const name = document.getElementById('newAdminName')?.value || '';
+        if (name) {
+          document.getElementById('trackCustomerName').value = name;
+        }
+        // Open track status popup
+        const trackPopup = document.getElementById('trackStatusPopupOverlay');
+        if (trackPopup) {
+          trackPopup.classList.add('show');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    }
+
+    // Close success popup on overlay click
+    if (successPopupOverlay) {
+      successPopupOverlay.addEventListener('click', (e) => {
+        if (e.target === successPopupOverlay) {
+          closeSuccessPopup();
+        }
+      });
+    }
+
+    // Track Status Popup Functionality - Initialize after DOM is ready
+    function initTrackStatusPopup() {
+      const trackStatusPopupOverlay = document.getElementById('trackStatusPopupOverlay');
+      const openTrackStatusBtn = document.getElementById('openTrackStatusBtn');
+      const closeTrackStatusPopupBtn = document.getElementById('closeTrackStatusPopup');
+      const cancelTrackStatusBtn = document.getElementById('cancelTrackStatusBtn');
+      const trackStatusForm = document.getElementById('trackStatusForm');
+      const trackCustomerNameInput = document.getElementById('trackCustomerName');
+      const trackEmailInput = document.getElementById('trackEmail');
+      const trackReferenceNumberInput = document.getElementById('trackReferenceNumber');
+
+      if (!trackStatusPopupOverlay) {
+        console.error('Track Status popup overlay not found!');
+        return;
+      }
+
+      if (!openTrackStatusBtn) {
+        console.error('Track Status button not found!');
+        return;
+      }
+
+      // Save track status form data to localStorage
+      const saveTrackStatusFormData = () => {
+        if (!trackStatusForm) return;
+        const formData = {
+          customerName: trackCustomerNameInput?.value || '',
+          email: trackEmailInput?.value || '',
+          referenceNumber: trackReferenceNumberInput?.value || ''
+        };
+        localStorage.setItem('trackStatusFormData', JSON.stringify(formData));
+      };
+
+      // Load track status form data from localStorage
+      const loadTrackStatusFormData = () => {
+        if (!trackStatusForm) return;
+        try {
+          const savedData = localStorage.getItem('trackStatusFormData');
+          if (savedData) {
+            const formData = JSON.parse(savedData);
+            if (trackCustomerNameInput) trackCustomerNameInput.value = formData.customerName || '';
+            if (trackEmailInput) trackEmailInput.value = formData.email || '';
+            if (trackReferenceNumberInput) trackReferenceNumberInput.value = formData.referenceNumber || '';
+          }
+        } catch (err) {
+          console.error('Error loading track status form data:', err);
+        }
+      };
+
+      // Clear track status form data from localStorage
+      const clearTrackStatusFormData = () => {
+        localStorage.removeItem('trackStatusFormData');
+      };
+
+      // Check if track status form has data
+      const hasTrackStatusFormData = () => {
+        if (!trackStatusForm) return false;
+        const customerName = trackCustomerNameInput?.value.trim() || '';
+        const trackEmail = trackEmailInput?.value.trim() || '';
+        const referenceNumber = trackReferenceNumberInput?.value.trim() || '';
+        return !!(customerName || trackEmail || referenceNumber);
+      };
+
+      // Auto-save form data on input
+      if (trackCustomerNameInput) {
+        trackCustomerNameInput.addEventListener('input', saveTrackStatusFormData);
+        trackCustomerNameInput.addEventListener('change', saveTrackStatusFormData);
+        trackCustomerNameInput.addEventListener('blur', saveTrackStatusFormData);
+      }
+      if (trackEmailInput) {
+        trackEmailInput.addEventListener('input', saveTrackStatusFormData);
+        trackEmailInput.addEventListener('change', saveTrackStatusFormData);
+        trackEmailInput.addEventListener('blur', saveTrackStatusFormData);
+      }
+      if (trackReferenceNumberInput) {
+        trackReferenceNumberInput.addEventListener('input', saveTrackStatusFormData);
+        trackReferenceNumberInput.addEventListener('change', saveTrackStatusFormData);
+        trackReferenceNumberInput.addEventListener('blur', saveTrackStatusFormData);
+      }
+
+      const openTrackStatusPopup = (e) => {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        console.log('Opening track status popup');
+        loadTrackStatusFormData(); // Load saved data
+        trackStatusPopupOverlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      };
+
+      const closeTrackStatusPopup = () => {
+        // Check if form has data
+        if (hasTrackStatusFormData()) {
+          const confirmClose = confirm('You have entered data in the form. Are you sure you want to close? Your data will be saved and restored when you reopen the popup.');
+          if (!confirmClose) {
+            return; // Don't close if user cancels
+          }
+          // Save data before closing
+          saveTrackStatusFormData();
+        }
+        console.log('Closing track status popup');
+        trackStatusPopupOverlay.classList.remove('show');
+        document.body.style.overflow = '';
+        // Don't reset form - keep data for user
+      };
+
+      // Initialize track status button click handler
+      openTrackStatusBtn.addEventListener('click', openTrackStatusPopup);
+
+      if (closeTrackStatusPopupBtn) {
+        closeTrackStatusPopupBtn.addEventListener('click', closeTrackStatusPopup);
+      }
+
+      if (cancelTrackStatusBtn) {
+        cancelTrackStatusBtn.addEventListener('click', closeTrackStatusPopup);
+      }
+
+      // Prevent closing track status popup on overlay click
+      trackStatusPopupOverlay.addEventListener('click', (e) => {
+        // Only prevent default behavior - don't close on overlay click
+        if (e.target === trackStatusPopupOverlay) {
+          e.stopPropagation();
+        }
+      });
+
+      // Prevent closing on ESC key for track status popup
+      // (ESC key handler is handled separately below)
+
+      // Handle track status form submission
+      if (trackStatusForm) {
+        trackStatusForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const customerName = trackCustomerNameInput?.value.trim() || '';
+          const trackEmail = trackEmailInput?.value.trim() || '';
+          const referenceNumber = trackReferenceNumberInput?.value.trim().toUpperCase() || '';
+
+          // Validate fields
+          if (!customerName || !trackEmail || !referenceNumber) {
+            alert('Please fill all fields.');
+            return;
+          }
+
+          // Validate email
+          const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          if (!emailRegex.test(trackEmail)) {
+            alert('Please enter a valid email address.');
+            return;
+          }
+
+          // Clear saved form data on successful submission
+          clearTrackStatusFormData();
+
+          // Navigate to trackstatusadmin.html with parameters
+          const params = new URLSearchParams({
+            name: customerName,
+            email: trackEmail,
+            reference: referenceNumber
+          });
+
+          window.location.href = `trackstatusadmin.html?${params.toString()}`;
+        });
+      }
+
+      // Warn before page unload if popup is open and form has data
+      window.addEventListener('beforeunload', (e) => {
+        if (trackStatusPopupOverlay.classList.contains('show') && hasTrackStatusFormData()) {
+          // Save data before leaving
+          saveTrackStatusFormData();
+          e.preventDefault();
+          e.returnValue = 'You have unsaved data in the track status form. Are you sure you want to leave?';
+          return e.returnValue;
+        }
+      });
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTrackStatusPopup);
+    } else {
+      // DOM already loaded
+      initTrackStatusPopup();
+    }
+
+    // Close popups on ESC key (but not track status popup - it must be closed via close icon)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (successPopupOverlay && successPopupOverlay.classList.contains('show')) {
+          closeSuccessPopup();
+        }
+        // Don't close track status popup on ESC - user must use close icon
+        // This prevents accidental data loss
+      }
+    });
   </script>
 </body>
 </html>
