@@ -594,104 +594,9 @@
 
       <!-- Request Details -->
       <div id="requestDetails" style="display: none;">
-        <!-- Status Timeline Flow -->
+        <!-- Status Timeline Flow - Dynamically generated -->
         <div class="status-timeline" id="statusTimeline">
-          <div class="timeline-item active" data-status="requested">
-            <div class="timeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2v20M2 12h20"/>
-              </svg>
-            </div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">New Admin Panel Requested</h3>
-              <p class="timeline-description">Your request has been submitted successfully</p>
-              <span class="timeline-date" id="timelineRequestedDate">-</span>
-            </div>
-          </div>
-
-          <div class="timeline-item" data-status="validation" id="timelineValidation">
-            <div class="timeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 11l3 3L22 4"/>
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-              </svg>
-            </div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">Request Under Validation</h3>
-              <p class="timeline-description">Your request is being validated by our team</p>
-              <span class="timeline-date" id="timelineValidationDate">-</span>
-            </div>
-          </div>
-
-          <div class="timeline-item" data-status="review" id="timelineReview">
-            <div class="timeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-                <line x1="16" y1="13" x2="8" y2="13"/>
-                <line x1="16" y1="17" x2="8" y2="17"/>
-              </svg>
-            </div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">Administrator Review</h3>
-              <p class="timeline-description">Administrator is reviewing your request</p>
-              <span class="timeline-date" id="timelineReviewDate">-</span>
-            </div>
-          </div>
-
-          <div class="timeline-item" data-status="accepted" id="timelineAccepted">
-            <div class="timeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">Administrator Accepted</h3>
-              <p class="timeline-description">Your request has been accepted by the administrator</p>
-              <span class="timeline-date" id="timelineAcceptedDate">-</span>
-            </div>
-          </div>
-
-          <div class="timeline-item" data-status="processing" id="timelineProcessing">
-            <div class="timeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-              </svg>
-            </div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">Processing Request</h3>
-              <p class="timeline-description">Your admin panel is being set up</p>
-              <span class="timeline-date" id="timelineProcessingDate">-</span>
-            </div>
-          </div>
-
-          <div class="timeline-item" data-status="completed" id="timelineCompleted">
-            <div class="timeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-            </div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">Request Completed</h3>
-              <p class="timeline-description">Your admin panel access has been granted</p>
-              <span class="timeline-date" id="timelineCompletedDate">-</span>
-            </div>
-          </div>
-
-          <div class="timeline-item" data-status="rejected" id="timelineRejected">
-            <div class="timeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M15 9l-6 6M9 9l6 6" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">Request Rejected</h3>
-              <p class="timeline-description">Your request has been rejected</p>
-              <span class="timeline-date" id="timelineRejectedDate">-</span>
-            </div>
-          </div>
+          <!-- Timeline items will be generated by JavaScript based on status -->
         </div>
 
         <!-- Current Status Card -->
@@ -876,100 +781,183 @@
       return typeMap[orgType] || orgType;
     };
 
-    // Update status timeline
-    const updateStatusTimeline = (status, requestedAt, updatedAt, processedAt) => {
-      // All timeline items
-      const timelineItems = {
-        requested: document.querySelector('[data-status="requested"]'),
-        validation: document.querySelector('[data-status="validation"]'),
-        review: document.querySelector('[data-status="review"]'),
-        accepted: document.querySelector('[data-status="accepted"]'),
-        processing: document.querySelector('[data-status="processing"]'),
-        completed: document.querySelector('[data-status="completed"]'),
-        rejected: document.querySelector('[data-status="rejected"]')
-      };
-
-      // Reset all items
-      Object.values(timelineItems).forEach(item => {
-        if (item) {
-          item.classList.remove('active', 'completed');
-          item.style.display = 'none';
+    // Get status configuration with title and description
+    const getStatusConfig = (statusValue) => {
+      const configs = {
+        'approval_pending': {
+          title: 'Approval Pending',
+          description: 'Your request is pending approval. Our team is reviewing your application.',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>',
+          color: '#fbbf24',
+          bgColor: 'rgba(251, 191, 36, 0.1)'
+        },
+        'approved': {
+          title: 'Approved',
+          description: 'Congratulations! Your admin access request has been approved by the administrator.',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+          color: '#10b981',
+          bgColor: 'rgba(16, 185, 129, 0.1)'
+        },
+        'under_customization': {
+          title: 'Under Customization',
+          description: 'Your admin panel is being customized according to your requirements. We will notify you once it\'s ready.',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>',
+          color: '#5ba6ff',
+          bgColor: 'rgba(91, 166, 255, 0.1)'
+        },
+        'customization_complete': {
+          title: 'Customization Complete',
+          description: 'Your admin panel customization is complete! You will receive access credentials soon.',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+          color: '#10b981',
+          bgColor: 'rgba(16, 185, 129, 0.1)'
+        },
+        'in_progress': {
+          title: 'In Progress',
+          description: 'Your request is currently being processed. We are working on setting up your admin access.',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>',
+          color: '#3b82f6',
+          bgColor: 'rgba(59, 130, 246, 0.1)'
+        },
+        'rejected': {
+          title: 'Rejected',
+          description: 'Your request has been rejected. Please see the rejection reason below for more details.',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6" stroke-linecap="round"/></svg>',
+          color: '#ef4444',
+          bgColor: 'rgba(239, 68, 68, 0.1)'
+        },
+        'pending': {
+          title: 'Pending Review',
+          description: 'Your request is being reviewed by our team. We will notify you once a decision has been made.',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>',
+          color: '#fbbf24',
+          bgColor: 'rgba(251, 191, 36, 0.1)'
         }
+      };
+      return configs[statusValue] || configs['approval_pending'];
+    };
+
+    // Update status timeline - now shows actual status changes with dates
+    const updateStatusTimeline = (status, requestedAt, updatedAt, processedAt) => {
+      const timelineContainer = document.getElementById('statusTimeline');
+      if (!timelineContainer) return;
+
+      // Clear ALL existing timeline items (both static and dynamic)
+      timelineContainer.innerHTML = '';
+
+      // Status mapping to timeline flow - showing each status change
+      const statusFlow = [];
+      
+      // Always start with requested status
+      statusFlow.push({ 
+        status: 'requested', 
+        date: requestedAt, 
+        title: 'New Admin Panel Requested', 
+        description: 'Your request has been submitted successfully', 
+        color: '#10b981',
+        isActive: false
       });
 
-      // Always show requested as completed (since request was submitted)
-      if (timelineItems.requested) {
-        timelineItems.requested.style.display = 'block';
-        timelineItems.requested.classList.add('completed');
-        if (requestedAt) {
-          document.getElementById('timelineRequestedDate').textContent = formatDate(requestedAt);
-        }
+      // Add current status based on what it is
+      const currentStatus = status || 'approval_pending';
+      const statusConfig = getStatusConfig(currentStatus);
+      
+      // Use updated_at for current status change date, processed_at for final states
+      const currentStatusDate = (currentStatus === 'approved' || currentStatus === 'rejected' || currentStatus === 'customization_complete') 
+        ? (processedAt || updatedAt) 
+        : updatedAt || requestedAt;
+
+      // Build the flow based on current status - show completed steps and current active step
+      if (currentStatus === 'approval_pending' || currentStatus === 'pending') {
+        // Show requested as completed, approval_pending as active
+        statusFlow.push({
+          status: 'approval_pending',
+          date: currentStatusDate,
+          title: statusConfig.title,
+          description: statusConfig.description,
+          color: statusConfig.color,
+          isActive: true
+        });
+      } else if (currentStatus === 'in_progress') {
+        // Show requested and approval_pending as completed, in_progress as active
+        statusFlow.push(
+          { status: 'approval_pending', date: updatedAt || requestedAt, title: 'Approval Pending', description: 'Request was validated and approved', color: '#10b981', isActive: false },
+          { status: 'in_progress', date: currentStatusDate, title: statusConfig.title, description: statusConfig.description, color: statusConfig.color, isActive: true }
+        );
+      } else if (currentStatus === 'approved') {
+        // Show requested and approval_pending as completed, approved as active
+        statusFlow.push(
+          { status: 'approval_pending', date: updatedAt || requestedAt, title: 'Approval Pending', description: 'Request was validated', color: '#10b981', isActive: false },
+          { status: 'approved', date: currentStatusDate, title: statusConfig.title, description: statusConfig.description, color: statusConfig.color, isActive: true }
+        );
+      } else if (currentStatus === 'under_customization') {
+        // Show full flow up to customization
+        statusFlow.push(
+          { status: 'approval_pending', date: updatedAt || requestedAt, title: 'Approval Pending', description: 'Request was validated', color: '#10b981', isActive: false },
+          { status: 'approved', date: updatedAt || requestedAt, title: 'Approved', description: 'Request was approved by administrator', color: '#10b981', isActive: false },
+          { status: 'under_customization', date: currentStatusDate, title: statusConfig.title, description: statusConfig.description, color: statusConfig.color, isActive: true }
+        );
+      } else if (currentStatus === 'customization_complete') {
+        // Show full flow with completion
+        statusFlow.push(
+          { status: 'approval_pending', date: updatedAt || requestedAt, title: 'Approval Pending', description: 'Request was validated', color: '#10b981', isActive: false },
+          { status: 'approved', date: updatedAt || requestedAt, title: 'Approved', description: 'Request was approved by administrator', color: '#10b981', isActive: false },
+          { status: 'under_customization', date: updatedAt || requestedAt, title: 'Under Customization', description: 'Panel was being customized', color: '#5ba6ff', isActive: false },
+          { status: 'customization_complete', date: currentStatusDate, title: statusConfig.title, description: statusConfig.description, color: statusConfig.color, isActive: true }
+        );
+      } else if (currentStatus === 'rejected') {
+        // Show requested and approval_pending as completed, rejected as active
+        statusFlow.push(
+          { status: 'approval_pending', date: updatedAt || requestedAt, title: 'Approval Pending', description: 'Request was validated', color: '#10b981', isActive: false },
+          { status: 'rejected', date: currentStatusDate, title: statusConfig.title, description: statusConfig.description, color: statusConfig.color, isActive: true }
+        );
       }
 
-      // Status flow logic
-      if (status === 'pending') {
-        // Request submitted - show validation as active
-        if (timelineItems.validation) {
-          timelineItems.validation.style.display = 'block';
-          timelineItems.validation.classList.add('active');
-          if (updatedAt) {
-            document.getElementById('timelineValidationDate').textContent = formatDate(updatedAt);
-          }
-        }
-      } else if (status === 'in_progress') {
-        // Request is being processed - show validation completed, review active
-        if (timelineItems.validation) {
-          timelineItems.validation.style.display = 'block';
-          timelineItems.validation.classList.add('completed');
-        }
-        if (timelineItems.review) {
-          timelineItems.review.style.display = 'block';
-          timelineItems.review.classList.add('active');
-          if (updatedAt) {
-            document.getElementById('timelineReviewDate').textContent = formatDate(updatedAt);
-          }
-        }
-      } else if (status === 'approved') {
-        // Request approved - show full flow
-        if (timelineItems.validation) {
-          timelineItems.validation.style.display = 'block';
-          timelineItems.validation.classList.add('completed');
-        }
-        if (timelineItems.review) {
-          timelineItems.review.style.display = 'block';
-          timelineItems.review.classList.add('completed');
-        }
-        if (timelineItems.accepted) {
-          timelineItems.accepted.style.display = 'block';
-          timelineItems.accepted.classList.add('active');
-          if (processedAt || updatedAt) {
-            document.getElementById('timelineAcceptedDate').textContent = formatDate(processedAt || updatedAt);
-          }
-        }
-        if (timelineItems.processing) {
-          timelineItems.processing.style.display = 'block';
-        }
-        if (timelineItems.completed) {
-          timelineItems.completed.style.display = 'block';
-        }
-      } else if (status === 'rejected') {
-        // Request rejected
-        if (timelineItems.validation) {
-          timelineItems.validation.style.display = 'block';
-          timelineItems.validation.classList.add('completed');
-        }
-        if (timelineItems.review) {
-          timelineItems.review.style.display = 'block';
-          timelineItems.review.classList.add('completed');
-        }
-        if (timelineItems.rejected) {
-          timelineItems.rejected.style.display = 'block';
-          timelineItems.rejected.classList.add('active');
-          if (processedAt || updatedAt) {
-            document.getElementById('timelineRejectedDate').textContent = formatDate(processedAt || updatedAt);
-          }
-        }
-      }
+      // Render timeline items
+      statusFlow.forEach((item, index) => {
+        const timelineItem = document.createElement('div');
+        timelineItem.className = `timeline-item ${item.isActive ? 'active' : 'completed'}`;
+        timelineItem.setAttribute('data-dynamic', 'true');
+        timelineItem.setAttribute('data-status', item.status);
+
+        const iconColor = item.color || '#5ba6ff';
+        const bgColor = item.isActive ? `rgba(${hexToRgb(item.color)}, 0.1)` : `rgba(${hexToRgb(item.color)}, 0.05)`;
+        const borderColor = item.color || '#5ba6ff';
+
+        timelineItem.innerHTML = `
+          <div class="timeline-icon" style="background: ${item.isActive ? `linear-gradient(135deg, ${item.color}, ${adjustColor(item.color, -20)})` : `linear-gradient(135deg, ${item.color}, ${adjustColor(item.color, -20)})`}; border-color: ${item.color}; color: white;">
+            ${item.status === 'requested' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>' : 
+              item.status === 'approval_pending' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>' :
+              item.status === 'approved' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>' :
+              item.status === 'under_customization' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>' :
+              item.status === 'customization_complete' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' :
+              item.status === 'rejected' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6" stroke-linecap="round"/></svg>' :
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>'}
+          </div>
+          <div class="timeline-content" style="background: ${bgColor}; border-color: ${item.isActive ? borderColor : 'var(--border)'}; ${item.isActive ? `box-shadow: 0 4px 12px rgba(${hexToRgb(item.color)}, 0.2);` : ''}">
+            <h3 class="timeline-title" style="color: ${item.isActive ? item.color : item.color};">${item.title}</h3>
+            <p class="timeline-description">${item.description}</p>
+            <span class="timeline-date">${item.date ? formatDate(item.date) : '-'}</span>
+          </div>
+        `;
+
+        timelineContainer.appendChild(timelineItem);
+      });
+    };
+
+    // Helper function to convert hex to RGB
+    const hexToRgb = (hex) => {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '91, 166, 255';
+    };
+
+    // Helper function to adjust color brightness
+    const adjustColor = (hex, amount) => {
+      const num = parseInt(hex.replace('#', ''), 16);
+      const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+      const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
+      const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
+      return '#' + (0x1000000 + (r << 16) + (g << 8) + b).toString(16).slice(1);
     };
 
     // Update status badge
@@ -981,29 +969,44 @@
       statusBadge.className = 'status-badge ' + status;
 
       const statusConfig = {
-        'pending': {
-          text: 'Pending Review',
-          message: 'Your request is being reviewed by our team. We will notify you once a decision has been made.',
+        'approval_pending': {
+          text: 'Approval Pending',
+          message: 'Your request is pending approval. Our team is reviewing your application.',
           icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>'
         },
         'approved': {
           text: 'Approved',
-          message: 'Congratulations! Your admin access request has been approved. You will receive further instructions via email.',
+          message: 'Congratulations! Your admin access request has been approved. We are now customizing your admin panel.',
           icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        },
+        'under_customization': {
+          text: 'Under Customization',
+          message: 'Your admin panel is being customized according to your requirements. We will notify you once it\'s ready.',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>'
+        },
+        'customization_complete': {
+          text: 'Customization Complete',
+          message: 'Your admin panel customization is complete! You will receive access credentials soon.',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+        },
+        'in_progress': {
+          text: 'In Progress',
+          message: 'Your request is currently being processed. We are working on setting up your admin access.',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>'
         },
         'rejected': {
           text: 'Rejected',
           message: 'Your request has been rejected. Please see the rejection reason below for more details.',
           icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6" stroke-linecap="round"/></svg>'
         },
-        'in_progress': {
-          text: 'In Progress',
-          message: 'Your request is currently being processed. We are working on setting up your admin access.',
+        'pending': {
+          text: 'Pending Review',
+          message: 'Your request is being reviewed by our team. We will notify you once a decision has been made.',
           icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>'
         }
       };
 
-      const config = statusConfig[status] || statusConfig['pending'];
+      const config = statusConfig[status] || statusConfig['approval_pending'];
       statusText.textContent = config.text;
       statusBadge.innerHTML = config.icon + '<span>' + config.text + '</span>';
       statusMessage.textContent = config.message;
@@ -1013,14 +1016,14 @@
     const displayRequestDetails = (request) => {
       // Update status timeline first
       updateStatusTimeline(
-        request.status || 'pending',
+        request.status || 'approval_pending',
         request.requested_at,
         request.updated_at,
         request.processed_at
       );
 
       // Update status badge
-      updateStatusBadge(request.status || 'pending');
+      updateStatusBadge(request.status || 'approval_pending');
 
       // Basic details
       document.getElementById('detailReference').textContent = request.reference_number || reference || '-';
@@ -1108,12 +1111,12 @@
           const { data: refRequest, error: refError } = await supabase
             .from('newadminrequests')
             .select('*')
-            .eq('reference_number', reference.toUpperCase())
-            .single();
+            .eq('reference_number', reference.toUpperCase().trim())
+            .maybeSingle(); // Use maybeSingle to avoid errors if not found
 
           if (!refError && refRequest) {
-            // Verify email matches
-            if (refRequest.admin_email === email) {
+            // Verify email matches (case-insensitive)
+            if (refRequest.admin_email && refRequest.admin_email.toLowerCase() === email.toLowerCase()) {
               request = refRequest;
             }
           }

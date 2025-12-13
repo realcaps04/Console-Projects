@@ -2276,7 +2276,7 @@
             .from('newadminrequests')
             .select('id, status')
             .eq('admin_email', email)
-            .eq('status', 'pending')
+            .in('status', ['pending', 'approval_pending', 'in_progress'])
             .single();
 
           if (existingRequest) {
@@ -2319,7 +2319,7 @@
               identity_proof_filename: identityProofFilename,
               reason_for_access: reason,
               additional_notes: notes || null,
-              status: 'pending',
+              status: 'approval_pending',
               reference_number: referenceNumber
             }])
             .select();
