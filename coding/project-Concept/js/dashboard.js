@@ -342,7 +342,7 @@
     if (inactiveForm) {
       inactiveForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const email = inactivePopup.dataset.adminEmail;
         const name = document.getElementById('inactiveRequestName')?.value?.trim() || adminData.name || '';
         const phone = document.getElementById('inactiveRequestPhone')?.value?.trim() || null;
@@ -399,7 +399,7 @@
           // Upload identity proof
           let identityProofUrl = null;
           let identityProofFilename = null;
-          
+
           if (identityProof) {
             const fileExt = identityProof.name.split('.').pop();
             const fileName = `${email}_${Date.now()}.${fileExt}`;
@@ -583,7 +583,7 @@
         { title: 'Expiry Tracking', icon: 'clock', description: 'Track medication expiry dates' }
       ]
     };
-    
+
     return rectangles[uiType] || [];
   };
 
@@ -748,6 +748,198 @@
       hideProfilePopup();
     }
   });
+
+
+  // Feedback FAB and Popup Logic
+  const initFeedbackSystem = () => {
+    const fabContainer = document.getElementById('fabContainer');
+    const fabMainBtn = document.getElementById('fabMainBtn');
+    const feedbackPopup = document.getElementById('feedbackPopup');
+    const feedbackForm = document.getElementById('feedbackForm');
+    const closeFeedbackBtn = document.getElementById('closeFeedbackPopup');
+    const cancelFeedbackBtn = document.getElementById('cancelFeedbackBtn');
+    const feedbackTitleInput = document.getElementById('feedbackPopupTitle');
+    const feedbackTypeInput = document.getElementById('feedbackType');
+    const feedbackMessage = document.getElementById('feedbackMessage');
+
+    // Toggle FAB Menu
+    if (fabMainBtn && fabContainer) {
+      fabMainBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fabContainer.classList.toggle('active');
+      });
+
+      // Close FAB when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!fabContainer.contains(e.target) && fabContainer.classList.contains('active')) {
+          fabContainer.classList.remove('active');
+        }
+      });
+    }
+
+    // Open Feedback Popup
+    const openFeedbackPopup = (type) => {
+      if (!feedbackPopup) return;
+
+      // Set Title based on type
+      let title = 'Submit Feedback';
+      const contextField = document.getElementById('bugContextField');
+      const contextSelect = document.getElementById('feedbackContext');
+
+      if (type === 'bug') {
+        title = 'Report a Bug';
+        if (contextField) {
+          contextField.classList.remove('hidden');
+          // Populate options from available cards
+          if (contextSelect) {
+            contextSelect.innerHTML = '<option value="">Select an element (Optional)</option>';
+            contextSelect.innerHTML += '<option value="General/Other">General / Entire Dashboard</option>';
+
+            // Get all visible console cards
+            const cards = document.querySelectorAll('.console-card .console-card-title');
+            cards.forEach(card => {
+              const cardName = card.textContent.trim();
+              const option = document.createElement('option');
+              option.value = cardName;
+              option.textContent = cardName;
+              contextSelect.appendChild(option);
+            });
+          }
+        }
+      } else {
+        if (type === 'suggestion') title = 'Make a Suggestion';
+        else if (type === 'other') title = 'Other Inquiry';
+
+        if (contextField) contextField.classList.add('hidden');
+      }
+
+      if (feedbackTitleInput) feedbackTitleInput.textContent = title;
+      if (feedbackTypeInput) feedbackTypeInput.value = type;
+
+      // Reset form
+      if (feedbackForm) feedbackForm.reset();
+      if (feedbackMessage) {
+        feedbackMessage.textContent = '';
+        feedbackMessage.classList.add('hidden');
+      }
+
+      feedbackPopup.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      fabContainer.classList.remove('active'); // Close FAB
+    };
+
+    // Close Feedback Popup
+    const closeFeedbackPopup = () => {
+      if (feedbackPopup) {
+        feedbackPopup.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    };
+
+    // Attach listeners to FAB options
+    if (fabContainer) {
+      const options = fabContainer.querySelectorAll('.fab-option');
+      options.forEach(option => {
+        option.addEventListener('click', (e) => {
+          e.stopPropagation(); // Prevent document click from immediately closing FAB if needed (though we want to close it intentionally)
+          const titleAttr = option.getAttribute('title');
+          let type = 'other';
+          if (titleAttr.toLowerCase().includes('bug')) type = 'bug';
+          else if (titleAttr.toLowerCase().includes('suggestion')) type = 'suggestion';
+
+          openFeedbackPopup(type);
+        });
+      });
+    }
+
+    // Close listeners
+    if (closeFeedbackBtn) closeFeedbackBtn.addEventListener('click', closeFeedbackPopup);
+    if (cancelFeedbackBtn) cancelFeedbackBtn.addEventListener('click', closeFeedbackPopup);
+    if (feedbackPopup) {
+      feedbackPopup.addEventListener('click', (e) => {
+        if (e.target === feedbackPopup) closeFeedbackPopup();
+      });
+    }
+
+    // Handle Form Submission
+    if (feedbackForm) {
+      feedbackForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const session = checkAuth();
+        if (!session) {
+          window.location.href = 'index.html';
+          return;
+        }
+
+        const type = document.getElementById('feedbackType').value;
+        const title = document.getElementById('feedbackTitle').value.trim();
+        const description = document.getElementById('feedbackDescription').value.trim();
+        const context = document.getElementById('feedbackContext')?.value || null;
+        const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+
+        if (!title || !description) {
+          if (feedbackMessage) {
+            feedbackMessage.textContent = 'Please fill in all fields.';
+            feedbackMessage.className = 'login-message error';
+          }
+          return;
+        }
+
+        // Loading state
+        if (submitBtn) {
+          const originalText = submitBtn.innerHTML;
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span>Submitting...</span>';
+        }
+
+        try {
+          const { error } = await supabase
+            .from('feedback_reports')
+            .insert([{
+              type,
+              title,
+              description,
+              related_element: (type === 'bug') ? context : null,
+              admin_id: session.id,
+              admin_email: session.email,
+              admin_name: session.name,
+              status: 'pending'
+            }]);
+
+          if (error) throw error;
+
+          // Success
+          if (feedbackMessage) {
+            feedbackMessage.textContent = 'Feedback submitted successfully!';
+            feedbackMessage.className = 'login-message success';
+          }
+
+          setTimeout(() => {
+            closeFeedbackPopup();
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = '<span>Submit</span><span class="glow"></span>';
+            }
+          }, 1500);
+
+        } catch (err) {
+          console.error('Error submitting feedback:', err);
+          if (feedbackMessage) {
+            feedbackMessage.textContent = 'Error submitting feedback. Please try again.';
+            feedbackMessage.className = 'login-message error';
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Submit</span><span class="glow"></span>';
+          }
+        }
+      });
+    }
+  };
+
+  // Initialize Feedback System
+  initFeedbackSystem();
 
   // Load dashboard on page load
   loadDashboard();
