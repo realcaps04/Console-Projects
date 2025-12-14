@@ -55,6 +55,10 @@ BEGIN
             WHEN p_new_status = 'rejected' THEN p_rejection_reason
             ELSE NULL
         END,
+        rejection_details = CASE 
+            WHEN p_new_status = 'rejected' THEN p_rejection_reason
+            ELSE NULL
+        END,
         processed_at = CASE 
             WHEN p_new_status IN ('approved', 'rejected', 'customization_complete') THEN NOW()
             ELSE NULL

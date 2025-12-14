@@ -495,6 +495,179 @@
     }
   };
 
+  // UI Type specific dashboard rectangles configuration
+  const getUITypeRectangles = (uiType) => {
+    const rectangles = {
+      'government': [
+        { title: 'Citizen Management', icon: 'users', description: 'Manage citizen records and registrations' },
+        { title: 'Document Management', icon: 'file-text', description: 'Handle official documents and certificates' },
+        { title: 'Service Requests', icon: 'inbox', description: 'Process public service requests' },
+        { title: 'Financial Management', icon: 'dollar-sign', description: 'Track budgets and expenditures' },
+        { title: 'Public Records', icon: 'database', description: 'Manage public records and archives' }
+      ],
+      'private': [
+        { title: 'Employee Management', icon: 'users', description: 'Manage staff and HR records' },
+        { title: 'Project Management', icon: 'briefcase', description: 'Track projects and deadlines' },
+        { title: 'Client Relations', icon: 'user-check', description: 'Manage client accounts' },
+        { title: 'Financial Operations', icon: 'dollar-sign', description: 'Track revenue and expenses' },
+        { title: 'Inventory Management', icon: 'package', description: 'Manage company inventory' }
+      ],
+      'mobile_shop': [
+        { title: 'Product Catalog', icon: 'smartphone', description: 'Manage mobile devices and accessories' },
+        { title: 'Inventory', icon: 'package', description: 'Track stock and supplies' },
+        { title: 'Sales Management', icon: 'shopping-cart', description: 'Process sales and orders' },
+        { title: 'Customer Database', icon: 'users', description: 'Manage customer information' },
+        { title: 'Repair Services', icon: 'tool', description: 'Track repair and service requests' }
+      ],
+      'court': [
+        { title: 'Case Management', icon: 'file-text', description: 'Manage court cases and proceedings' },
+        { title: 'Legal Documents', icon: 'folder', description: 'Store and organize legal documents' },
+        { title: 'Hearing Schedule', icon: 'calendar', description: 'Manage court hearing schedules' },
+        { title: 'Judicial Records', icon: 'database', description: 'Access judicial records and archives' },
+        { title: 'Docket Management', icon: 'clipboard', description: 'Manage court dockets' }
+      ],
+      'college_school': [
+        { title: 'Student Management', icon: 'users', description: 'Manage student records and enrollment' },
+        { title: 'Academic Records', icon: 'book', description: 'Track grades and academic performance' },
+        { title: 'Faculty Management', icon: 'user-check', description: 'Manage faculty and staff' },
+        { title: 'Course Schedule', icon: 'calendar', description: 'Manage class schedules' },
+        { title: 'Fee Management', icon: 'dollar-sign', description: 'Track tuition and fees' }
+      ],
+      'hospital': [
+        { title: 'Patient Management', icon: 'heart', description: 'Manage patient records and information' },
+        { title: 'Appointments', icon: 'calendar', description: 'Schedule and manage appointments' },
+        { title: 'Medical Records', icon: 'file-text', description: 'Access patient medical history' },
+        { title: 'Staff Management', icon: 'users', description: 'Manage hospital staff and doctors' },
+        { title: 'Inventory', icon: 'package', description: 'Track medical supplies and equipment' }
+      ],
+      'bank': [
+        { title: 'Account Management', icon: 'credit-card', description: 'Manage customer accounts' },
+        { title: 'Transactions', icon: 'repeat', description: 'Track financial transactions' },
+        { title: 'Loan Management', icon: 'dollar-sign', description: 'Process loans and approvals' },
+        { title: 'Customer Service', icon: 'headphones', description: 'Handle customer inquiries' },
+        { title: 'Financial Reports', icon: 'bar-chart', description: 'Generate financial reports' }
+      ],
+      'restaurant': [
+        { title: 'Menu Management', icon: 'utensils', description: 'Manage menu items and prices' },
+        { title: 'Orders', icon: 'shopping-cart', description: 'Process and track orders' },
+        { title: 'Inventory', icon: 'package', description: 'Manage kitchen inventory' },
+        { title: 'Staff Management', icon: 'users', description: 'Manage restaurant staff' },
+        { title: 'Reservations', icon: 'calendar', description: 'Handle table reservations' }
+      ],
+      'retail': [
+        { title: 'Product Catalog', icon: 'shopping-bag', description: 'Manage product listings' },
+        { title: 'Inventory', icon: 'package', description: 'Track stock levels' },
+        { title: 'Sales Management', icon: 'shopping-cart', description: 'Process sales transactions' },
+        { title: 'Customer Database', icon: 'users', description: 'Manage customer information' },
+        { title: 'Supplier Management', icon: 'truck', description: 'Manage suppliers and deliveries' }
+      ],
+      'ngo': [
+        { title: 'Beneficiary Management', icon: 'heart', description: 'Manage beneficiaries and programs' },
+        { title: 'Donation Management', icon: 'dollar-sign', description: 'Track donations and funding' },
+        { title: 'Volunteer Management', icon: 'users', description: 'Manage volunteers and activities' },
+        { title: 'Program Management', icon: 'target', description: 'Track programs and initiatives' },
+        { title: 'Reports', icon: 'file-text', description: 'Generate activity reports' }
+      ],
+      'hotel': [
+        { title: 'Reservation Management', icon: 'calendar', description: 'Manage room reservations' },
+        { title: 'Guest Management', icon: 'users', description: 'Handle guest check-in and check-out' },
+        { title: 'Room Management', icon: 'home', description: 'Manage room availability and status' },
+        { title: 'Billing', icon: 'dollar-sign', description: 'Process payments and invoices' },
+        { title: 'Facilities', icon: 'settings', description: 'Manage hotel facilities and services' }
+      ],
+      'pharmacy': [
+        { title: 'Medication Inventory', icon: 'pill', description: 'Manage pharmaceutical stock' },
+        { title: 'Prescription Management', icon: 'file-text', description: 'Process prescriptions' },
+        { title: 'Customer Records', icon: 'users', description: 'Manage customer medication history' },
+        { title: 'Supplier Management', icon: 'truck', description: 'Manage pharmaceutical suppliers' },
+        { title: 'Expiry Tracking', icon: 'clock', description: 'Track medication expiry dates' }
+      ]
+    };
+    
+    return rectangles[uiType] || [];
+  };
+
+  // Load UI type specific rectangles
+  const loadUITypeRectangles = async () => {
+    const session = checkAuth();
+    if (!session) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('admin')
+        .select('ui_type')
+        .eq('id', session.id)
+        .single();
+
+      if (error || !data || !data.ui_type) {
+        // If no UI type, keep default "Coming Soon" rectangles
+        return;
+      }
+
+      const rectangles = getUITypeRectangles(data.ui_type);
+      if (rectangles.length === 0) return;
+
+      // Get the console grid container
+      const consoleGrid = document.querySelector('.console-grid');
+      if (!consoleGrid) return;
+
+      // Remove all placeholder rectangles (keep Manage Profile)
+      const placeholderCards = consoleGrid.querySelectorAll('.console-card.placeholder');
+      placeholderCards.forEach(card => card.remove());
+
+      // Icon SVG paths mapping
+      const iconMap = {
+        'users': '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />',
+        'file-text': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />',
+        'inbox': '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />',
+        'dollar-sign': '<line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />',
+        'database': '<ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" /><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />',
+        'briefcase': '<rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />',
+        'user-check': '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="8.5" cy="7" r="4" /><polyline points="17 11 19 13 23 9" />',
+        'package': '<line x1="16.5" y1="9.4" x2="7.5" y2="4.21" /><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" />',
+        'smartphone': '<rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12.01" y2="18" />',
+        'shopping-cart': '<circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />',
+        'tool': '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />',
+        'folder': '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />',
+        'calendar': '<rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />',
+        'clipboard': '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><rect x="8" y="2" width="8" height="4" rx="1" ry="1" />',
+        'book': '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />',
+        'heart': '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />',
+        'credit-card': '<rect x="1" y="4" width="22" height="16" rx="2" ry="2" /><line x1="1" y1="10" x2="23" y2="10" />',
+        'repeat': '<polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" />',
+        'headphones': '<path d="M3 18v-6a9 9 0 0 1 18 0v6" /><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />',
+        'bar-chart': '<line x1="12" y1="20" x2="12" y2="10" /><line x1="18" y1="20" x2="18" y2="4" /><line x1="6" y1="20" x2="6" y2="16" />',
+        'utensils': '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" /><path d="M7 2v20" /><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3z" />',
+        'shopping-bag': '<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" />',
+        'truck': '<rect x="1" y="3" width="15" height="13" /><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" />',
+        'target': '<circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" />',
+        'home': '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />',
+        'settings': '<circle cx="12" cy="12" r="3" /><path d="M12 1v6m0 6v6m9-9h-6m-6 0H3m15.364 6.364l-4.243-4.243m-4.242 0L5.636 17.364m12.728 0l-4.243-4.243m-4.242 0L5.636 6.636" />',
+        'pill': '<rect x="3" y="8" width="18" height="8" rx="4" /><path d="M8 8h8" /><path d="M8 16h8" />',
+        'clock': '<circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />'
+      };
+
+      // Create and append rectangles
+      rectangles.forEach(rect => {
+        const card = document.createElement('div');
+        card.className = 'console-card';
+        card.innerHTML = `
+          <div class="console-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              ${iconMap[rect.icon] || '<rect x="3" y="3" width="18" height="18" rx="2" ry="2" />'}
+            </svg>
+          </div>
+          <h3 class="console-card-title">${rect.title}</h3>
+          <p>${rect.description}</p>
+        `;
+        consoleGrid.appendChild(card);
+      });
+
+    } catch (err) {
+      console.error('Error loading UI type rectangles:', err);
+    }
+  };
+
   // Check authentication on page load
   const loadDashboard = async () => {
     const session = checkAuth();
@@ -506,6 +679,9 @@
       showInactiveStatusPopup(adminData);
       return;
     }
+
+    // Load UI type specific rectangles
+    await loadUITypeRectangles();
 
     // Set up periodic status checking (every 30 seconds)
     setInterval(async () => {

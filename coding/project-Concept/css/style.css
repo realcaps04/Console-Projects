@@ -65,6 +65,17 @@ body {
   width: min(640px, 100%);
 }
 
+/* Wider shell for admin console section with forms */
+.shell:has(#adminConsoleSection) {
+  width: min(900px, 100%);
+}
+
+@media (min-width: 1024px) {
+  .shell:has(#adminConsoleSection) {
+    width: min(1000px, 100%);
+  }
+}
+
 .shell-wide {
   width: calc(100% - 40px);
   max-width: 100%;
@@ -218,8 +229,14 @@ h1 {
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 14px;
+}
+
+/* Ensure form grid in admin console has adequate width */
+#adminConsoleSection .form-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
 }
 
 .select-wrap select {
@@ -548,6 +565,12 @@ h1 {
   background: #fdfefe;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
   transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, background 0.18s ease;
+  position: relative;
+}
+
+/* Adjust padding when password toggle is present */
+.input:has(.password-toggle) {
+  padding-right: 48px;
 }
 
 .input:hover {
@@ -578,6 +601,8 @@ h1 {
   font-weight: 600;
   letter-spacing: 0.01em;
   outline: none;
+  min-width: 0; /* Allow input to shrink if needed */
+  padding-right: 8px; /* Space before password toggle */
 }
 
 .input input::placeholder {
@@ -597,7 +622,10 @@ h1 {
   color: #7c8bb0;
   transition: color 0.18s ease, transform 0.18s ease;
   flex-shrink: 0;
-  margin-left: 4px;
+  margin-left: auto;
+  position: absolute;
+  right: 12px;
+  z-index: 1;
 }
 
 .password-toggle:hover {
@@ -1690,6 +1718,99 @@ h1 {
 
 .admin-notes-value {
   padding: 12px;
+}
+
+/* Reject Request Section */
+.reject-request-section {
+  background: #fff5f5;
+  border: 2px solid #fecaca;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 24px;
+}
+
+.reject-section-title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+.reject-section-description {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.reject-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  color: white !important;
+  margin-top: 16px;
+}
+
+.reject-btn:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Reject section textarea styling */
+.reject-request-section {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reject-request-section .field {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+.reject-request-section #rejectReasonFieldContainer {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: 16px;
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+.reject-request-section #rejectReasonFieldContainer .detail-label {
+  display: block;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.reject-request-section textarea.field-input {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 12px 16px;
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #ffffff;
+  color: var(--text);
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 100px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin: 0;
+}
+
+.reject-request-section textarea.field-input:focus {
+  outline: none;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.reject-request-section textarea.field-input::placeholder {
+  color: #97a4c2;
+  font-weight: 400;
+}
   background: #f0f9ff;
   border-radius: 12px;
   font-size: 15px;
@@ -1702,14 +1823,15 @@ h1 {
 /* Field Input Styles for Details Popup */
 .details-grid .field-input {
   width: 100%;
-  padding: 12px;
+  padding: 12px 16px;
   border: 1px solid var(--input-border);
   border-radius: 12px;
   font-size: 15px;
   background: #ffffff;
   color: var(--text);
-  font-family: 'Inter', system-ui, sans-serif;
-  transition: border-color 0.2s ease;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
 .details-grid .field-input:focus {
@@ -1719,9 +1841,33 @@ h1 {
 }
 
 .details-grid textarea.field-input {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 12px 16px;
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #ffffff;
+  color: var(--text);
+  line-height: 1.5;
   resize: vertical;
   min-height: 80px;
-  line-height: 1.5;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin: 0;
+}
+
+.details-grid textarea.field-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(91, 166, 255, 0.1);
+}
+
+.details-grid textarea.field-input::placeholder {
+  color: #97a4c2;
+  font-weight: 400;
 }
 
 .details-grid .select-wrap {
@@ -1740,24 +1886,91 @@ h1 {
 
 /* Document Viewer Modal */
 .document-viewer-popup {
-  max-width: 90vw;
-  max-height: 90vh;
-  width: auto;
-  height: auto;
+  max-width: 95vw;
+  max-height: 95vh;
+  width: 95vw;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .document-viewer-content {
-  padding: 20px;
-  overflow: auto;
-  max-height: calc(90vh - 100px);
+  padding: 12px;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .document-viewer-frame {
   width: 100%;
-  min-height: 600px;
+  height: 100%;
+  min-height: 80vh;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: white;
+  flex: 1;
+  box-sizing: border-box;
+  display: block;
+}
+
+.document-viewer-popup {
+  position: relative;
+}
+
+.document-viewer-popup .popup-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.document-viewer-popup .popup-close:hover {
+  background: rgba(249, 250, 251, 0.98);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.document-viewer-popup .popup-header {
+  padding-right: 80px;
+}
+
+@media (max-width: 768px) {
+  .document-viewer-popup {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .document-viewer-popup .popup-close {
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .document-viewer-popup .popup-close svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .document-viewer-popup .popup-header {
+    padding-right: 60px;
+  }
+  
+  .document-viewer-frame {
+    min-height: 70vh;
+  }
+  
+  .document-viewer-content {
+    padding: 8px;
+  }
 }
 
 /* Document Action Buttons */
@@ -1880,6 +2093,14 @@ h1 {
   margin: 0;
   text-align: center;
   color: var(--text);
+}
+
+.console-card p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+  line-height: 1.4;
 }
 
 /* Colored Console Cards */

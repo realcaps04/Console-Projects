@@ -177,6 +177,9 @@
       // Store initial status for change detection
       window.initialStatus = data.status;
 
+      // Store request data globally for admin creation
+      window.currentRequestData = data;
+
       // Populate details
       document.getElementById('detailReference').textContent = data.reference_number || '-';
       
@@ -213,7 +216,14 @@
           }
         };
         
-        statusSelect.addEventListener('change', toggleRejectionReason);
+        statusSelect.addEventListener('change', () => {
+          toggleRejectionReason();
+          // Reset selected UI type when status changes away from approved
+          if (statusSelect.value !== 'approved') {
+            window.selectedUIType = null;
+            window.selectedUITypeDisplay = null;
+          }
+        });
         toggleRejectionReason(); // Initial check
       }
       
@@ -221,6 +231,22 @@
       const adminNotesInput = document.getElementById('adminNotesInput');
       if (adminNotesInput) {
         adminNotesInput.value = data.notes || '';
+      }
+
+      // Reject request section - populate rejection reason if already rejected
+      const rejectReasonTextarea = document.getElementById('rejectReasonTextarea');
+      const rejectRequestSection = document.querySelector('.reject-request-section');
+      if (rejectRequestSection) {
+        // Show reject section only if request is not already rejected
+        if (data.status === 'rejected') {
+          rejectRequestSection.style.display = 'none';
+        } else {
+          rejectRequestSection.style.display = 'block';
+        }
+      }
+      if (rejectReasonTextarea) {
+        // Use rejection_details if available, fallback to rejection_reason
+        rejectReasonTextarea.value = data.rejection_details || data.rejection_reason || '';
       }
 
       // Personal information
@@ -324,11 +350,12 @@
       document.getElementById('detailRequestedAt').textContent = formatDate(data.requested_at);
       document.getElementById('detailProcessedAt').textContent = formatDate(data.processed_at) || '-';
 
-      // Rejection information
+      // Rejection information - use rejection_details if available, fallback to rejection_reason
       const rejectionSection = document.getElementById('rejectionSection');
-      if (data.status === 'rejected' && data.rejection_reason) {
+      const rejectionReasonText = data.rejection_details || data.rejection_reason;
+      if (data.status === 'rejected' && rejectionReasonText) {
         rejectionSection.classList.remove('hidden');
-        document.getElementById('detailRejectionReason').textContent = data.rejection_reason;
+        document.getElementById('detailRejectionReason').textContent = rejectionReasonText;
       } else {
         rejectionSection.classList.add('hidden');
       }
@@ -434,13 +461,16 @@
         updateData.processed_by = session.id;
       }
 
-      // Handle rejection reason
+      // Handle rejection reason and rejection details
       if (newStatus === 'rejected') {
         // Set rejection reason if status is rejected
         updateData.rejection_reason = rejectionReason || null;
+        // Also save to rejection_details for detailed information
+        updateData.rejection_details = rejectionReason || null;
       } else {
-        // Clear rejection reason if status is not rejected
+        // Clear rejection reason and details if status is not rejected
         updateData.rejection_reason = null;
+        updateData.rejection_details = null;
       }
 
       // Update the request in Supabase using the database function
@@ -584,7 +614,7 @@
       // Verify update was successful by fetching the updated record
       const { data: verifyRequest, error: verifyError } = await supabase
         .from('newadminrequests')
-        .select('id, status, updated_at, notes, rejection_reason, processed_at, processed_by')
+        .select('id, status, updated_at, notes, rejection_reason, rejection_details, processed_at, processed_by')
         .eq('id', window.currentRequestId)
         .maybeSingle();
 
@@ -669,14 +699,15 @@
         statusSelect.value = updatedRequest.status;
       }
 
-      // Update rejection section visibility
+      // Update rejection section visibility - use rejection_details if available, fallback to rejection_reason
       const rejectionSection = document.getElementById('rejectionSection');
-      if (updatedRequest.status === 'rejected' && updatedRequest.rejection_reason) {
+      const rejectionReasonText = updatedRequest.rejection_details || updatedRequest.rejection_reason;
+      if (updatedRequest.status === 'rejected' && rejectionReasonText) {
         if (rejectionSection) {
           rejectionSection.classList.remove('hidden');
           const rejectionReasonElement = document.getElementById('detailRejectionReason');
           if (rejectionReasonElement) {
-            rejectionReasonElement.textContent = updatedRequest.rejection_reason;
+            rejectionReasonElement.textContent = rejectionReasonText;
           }
         }
       } else {
@@ -727,10 +758,339 @@
     }
   };
 
+  // Reject request handler
+  const rejectRequest = async () => {
+    const rejectReasonTextarea = document.getElementById('rejectReasonTextarea');
+    const rejectionReason = rejectReasonTextarea?.value.trim() || '';
+
+    if (!rejectionReason) {
+      alert('Please provide a rejection reason before rejecting the request.');
+      if (rejectReasonTextarea) {
+        rejectReasonTextarea.focus();
+      }
+      return;
+    }
+
+    // Validate request ID
+    if (!window.currentRequestId) {
+      alert('No request selected. Please close and reopen the details popup.');
+      return;
+    }
+
+    // Confirm rejection
+    const confirmMessage = 'Are you sure you want to reject this request?\n\nRejection Reason:\n' + rejectionReason;
+    if (!confirm(confirmMessage)) {
+      return;
+    }
+
+    // Set status to rejected and sync rejection reason in the form
+    const statusSelect = document.getElementById('statusSelect');
+    const rejectionReasonInput = document.getElementById('rejectionReasonInput');
+    const rejectionReasonField = document.getElementById('rejectionReasonField');
+    
+    if (statusSelect) {
+      statusSelect.value = 'rejected';
+      // Trigger change event to show the rejection reason field
+      statusSelect.dispatchEvent(new Event('change'));
+    }
+    
+    // Sync the rejection reason from rejectReasonTextarea to rejectionReasonInput
+    if (rejectionReasonInput) {
+      rejectionReasonInput.value = rejectionReason;
+      rejectionReasonInput.setAttribute('required', 'required');
+    }
+    
+    if (rejectionReasonField) {
+      rejectionReasonField.classList.remove('hidden');
+    }
+
+    // Now call saveStatusUpdate - it will use the values from the form
+    await saveStatusUpdate();
+  };
+
+  // Reject request button handler
+  const rejectRequestBtn = document.getElementById('rejectRequestBtn');
+  if (rejectRequestBtn) {
+    rejectRequestBtn.addEventListener('click', rejectRequest);
+  }
+
+  // UI Type Selection Modal Functions
+  const uiTypes = [
+    { type: 'government', display: 'Government', icon: '<path d="M12 2L2 7l10 5 10-5-10-5Z" /><path d="M2 17l10 5 10-5M2 12l10 5 10-5" />', class: 'ui-type-government' },
+    { type: 'private', display: 'Private', icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><path d="M9 9h6v6H9z" />', class: 'ui-type-private' },
+    { type: 'mobile_shop', display: 'Mobile Shop', icon: '<rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12" y2="18.01" stroke-linecap="round" />', class: 'ui-type-mobile-shop' },
+    { type: 'court', display: 'Court', icon: '<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" /><circle cx="12" cy="12" r="3" />', class: 'ui-type-court' },
+    { type: 'college_school', display: 'College/School', icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /><path d="M10 8h4" />', class: 'ui-type-college-school' },
+    { type: 'hospital', display: 'Hospital', icon: '<path d="M12 2v20M2 12h20" stroke-linecap="round" /><circle cx="12" cy="12" r="3" />', class: 'ui-type-hospital' },
+    { type: 'bank', display: 'Bank', icon: '<rect x="2" y="8" width="20" height="14" rx="2" ry="2" /><path d="M6 8V6a4 4 0 0 1 8 0v2" /><line x1="8" y1="14" x2="16" y2="14" stroke-linecap="round" />', class: 'ui-type-bank' },
+    { type: 'restaurant', display: 'Restaurant', icon: '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" /><path d="M7 2v20" /><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3z" />', class: 'ui-type-restaurant' },
+    { type: 'retail', display: 'Retail', icon: '<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" />', class: 'ui-type-retail' },
+    { type: 'ngo', display: 'NGO', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />', class: 'ui-type-ngo' },
+    { type: 'hotel', display: 'Hotel', icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />', class: 'ui-type-hotel' },
+    { type: 'pharmacy', display: 'Pharmacy', icon: '<rect x="3" y="8" width="18" height="14" rx="2" /><path d="M8 8V6a4 4 0 1 1 8 0v2" /><line x1="12" y1="14" x2="12" y2="18" stroke-linecap="round" /><line x1="10" y1="16" x2="14" y2="16" stroke-linecap="round" />', class: 'ui-type-pharmacy' }
+  ];
+
+  const populateUITypesGrid = () => {
+    const grid = document.getElementById('uiTypesGrid');
+    if (!grid) return;
+
+    grid.innerHTML = uiTypes.map(uiType => `
+      <div class="ui-type-card ${uiType.class}" onclick="selectUITypeForApproval('${uiType.type}', '${uiType.display}')">
+        <div class="ui-type-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            ${uiType.icon}
+          </svg>
+        </div>
+        <h3 class="ui-type-card-title">${uiType.display}</h3>
+      </div>
+    `).join('');
+  };
+
+  const showUITypeSelectionModal = () => {
+    const modal = document.getElementById('uiTypeSelectionModal');
+    if (!modal) return;
+
+    populateUITypesGrid();
+    modal.classList.remove('hidden');
+    // Keep the view details popup visible behind
+  };
+
+  const hideUITypeSelectionModal = () => {
+    const modal = document.getElementById('uiTypeSelectionModal');
+    if (modal) {
+      modal.classList.add('hidden');
+    }
+  };
+
+  window.selectUITypeForApproval = function(type, displayName) {
+    // Store selected UI type
+    window.selectedUIType = type;
+    window.selectedUITypeDisplay = displayName;
+
+    // Update display in admin creation modal
+    const displayElement = document.getElementById('selectedUITypeDisplay');
+    const valueElement = document.getElementById('selectedUITypeValue');
+    if (displayElement) displayElement.textContent = displayName;
+    if (valueElement) valueElement.value = type;
+
+    // Hide UI type selection modal and show admin creation modal
+    hideUITypeSelectionModal();
+    showAdminCreationModal();
+  };
+
+  const showAdminCreationModal = () => {
+    const modal = document.getElementById('adminCreationModal');
+    if (!modal) return;
+
+    // Pre-fill email and name from request data if available
+    const requestData = window.currentRequestData;
+    if (requestData) {
+      const emailInput = document.getElementById('newAdminEmail');
+      if (emailInput && requestData.admin_email) {
+        emailInput.value = requestData.admin_email;
+      }
+      // Pre-fill username from email or name if available
+      const usernameInput = document.getElementById('newAdminUsername');
+      if (usernameInput && !usernameInput.value && requestData.admin_email) {
+        // Generate username from email (part before @)
+        usernameInput.value = requestData.admin_email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '_');
+      }
+    }
+
+    modal.classList.remove('hidden');
+  };
+
+  const hideAdminCreationModal = () => {
+    const modal = document.getElementById('adminCreationModal');
+    if (modal) {
+      modal.classList.add('hidden');
+      // Reset form
+      const form = document.getElementById('adminCreationForm');
+      if (form) form.reset();
+      window.selectedUIType = null;
+      window.selectedUITypeDisplay = null;
+    }
+  };
+
+  // Store request data globally (initialized in showViewDetailsPopup)
+  window.currentRequestData = null;
+
+  // Handle admin creation form submission
+  const handleAdminCreation = async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('newAdminEmail')?.value.trim();
+    const username = document.getElementById('newAdminUsername')?.value.trim();
+    const pin = document.getElementById('newAdminPin')?.value.trim() || null;
+    const password = document.getElementById('newAdminPassword')?.value;
+    const passwordConfirm = document.getElementById('newAdminPasswordConfirm')?.value;
+    const role = document.getElementById('newAdminRole')?.value;
+    const uiType = document.getElementById('selectedUITypeValue')?.value;
+
+    // Validation
+    if (!email || !username || !password || !role || !uiType) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    if (password !== passwordConfirm) {
+      alert('Passwords do not match.');
+      return;
+    }
+
+    if (password.length < 6) {
+      alert('Password must be at least 6 characters long.');
+      return;
+    }
+
+    const session = getSession();
+    if (!session) {
+      alert('Session expired. Please login again.');
+      window.location.href = 'Superadminindex.html';
+      return;
+    }
+
+    try {
+      // Create admin in database
+      // Note: Using 'admin' table (lowercase) as per existing codebase
+      const adminData = {
+        email: email,
+        username: username,
+        pin: pin || null,
+        password: password, // In production, this should be hashed
+        role: role,
+        ui_type: uiType, // Store the selected UI type
+        is_active: true
+        // Note: created_by column may not exist in schema - add if needed
+      };
+
+      const { data: newAdmin, error: adminError } = await supabase
+        .from('admin')
+        .insert(adminData)
+        .select()
+        .single();
+
+      if (adminError) {
+        console.error('Error creating admin:', adminError);
+        
+        // Check if error is due to missing ui_type column
+        const errorMessage = adminError.message || '';
+        if (errorMessage.includes('ui_type') || errorMessage.includes('column') || adminError.code === '42703') {
+          alert('Error: The ui_type column is missing from the admin table.\n\nPlease run the SQL migration file:\nsql-query/add_ui_type_to_admin_table.sql\n\nin your Supabase SQL Editor to add the required column.');
+        } else {
+          alert('Error creating admin: ' + errorMessage);
+        }
+        return;
+      }
+
+      // Now update the request status to approved
+      const statusSelect = document.getElementById('statusSelect');
+      if (statusSelect) {
+        statusSelect.value = 'approved';
+      }
+
+      // Update admin notes with creation details
+      const adminNotesInput = document.getElementById('adminNotesInput');
+      const existingNotes = adminNotesInput?.value.trim() || '';
+      const creationNote = `Admin account created. UI Type: ${window.selectedUITypeDisplay}. Admin Email: ${email}. Admin Username: ${username}.`;
+      if (adminNotesInput) {
+        adminNotesInput.value = existingNotes ? `${existingNotes}\n\n${creationNote}` : creationNote;
+      }
+
+      // Save status update (will proceed since UI type is selected)
+      await saveStatusUpdate();
+
+      // Close modals
+      hideAdminCreationModal();
+      hideUITypeSelectionModal();
+
+      alert(`Admin account created successfully!\n\nEmail: ${email}\nUsername: ${username}\nUI Type: ${window.selectedUITypeDisplay}\n\nThe request has been approved.`);
+
+    } catch (err) {
+      console.error('Error:', err);
+      alert('Error creating admin account: ' + (err.message || 'Unknown error'));
+    }
+  };
+
   // Save status button handler
   const saveStatusBtn = document.getElementById('saveStatusBtn');
   if (saveStatusBtn) {
-    saveStatusBtn.addEventListener('click', saveStatusUpdate);
+    saveStatusBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const statusSelect = document.getElementById('statusSelect');
+      
+      // If status is "approved", require UI type selection and admin creation first
+      if (statusSelect && statusSelect.value === 'approved') {
+        // Check if UI type has been selected (via admin creation flow)
+        if (!window.selectedUIType) {
+          // Show UI type selection modal - user must complete this flow first
+          showUITypeSelectionModal();
+          return;
+        }
+        // If UI type is selected but admin creation flow is not complete,
+        // don't save yet - admin creation form submission will handle the save
+        // Only allow direct save if we're not in the approval flow
+        return;
+      }
+      
+      // For non-approved statuses, proceed with normal save
+      await saveStatusUpdate();
+    });
+  }
+
+  // Close UI Type Selection Modal handlers
+  const closeUITypeModal = document.getElementById('closeUITypeModal');
+  if (closeUITypeModal) {
+    closeUITypeModal.addEventListener('click', () => {
+      hideUITypeSelectionModal();
+      // Don't reset status - let user keep "approved" selected
+      // They can change it manually if needed
+    });
+  }
+
+  // Close Admin Creation Modal handlers
+  const closeAdminCreationModal = document.getElementById('closeAdminCreationModal');
+  if (closeAdminCreationModal) {
+    closeAdminCreationModal.addEventListener('click', () => {
+      hideAdminCreationModal();
+      // Go back to UI type selection
+      showUITypeSelectionModal();
+    });
+  }
+
+  const cancelAdminCreationBtn = document.getElementById('cancelAdminCreationBtn');
+  if (cancelAdminCreationBtn) {
+    cancelAdminCreationBtn.addEventListener('click', () => {
+      hideAdminCreationModal();
+      showUITypeSelectionModal();
+    });
+  }
+
+  // Admin creation form handler
+  const adminCreationForm = document.getElementById('adminCreationForm');
+  if (adminCreationForm) {
+    adminCreationForm.addEventListener('submit', handleAdminCreation);
+  }
+
+  // Close modals on overlay click
+  const uiTypeSelectionModal = document.getElementById('uiTypeSelectionModal');
+  if (uiTypeSelectionModal) {
+    uiTypeSelectionModal.addEventListener('click', (e) => {
+      if (e.target === uiTypeSelectionModal) {
+        hideUITypeSelectionModal();
+        // Don't reset status - let user keep their selection
+      }
+    });
+  }
+
+  const adminCreationModal = document.getElementById('adminCreationModal');
+  if (adminCreationModal) {
+    adminCreationModal.addEventListener('click', (e) => {
+      if (e.target === adminCreationModal) {
+        hideAdminCreationModal();
+        showUITypeSelectionModal();
+      }
+    });
   }
 
   // Close popup handlers
