@@ -29,7 +29,8 @@ body {
     var(--bg);
   color: var(--text);
   display: grid;
-  place-items: start center;
+  place-items: center;
+  /* Updated to center vertically and horizontally */
   padding: 20px 18px;
   position: relative;
   overflow: hidden;
@@ -49,6 +50,7 @@ body {
   background: radial-gradient(circle, rgba(123, 123, 255, 0.34), transparent 60%);
   top: -140px;
   right: -130px;
+  animation: floatOne 20s infinite alternate ease-in-out;
 }
 
 .bg-two {
@@ -57,6 +59,7 @@ body {
   background: radial-gradient(circle, rgba(91, 166, 255, 0.3), transparent 58%);
   bottom: -140px;
   left: -90px;
+  animation: floatTwo 25s infinite alternate ease-in-out;
 }
 
 .shell {
@@ -2566,4 +2569,178 @@ border: 1px solid #dbeafe;
 .filters::-webkit-scrollbar-thumb {
   background: #e2e8f0;
   border-radius: 4px;
+}
+
+@keyframes floatOne {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes floatTwo {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(-30px, 50px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(20px, -20px) scale(0.9);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* Floating Cursor Animations */
+.cursor-animation-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.floating-cursor {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+}
+
+.floating-cursor svg {
+  width: 24px;
+  height: 24px;
+}
+
+.cursor-label {
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+}
+
+/* Cursor 1 - Safe (Blue) */
+.cursor-1 {
+  color: #5ba6ff;
+  top: 20%;
+  left: 20%;
+  animation: floatCursor1 18s infinite ease-in-out;
+}
+
+.cursor-1 .cursor-label {
+  background: #5ba6ff;
+}
+
+/* Cursor 2 - Secure (Purple) */
+.cursor-2 {
+  color: #7b7bff;
+  top: 60%;
+  left: 70%;
+  animation: floatCursor2 22s infinite ease-in-out;
+  animation-delay: -5s;
+}
+
+.cursor-2 .cursor-label {
+  background: #7b7bff;
+}
+
+/* Cursor 3 - Fast (Green) */
+.cursor-3 {
+  color: #2fca7a;
+  top: 70%;
+  left: 15%;
+  animation: floatCursor3 20s infinite ease-in-out;
+  animation-delay: -10s;
+}
+
+.cursor-3 .cursor-label {
+  background: #2fca7a;
+}
+
+@keyframes floatCursor1 {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  20% {
+    transform: translate(150px, 50px);
+  }
+
+  45% {
+    transform: translate(80px, 200px);
+  }
+
+  70% {
+    transform: translate(-50px, 120px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes floatCursor2 {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-120px, -80px);
+  }
+
+  50% {
+    transform: translate(-180px, 50px);
+  }
+
+  75% {
+    transform: translate(-60px, 100px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes floatCursor3 {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  30% {
+    transform: translate(100px, -100px);
+  }
+
+  60% {
+    transform: translate(200px, -50px);
+  }
+
+  85% {
+    transform: translate(50px, 80px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }

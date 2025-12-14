@@ -96,7 +96,7 @@
     const rejectionDetails = document.getElementById('rejectionDetails');
     const rejectionNotes = document.getElementById('rejectionNotes');
     const rejectionDate = document.getElementById('rejectionDate');
-    
+
     if (inactivePopup) {
       inactivePopup.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
@@ -130,7 +130,7 @@
       // Check for rejected request
       const rejectedRequest = await checkRejectedRequest(email);
       const activationForm = document.getElementById('activationRequestForm');
-      
+
       if (rejectedRequest && rejectedRequest.notes) {
         // Show rejection details and hide form
         if (rejectionDetails) {
@@ -190,7 +190,7 @@
     const rejectionDetails = document.getElementById('rejectionDetails');
     const activationForm = document.getElementById('activationRequestForm');
     const inactivePopup = document.getElementById('inactivePopup');
-    
+
     if (rejectionDetails) {
       rejectionDetails.classList.add('hidden');
     }
@@ -275,11 +275,11 @@
     const activationMessage = document.getElementById('activationMessage');
     const sendBtn = document.getElementById('sendActivationRequestBtn');
     const activationForm = document.getElementById('activationRequestForm');
-    
+
     if (!inactivePopup) return;
 
     const email = inactivePopup.dataset.adminEmail;
-    
+
     // Check for pending request before allowing submission
     const pendingRequest = await checkPendingRequest(email);
     if (pendingRequest) {
@@ -346,7 +346,7 @@
       // Upload identity proof
       let identityProofUrl = null;
       let identityProofFilename = null;
-      
+
       if (identityProof) {
         const uploadResult = await uploadIdentityProof(identityProof, email);
         identityProofUrl = uploadResult.url;
@@ -459,7 +459,7 @@
   const handleFilePreview = () => {
     const fileInput = document.getElementById('identityProof');
     const filePreview = document.getElementById('filePreview');
-    
+
     if (fileInput && filePreview) {
       fileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
@@ -513,7 +513,7 @@
       return;
     }
     showMessage('Signing in...');
-    
+
     // Query admin table to verify credentials (without checking is_active first)
     const { data, error } = await supabase
       .from('admin')
@@ -545,7 +545,7 @@
     }));
 
     showMessage('Signed in successfully. Redirecting...', 'success');
-    
+
     // Redirect to admin dashboard after a short delay
     setTimeout(() => {
       window.location.href = 'admin-dashboard.html';
@@ -560,7 +560,7 @@
       return;
     }
     showMessage('Signing in...');
-    
+
     // Query admin table to verify credentials (without checking is_active first)
     const { data, error } = await supabase
       .from('admin')
@@ -592,7 +592,7 @@
     }));
 
     showMessage('Signed in successfully. Redirecting...', 'success');
-    
+
     // Redirect to admin dashboard after a short delay
     setTimeout(() => {
       window.location.href = 'admin-dashboard.html';
@@ -612,7 +612,7 @@
   // Add Enter key support for form submission
   const passwordInput = document.getElementById('passwordInput');
   const pinInput = document.getElementById('pinInput');
-  
+
   if (passwordInput) {
     passwordInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && getActiveMode() === 'email') {
@@ -663,5 +663,139 @@
       }
     });
   }
+  // Interactive Background Bubbles
+  const initInteractiveBubbles = () => {
+    const container = document.querySelector('.cursor-animation-container');
+    if (!container) return;
+
+    // Clear existing content
+    container.innerHTML = '';
+
+    // Configuration
+    const numBubbles = 20;
+    const colors = ['#1e40af', '#6b21a8', '#166534', '#3730a3', '#1f2937'];
+    const bubbles = [];
+
+    // Create bubbles
+    for (let i = 0; i < numBubbles; i++) {
+      const bubble = document.createElement('div');
+      bubble.classList.add('floating-bubble');
+
+      // Varied size for depth
+      const size = Math.random() * 60 + 15; // 15px to 75px
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+
+      // Visual styling
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      bubble.style.background = color;
+      bubble.style.borderRadius = '50%';
+      bubble.style.position = 'absolute';
+      bubble.style.pointerEvents = 'none';
+
+      // Depth effects
+      const isBackground = Math.random() > 0.5;
+      bubble.style.opacity = isBackground ? '0.05' : '0.15';
+      bubble.style.filter = `blur(${Math.random() * 3 + 1}px)`;
+      bubble.style.zIndex = isBackground ? '-1' : '0';
+
+      // Initial random position
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+
+      container.appendChild(bubble);
+
+      bubbles.push({
+        el: bubble,
+        x: x,
+        y: y,
+        baseX: x, // Store base position for relative movement
+        baseY: y,
+        vx: 0,
+        vy: 0,
+        friction: Math.random() * 0.05 + 0.92, // Smooth ease out
+        spring: Math.random() * 0.002 + 0.001, // Gentleness of pull
+        noiseSpeed: Math.random() * 0.005 + 0.002, // Drifting speed
+        noiseOffset: Math.random() * 1000 // Unique random seed equivalent
+      });
+    }
+
+    // Mouse tracking
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let targetX = mouseX;
+    let targetY = mouseY;
+
+    document.addEventListener('mousemove', (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+    });
+
+    // Smooth mouse interpolation
+    const updateMouse = () => {
+      mouseX += (targetX - mouseX) * 0.05;
+      mouseY += (targetY - mouseY) * 0.05;
+      requestAnimationFrame(updateMouse);
+    };
+    updateMouse();
+
+    // Animation loop
+    const animate = () => {
+      const time = Date.now();
+
+      bubbles.forEach((bubble, index) => {
+        // Calculate distance from mouse
+        const dx = mouseX - bubble.x;
+        const dy = mouseY - bubble.y;
+
+        // Stronger Mouse Interaction
+        // Bubbles are attracted to the mouse but keep a "orbit" feel
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Interaction radius covering most of the screen for global feel
+        const maxDist = window.innerWidth * 0.8;
+
+        if (dist < maxDist) {
+          // Stronger pull factor
+          const force = (maxDist - dist) / maxDist;
+
+          // Different layers move at different speeds (parallax)
+          // index 0 = fast (close), index N = slow (far)
+          const depthFactor = (numBubbles - index) / numBubbles;
+
+          // Move towards mouse velocity
+          bubble.vx += dx * force * 0.002 * depthFactor;
+          bubble.vy += dy * force * 0.002 * depthFactor;
+        }
+
+        // Continuous gentle noise movement (drifting)
+        bubble.vx += Math.sin(time * bubble.noiseSpeed + bubble.noiseOffset) * 0.01;
+        bubble.vy += Math.cos(time * bubble.noiseSpeed + bubble.noiseOffset) * 0.01;
+
+        // Apply velocity with friction (dampening)
+        bubble.vx *= 0.94;
+        bubble.vy *= 0.94;
+
+        // Update position
+        bubble.x += bubble.vx;
+        bubble.y += bubble.vy;
+
+        // Soft screen wrapping
+        const margin = 100;
+        if (bubble.x < -margin) bubble.x = window.innerWidth + margin;
+        if (bubble.x > window.innerWidth + margin) bubble.x = -margin;
+        if (bubble.y < -margin) bubble.y = window.innerHeight + margin;
+        if (bubble.y > window.innerHeight + margin) bubble.y = -margin;
+
+        bubble.el.style.transform = `translate(${bubble.x}px, ${bubble.y}px)`;
+      });
+
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+  };
+
+  initInteractiveBubbles();
 })();
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,9 +10,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
   <div class="background-blur bg-one"></div>
   <div class="background-blur bg-two"></div>
+
+  <div class="cursor-animation-container">
+    <div class="floating-cursor cursor-1">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" fill="white" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="cursor-label">Safe</div>
+    </div>
+    <div class="floating-cursor cursor-2">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" fill="white" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="cursor-label">Secure</div>
+    </div>
+    <div class="floating-cursor cursor-3">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" fill="white" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="cursor-label">Fast</div>
+    </div>
+  </div>
 
   <section class="shell">
     <div class="card">
@@ -26,8 +52,8 @@
         </div>
         <a href="Newadmingeneration.html" class="new-admin-header-link">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 8v8M8 12h8"/>
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v8M8 12h8" />
           </svg>
           <span>New Admin Request</span>
         </a>
@@ -47,7 +73,9 @@
             Email address
             <div class="input">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Z" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".75"/>
+                <path
+                  d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Z"
+                  fill="none" stroke="currentColor" stroke-width="1.5" opacity=".75" />
                 <path d="m5.5 8 5.55 3.7a2 2 0 0 0 2.2 0L18.8 8" fill="none" stroke="currentColor" stroke-width="1.5" />
               </svg>
               <input id="emailInput" type="email" placeholder="admin@example.com" autocomplete="email" required />
@@ -58,17 +86,20 @@
             Password
             <div class="input">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="4" y="10" width="16" height="10" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M8 10V8a4 4 0 0 1 8 0v2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="4" y="10" width="16" height="10" rx="2" ry="2" fill="none" stroke="currentColor"
+                  stroke-width="1.5" />
+                <path d="M8 10V8a4 4 0 0 1 8 0v2" fill="none" stroke="currentColor" stroke-width="1.5" />
               </svg>
-              <input id="passwordInput" type="password" placeholder="••••••••" autocomplete="current-password" required />
+              <input id="passwordInput" type="password" placeholder="••••••••" autocomplete="current-password"
+                required />
               <button type="button" class="password-toggle" aria-label="Toggle password visibility">
                 <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
                   <circle cx="12" cy="12" r="3" />
                 </svg>
                 <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                  <path
+                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
                   <line x1="1" y1="1" x2="23" y2="23" />
                 </svg>
               </button>
@@ -81,8 +112,9 @@
             Username
             <div class="input">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M5 19.5C5 16.4624 7.4624 14 10.5 14h3c3.0376 0 5.5 2.4624 5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="1.5" />
+                <path d="M5 19.5C5 16.4624 7.4624 14 10.5 14h3c3.0376 0 5.5 2.4624 5.5 5.5" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
               </svg>
               <input id="usernameInput" type="text" placeholder="your.username" autocomplete="username" required />
             </div>
@@ -92,17 +124,20 @@
             PIN
             <div class="input">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="5" y="6" width="14" height="14" rx="3" ry="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                <circle cx="12" cy="13" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="5" y="6" width="14" height="14" rx="3" ry="3" fill="none" stroke="currentColor"
+                  stroke-width="1.5" />
+                <circle cx="12" cy="13" r="2" fill="none" stroke="currentColor" stroke-width="1.5" />
               </svg>
-              <input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="••••" autocomplete="one-time-code" required />
+              <input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="••••"
+                autocomplete="one-time-code" required />
               <button type="button" class="password-toggle" aria-label="Toggle PIN visibility">
                 <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
                   <circle cx="12" cy="12" r="3" />
                 </svg>
                 <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                  <path
+                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
                   <line x1="1" y1="1" x2="23" y2="23" />
                 </svg>
               </button>
@@ -139,13 +174,14 @@
       </button>
       <div class="popup-icon error-icon">
         <svg viewBox="0 0 64 64" aria-hidden="true">
-          <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" stroke-width="3"/>
-          <path d="M32 20v16M32 44h.01" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" stroke-width="3" />
+          <path d="M32 20v16M32 44h.01" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
         </svg>
       </div>
       <h3 class="popup-title">Account Inactive</h3>
-      <p class="popup-message">Your account status is currently inactive. Please contact your administrator to activate your account.</p>
-      
+      <p class="popup-message">Your account status is currently inactive. Please contact your administrator to activate
+        your account.</p>
+
       <!-- Rejection Details Section -->
       <div id="rejectionDetails" class="rejection-details hidden">
         <h4 class="rejection-title">Previous Request Rejected</h4>
@@ -225,7 +261,8 @@
           <label>
             Additional Notes (Optional)
           </label>
-          <textarea id="requestNotes" placeholder="Any additional information you'd like to provide..." rows="3"></textarea>
+          <textarea id="requestNotes" placeholder="Any additional information you'd like to provide..."
+            rows="3"></textarea>
         </div>
 
         <div class="popup-actions popup-actions-spaced">
@@ -243,4 +280,5 @@
   <script src="js/password-toggle.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>
