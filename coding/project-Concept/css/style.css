@@ -29,11 +29,15 @@ body {
     var(--bg);
   color: var(--text);
   display: grid;
-  place-items: center;
+  place-items: start center;
   /* Updated to center vertically and horizontally */
   padding: 20px 18px;
   position: relative;
   overflow: hidden;
+}
+
+.centered-layout {
+  place-items: center;
 }
 
 .background-blur {
