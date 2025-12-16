@@ -505,35 +505,11 @@
     return active ? active.dataset.mode : 'email';
   };
 
-  const handleEmailPasswordLogin = async () => {
-    const email = document.getElementById('emailInput')?.value?.trim();
-    const password = document.getElementById('passwordInput')?.value || '';
-    if (!email || !password) {
-      showMessage('Enter email and password to continue.', 'error');
-      return;
-    }
-    showMessage('Signing in...');
+  // State for OTP
+  let pendingAdminData = null;
+  let currentOtp = null;
 
-    // Query admin table to verify credentials (without checking is_active first)
-    const { data, error } = await supabase
-      .from('admin')
-      .select('id, name, email, username, role, is_active')
-      .eq('email', email)
-      .eq('password', password)
-      .single();
-
-    if (error || !data) {
-      showMessage('Invalid email or password.', 'error');
-      return;
-    }
-
-    // Check if admin is inactive
-    if (!data.is_active) {
-      showMessage('', 'info'); // Clear any existing message
-      showInactivePopup(email, data.name);
-      return;
-    }
-
+  const completeLogin = (data) => {
     // Store session data
     localStorage.setItem('adminSession', JSON.stringify({
       id: data.id,
@@ -545,11 +521,159 @@
     }));
 
     showMessage('Signed in successfully. Redirecting...', 'success');
+    document.getElementById('otpPopup').classList.add('hidden'); // Hide OTP popup
 
     // Redirect to admin dashboard after a short delay
     setTimeout(() => {
       window.location.href = 'admin-dashboard.html';
     }, 1000);
+  };
+
+  const initiateOtpFlow = async () => {
+    const otpPopup = document.getElementById('otpPopup');
+    if (!otpPopup) return;
+
+    // Generate 4-digit OTP
+    currentOtp = Math.floor(1000 + Math.random() * 9000).toString();
+
+    // Send OTP (Type = 'admin')
+    const result = await NotificationService.sendOtp(
+      pendingAdminData.email,
+      pendingAdminData.phone, // Might be undefined, handled by service
+      currentOtp,
+      pendingAdminData.name,
+      'admin' // Specify Admin type for template
+    );
+
+    // Show feedback
+    let msg = `Code sent to ${pendingAdminData.email}`;
+    // Since SMS is not active, we don't need to overcomplicate the feedback
+    document.querySelector('.popup-message').textContent = msg;
+
+    otpPopup.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    // Reset OTP inputs
+    const inputs = document.querySelectorAll('.otp-digit');
+    inputs.forEach(input => input.value = '');
+    inputs[0]?.focus();
+    setupOtpInputs();
+
+    // Hide main login message
+    clearMessage();
+  };
+
+  const setupOtpInputs = () => {
+    const inputs = document.querySelectorAll('.otp-digit');
+    inputs.forEach((input, index) => {
+      // Auto-focus next input and check for completion
+      input.addEventListener('input', (e) => {
+        if (e.target.value.length === 1) {
+          if (index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          } else {
+            // Last digit entered, verify
+            const allFilled = Array.from(inputs).every(i => i.value.length === 1);
+            if (allFilled) verifyOtpLogic();
+          }
+        }
+      });
+
+      // Handle backspace
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value) {
+          if (index > 0) inputs[index - 1].focus();
+        }
+      });
+
+      // Paste handler
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text');
+        if (!/^\d{4}$/.test(text)) return;
+        const digits = text.split('');
+        inputs.forEach((inp, i) => inp.value = digits[i] || '');
+        verifyOtpLogic();
+      });
+    });
+  };
+
+  const verifyOtpLogic = () => {
+    const inputs = document.querySelectorAll('.otp-digit');
+    const enteredOtp = Array.from(inputs).map(i => i.value).join('');
+    const otpMsg = document.getElementById('otpMessage');
+
+    const showOtpError = (text) => {
+      if (otpMsg) {
+        otpMsg.textContent = text;
+        otpMsg.classList.remove('hidden');
+        otpMsg.classList.add('error');
+        otpMsg.classList.remove('success');
+      }
+    };
+
+    if (enteredOtp.length !== 4) return;
+
+    if (enteredOtp !== currentOtp) {
+      showOtpError('Invalid code. Please try again.');
+      inputs.forEach(i => i.classList.add('error-shake'));
+      setTimeout(() => inputs.forEach(i => i.classList.remove('error-shake')), 500);
+      return;
+    }
+
+    if (otpMsg) {
+      otpMsg.textContent = 'Verified!';
+      otpMsg.classList.remove('hidden', 'error');
+      otpMsg.classList.add('success');
+    }
+
+    completeLogin(pendingAdminData);
+  };
+
+  // Close OTP
+  document.getElementById('closeOtpPopup')?.addEventListener('click', () => {
+    document.getElementById('otpPopup').classList.add('hidden');
+    document.body.style.overflow = '';
+  });
+
+  // Resend OTP
+  document.getElementById('resendOtpBtn')?.addEventListener('click', () => {
+    if (!pendingAdminData) return;
+    initiateOtpFlow();
+  });
+
+  const handleEmailPasswordLogin = async () => {
+    const email = document.getElementById('emailInput')?.value?.trim();
+    const password = document.getElementById('passwordInput')?.value || '';
+    if (!email || !password) {
+      showMessage('Enter email and password to continue.', 'error');
+      return;
+    }
+    showMessage('Verifying credentials...');
+
+    // Query admin table to verify credentials
+    const { data, error } = await supabase
+      .from('admin')
+      .select('id, name, email, username, role, is_active, phone')
+      .eq('email', email)
+      .eq('password', password)
+      .single();
+
+    if (error || !data) {
+      showMessage('Invalid email or password.', 'error');
+      return;
+    }
+
+    // Check if admin is inactive
+    if (!data.is_active) {
+      showMessage('', 'info');
+      showInactivePopup(email, data.name);
+      return;
+    }
+
+    // Credentials valid, start OTP
+    pendingAdminData = data;
+    initiateOtpFlow();
   };
 
   const handleUsernamePinLogin = async () => {
@@ -559,12 +683,12 @@
       showMessage('Enter username and PIN to continue.', 'error');
       return;
     }
-    showMessage('Signing in...');
+    showMessage('Verifying credentials...');
 
-    // Query admin table to verify credentials (without checking is_active first)
+    // Query admin table to verify credentials
     const { data, error } = await supabase
       .from('admin')
-      .select('id, name, email, username, role, is_active')
+      .select('id, name, email, username, role, is_active, phone')
       .eq('username', username)
       .eq('pin', pin)
       .single();
@@ -581,22 +705,9 @@
       return;
     }
 
-    // Store session data
-    localStorage.setItem('adminSession', JSON.stringify({
-      id: data.id,
-      name: data.name,
-      email: data.email,
-      username: data.username,
-      role: data.role,
-      loginTime: new Date().toISOString()
-    }));
-
-    showMessage('Signed in successfully. Redirecting...', 'success');
-
-    // Redirect to admin dashboard after a short delay
-    setTimeout(() => {
-      window.location.href = 'admin-dashboard.html';
-    }, 1000);
+    // Credentials valid, start OTP
+    pendingAdminData = data;
+    initiateOtpFlow();
   };
 
   const handleLogin = () => {

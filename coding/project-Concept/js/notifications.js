@@ -21,12 +21,13 @@
 
 const NotificationService = {
   // Generate Beautiful HTML Email Template
-  generateEmailHtml: (otp, name) => {
+  generateEmailHtml: (otp, name, type = 'superadmin') => {
+    const title = type === 'superadmin' ? 'Super Admin Console' : 'Admin Portal';
     return `
       <div style="font-family: 'Inter', system-ui, -apple-system, sans-serif; max-width: 480px; margin: 20px auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e6e9f2; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
         <div style="background: linear-gradient(135deg, #f6f8fb 0%, #f1f5fa 100%); padding: 30px 20px; text-align: center; border-bottom: 1px solid #e6e9f2;">
           <h1 style="color: #1d2433; font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -0.02em;">Secure Login</h1>
-          <p style="color: #5f6b85; font-size: 14px; margin: 6px 0 0 0;">Super Admin Console</p>
+          <p style="color: #5f6b85; font-size: 14px; margin: 6px 0 0 0;">${title}</p>
         </div>
         
         <div style="padding: 40px 30px; text-align: center;">
@@ -58,20 +59,20 @@ const NotificationService = {
   },
 
   // Send OTP
-  sendOtp: async (email, phone, otp, name) => {
-    console.group('%c 🔒 Sending Verification Code', 'color: #5ba6ff; font-weight: bold; font-size: 14px;');
+  sendOtp: async (email, phone, otp, name, type = 'superadmin') => {
+    console.group(`%c 🔒 Sending Verification Code (${type})`, 'color: #5ba6ff; font-weight: bold; font-size: 14px;');
     console.log(`To Email: ${email}`);
     console.log(`OTP: ${otp}`);
 
     try {
       // 1. Send Email via EmailJS
-      // Service ID provided by user: service_su2n3x9
-      // ⚠️ STILL REQUIRED: Replace 'YOUR_TEMPLATE_ID' and 'YOUR_PUBLIC_KEY_HERE' (above)
-      const emailResult = await emailjs.send("service_su2n3x9", "template_n2q0cvw", {
+      const templateId = type === 'admin' ? 'template_b6z2t4h' : 'template_n2q0cvw';
+
+      const emailResult = await emailjs.send("service_su2n3x9", templateId, {
         to_name: name,
         to_email: email,
         otp_code: otp,
-        message_html: NotificationService.generateEmailHtml(otp, name),
+        message_html: NotificationService.generateEmailHtml(otp, name, type),
         reply_to: "security@projectconcept.com"
       });
 
