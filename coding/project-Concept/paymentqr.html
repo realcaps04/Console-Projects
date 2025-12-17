@@ -254,8 +254,8 @@
         </div>
     </section>
 
-    <!-- QR Code Popup -->
-    <div id="qrPopup" class="popup-overlay hidden">
+    <!-- Success/Link Display Section (Initially Hidden) -->
+    <div id="linkResult" class="popup-overlay hidden">
         <div class="qr-popup-content">
             <button class="popup-close" onclick="closePopup()" style="position: absolute; right: 20px; top: 20px;">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -263,30 +263,38 @@
                 </svg>
             </button>
 
-            <h3 style="margin-bottom: 24px; font-size: 18px;">Scan to Pay</h3>
-
-            <img id="qrImage" class="qr-code-img" alt="Payment QR Code" src="" />
-
-            <div class="generated-amount" id="displayAmount">₹0.00</div>
-            <p class="scan-instruction">Scan this QR code with any UPI app to pay.</p>
-
             <div
-                style="display: flex; gap: 12px; margin-top: 20px; align-items: center; justify-content: center; flex-wrap: wrap;">
-                <div style="padding: 6px; background: #fff; border-radius: 6px; border: 1px solid #eee;"><img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1024px-UPI-Logo-vector.svg.png"
-                        height="24" alt="UPI"></div>
-                <div style="padding: 6px; background: #fff; border-radius: 6px; border: 1px solid #eee;"><img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/1280px-PhonePe_Logo.svg.png"
-                        height="24" alt="PhonePe"></div>
-                <div style="padding: 6px; background: #fff; border-radius: 6px; border: 1px solid #eee;"><img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/1024px-Google_Pay_Logo.svg.png"
-                        height="24" alt="GPay"></div>
-                <div style="padding: 6px; background: #fff; border-radius: 6px; border: 1px solid #eee;"><img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/512px-Paytm_Logo_%28standalone%29.svg.png"
-                        height="24" alt="Paytm"></div>
+                style="width: 48px; height: 48px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: #10b981;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 6L9 17l-5-5" />
+                </svg>
             </div>
 
-            <button class="cta ghost" onclick="closePopup()" style="margin-top: 24px; width: 100%;">Close</button>
+            <h3 style="margin-bottom: 8px; font-size: 18px;">Payment Link Generated</h3>
+            <p style="font-size: 14px; color: var(--muted); margin-bottom: 24px;">Share this link with the customer to
+                receive payment.</p>
+
+            <div class="field" style="width: 100%; text-align: left; margin-bottom: 24px;">
+                <label
+                    style="font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 8px; display: block;">Payment
+                    URL</label>
+                <div class="input"
+                    style="display: flex; align-items: center; padding: 0; overflow: hidden; background: #f8faff;">
+                    <input type="text" id="generatedUrl" readonly
+                        style="border: none; background: transparent; padding: 12px; font-size: 13px; color: var(--text); width: 100%;" />
+                    <button onclick="copyLink()"
+                        style="background: var(--primary); color: #fff; border: none; padding: 12px 16px; font-size: 13px; font-weight: 600; cursor: pointer; height: 100%; white-space: nowrap;">
+                        Copy
+                    </button>
+                </div>
+            </div>
+
+            <a id="openLinkBtn" href="#" target="_blank" class="cta"
+                style="width: 100%; margin-bottom: 12px; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+                Open Payment Page
+            </a>
+
+            <button class="cta ghost" onclick="closePopup()" style="width: 100%;">Close</button>
         </div>
     </div>
 
@@ -295,33 +303,46 @@
             event.preventDefault();
 
             const amount = document.getElementById('amountInput').value;
-            const upiId = '7510483455@ikwik';
-            const name = 'Beneficiary';
 
             if (!amount || amount <= 0) {
                 alert('Please enter a valid amount.');
                 return;
             }
 
-            const upiLink = `upi://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
-            const encodedLink = encodeURIComponent(upiLink);
-            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodedLink}`;
+            // Construct the Absolute URL to payableqr.html
+            // We use window.location to get the current base path
+            const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
+            const paymentUrl = `${basePath}/payableqr.html?amount=${amount}`;
 
-            // Update Popup Content
-            const qrImg = document.getElementById('qrImage');
-            qrImg.src = qrApiUrl;
-            document.getElementById('displayAmount').textContent = '₹' + parseFloat(amount).toFixed(2);
+            // Update Link UI
+            document.getElementById('generatedUrl').value = paymentUrl;
+            document.getElementById('openLinkBtn').href = paymentUrl;
 
-            // Show Popup
-            document.getElementById('qrPopup').classList.remove('hidden');
+            // Show Success Modal
+            document.getElementById('linkResult').classList.remove('hidden');
+        }
+
+        function copyLink() {
+            const copyText = document.getElementById("generatedUrl");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            navigator.clipboard.writeText(copyText.value);
+
+            // Visual feedback
+            const btn = document.querySelector('button[onclick="copyLink()"]');
+            const originalText = btn.innerText;
+            btn.innerText = "Copied!";
+            setTimeout(() => {
+                btn.innerText = originalText;
+            }, 2000);
         }
 
         function closePopup() {
-            document.getElementById('qrPopup').classList.add('hidden');
+            document.getElementById('linkResult').classList.add('hidden');
         }
 
         // Close on clicking overlay
-        document.getElementById('qrPopup').addEventListener('click', function (e) {
+        document.getElementById('linkResult').addEventListener('click', function (e) {
             if (e.target === this) {
                 closePopup();
             }
