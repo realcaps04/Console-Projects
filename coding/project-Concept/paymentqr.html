@@ -121,54 +121,72 @@
         }
 
         /* Mobile Specific Overrides */
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
+            body {
+                padding: 10px !important;
+                display: block !important;
+                /* Allow scrolling */
+                height: auto !important;
+            }
+
             .shell {
-                padding: 16px;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
 
             .card {
-                border-radius: 12px;
+                border-radius: 16px !important;
+                box-shadow: none !important;
+                /* Cleaner look on mobile */
+                border: none !important;
             }
 
             .card-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 16px;
+                padding: 24px 20px !important;
             }
 
             .header-actions {
                 width: 100%;
+                display: flex;
+                justify-content: flex-start;
             }
 
             .back-btn {
-                width: 100%;
-                text-align: center;
-                justify-content: center;
+                width: auto !important;
+                /* Allow natural width */
+                padding: 8px 16px;
+            }
+
+            .card-body {
+                padding: 20px !important;
             }
 
             .receiver-details-card {
-                padding: 16px;
+                padding: 16px !important;
             }
 
             .detail-row {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 4px;
+                gap: 6px;
             }
 
             .detail-value {
                 text-align: left;
                 font-size: 15px;
-                /* Slightly larger for readability */
+                width: 100%;
+                word-break: break-all;
             }
 
-            /* Stack logos if needed or reduce size */
-            .payment-logos img {
-                height: 20px;
-            }
-
-            .generated-amount {
-                font-size: 24px;
+            /* Ensure popup fits */
+            .qr-popup-content {
+                width: 92% !important;
+                max-height: 85vh;
+                padding: 24px 16px;
             }
         }
     </style>
