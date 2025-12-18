@@ -299,6 +299,17 @@
                     <form id="qrForm" onsubmit="generateQR(event)">
                         <div class="field">
                             <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text);">Customer
+                                Name</label>
+                            <div class="input"
+                                style="padding: 12px; background: #fff; border: 1px solid var(--border); border-radius: 12px;">
+                                <input type="text" id="nameInput" placeholder="Enter customer name" required
+                                    style="font-size: 16px; font-weight: 500; width: 100%; border: none; outline: none; background: transparent; color: var(--text);" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label
                                 style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text);">Enter
                                 Amount (INR)</label>
                             <div class="input">
@@ -307,6 +318,25 @@
                                     style="font-size: 18px; font-weight: 600;" />
                             </div>
                             <small>Enter the specific amount for this payment request.</small>
+                        </div>
+
+                        <div class="field">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text);">Service
+                                Type</label>
+                            <div class="input"
+                                style="padding: 12px; background: #fff; border: 1px solid var(--border); border-radius: 12px;">
+                                <input list="serviceOptions" id="serviceInput" placeholder="Search or select service"
+                                    required
+                                    style="font-size: 16px; font-weight: 500; width: 100%; border: none; outline: none; background: transparent; color: var(--text);" />
+                                <datalist id="serviceOptions">
+                                    <option value="Possession Certificate"></option>
+                                    <option value="Encumbrance Certificate"></option>
+                                    <option value="Vidyalakshmi Portal Registration"></option>
+                                    <option value="Bank Loans and Services"></option>
+                                    <option value="Personal Certificates"></option>
+                                </datalist>
+                            </div>
                         </div>
 
                         <button type="submit" class="cta" style="width: 100%;">
@@ -390,16 +420,28 @@
             event.preventDefault();
 
             const amount = document.getElementById('amountInput').value;
+            const customerName = document.getElementById('nameInput').value;
+            const serviceType = document.getElementById('serviceInput').value;
 
             if (!amount || amount <= 0) {
                 alert('Please enter a valid amount.');
                 return;
             }
 
+            if (!customerName) {
+                alert('Please enter customer name.');
+                return;
+            }
+
+            if (!serviceType) {
+                alert('Please select a service type.');
+                return;
+            }
+
             // Construct the Absolute URL to payableqr.html
-            // We use window.location to get the current base path
             const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
-            const paymentUrl = `${basePath}/payableqr.html?data=${btoa(amount)}`;
+            // Encode amount in data (legacy support), add others as params
+            const paymentUrl = `${basePath}/payableqr.html?data=${btoa(amount)}&name=${encodeURIComponent(customerName)}&service=${encodeURIComponent(serviceType)}`;
 
             // Update Link UI
             document.getElementById('generatedUrl').value = paymentUrl;
