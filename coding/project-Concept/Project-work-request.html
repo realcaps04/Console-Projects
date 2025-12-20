@@ -745,6 +745,236 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
+
+        /* --- Login Modal Styles --- */
+        /* --- Login Modal Styles (Premium Glassmorphism) --- */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .login-modal {
+            background: rgba(255, 255, 255, 0.95);
+            width: 90%;
+            max-width: 420px;
+            padding: 48px 40px;
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            position: relative;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-header h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .login-header p {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        #loginForm,
+        #signupForm {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .login-field {
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        .login-field label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            margin-left: 4px;
+        }
+
+        .login-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .login-input-wrapper i {
+            position: absolute;
+            left: 16px;
+            color: #94a3b8;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+            z-index: 10;
+        }
+
+        .login-field input {
+            width: 100%;
+            height: 56px;
+            padding: 0 16px 0 48px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .login-field input:focus {
+            border-color: var(--brand-primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+        }
+
+        .login-field input:focus+i {
+            color: var(--brand-primary);
+        }
+
+        .login-error {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+            border: 1px solid #fee2e2;
+        }
+
+        .btn-login-submit {
+            width: 100%;
+            background: var(--brand-primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-login-submit:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -5px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-login-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-login-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .close-login {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 32px;
+            height: 32px;
+            background: #f1f5f9;
+            color: var(--text-sub);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .close-login:hover {
+            background: #e2e8f0;
+            color: var(--text-main);
+            transform: rotate(90deg);
+        }
+
+        .modal-switch {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+
+        .modal-switch a {
+            color: var(--brand-primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .modal-switch a:hover {
+            text-decoration: underline;
+        }
+
+        #signupModal .login-modal {
+            max-width: 650px;
+            padding: 40px 48px;
+        }
+
+        #signupModal .login-header {
+            margin-bottom: 24px;
+        }
+
+        #signupForm {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+        }
+
+        #signupForm .login-field:first-child,
+        #signupForm #signupError,
+        #signupForm .btn-login-submit {
+            grid-column: span 2;
+        }
+
+        #signupForm .login-field {
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 
@@ -759,8 +989,8 @@
             </div>
         </a>
         <div class="nav-actions">
-            <a href="#" class="link-login">Login</a>
-            <a href="#" class="link-signup">Get Started</a>
+            <a href="javascript:void(0)" onclick="openLoginModal()" class="link-login">Login</a>
+            <a href="javascript:void(0)" onclick="openSignupModal()" class="link-signup">Get Started</a>
         </div>
     </nav>
 
@@ -982,14 +1212,11 @@
                     <input type="text" id="domainSearch" placeholder="Search domains (e.g., 'Robotics')..."
                         oninput="filterDomains()">
                 </div>
-                <div id="domainResults" class="domain-list">
-                    <!-- Dynamic Items -->
-                </div>
+                <div id="domainResults" class="domain-list"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn-cancel" onclick="closeDomainModal()">Cancel</button>
-                    <button type="button" class="btn-confirm" id="confirmDomainBtn" onclick="confirmDomainSelection()">
-                        Select Domain
-                    </button>
+                    <button type="button" class="btn-confirm" id="confirmDomainBtn"
+                        onclick="confirmDomainSelection()">Select Domain</button>
                 </div>
             </div>
         </div>
@@ -1021,9 +1248,7 @@
                                 <option value="10">November</option>
                                 <option value="11">December</option>
                             </select>
-                            <select id="calYear" onchange="updateCalendarView()">
-                                <!-- Years populate here -->
-                            </select>
+                            <select id="calYear" onchange="updateCalendarView()"></select>
                         </div>
                         <div class="calendar-controls" style="margin-left: auto;">
                             <button type="button" class="cal-btn" onclick="changeMonth(-1)"><i
@@ -1032,9 +1257,7 @@
                                     class="fas fa-chevron-right"></i></button>
                         </div>
                     </div>
-                    <div id="calendarGrid" class="calendar-grid">
-                        <!-- Days populate here -->
-                    </div>
+                    <div id="calendarGrid" class="calendar-grid"></div>
                 </div>
                 <div class="modal-footer" style="padding: 10px 0 0 0; background: transparent;">
                     <button type="button" class="btn-cancel" onclick="closeDateModal()"
@@ -1169,7 +1392,6 @@
             border: 1px solid var(--border-light);
         }
 
-        /* Custom Scrollbar */
         .domain-list::-webkit-scrollbar {
             width: 6px;
         }
@@ -1272,346 +1494,318 @@
         }
     </style>
 
-    <!-- Logic -->
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-overlay">
+        <div class="login-modal">
+            <div class="close-login" onclick="closeLoginModal()"><i class="fas fa-times"></i></div>
+            <div class="login-header">
+                <h2>Welcome Back</h2>
+                <p>Log in to manage your engineering projects and track real-time updates.</p>
+            </div>
+            <form id="loginForm">
+                <div id="loginError" class="login-error"></div>
+                <div class="login-field">
+                    <label>Email Address</label>
+                    <div class="login-input-wrapper">
+                        <input type="email" id="loginEmail" placeholder="name@university.com" required>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+                <div class="login-field">
+                    <label>Password</label>
+                    <div class="login-input-wrapper">
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn-login-submit" id="btnLogin">Log In to Dashboard</button>
+            </form>
+            <div class="modal-switch">
+                Don't have an account? <a href="javascript:void(0)" onclick="switchToSignup()">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="login-overlay">
+        <div class="login-modal">
+            <div class="close-login" onclick="closeSignupModal()"><i class="fas fa-times"></i></div>
+            <div class="login-header">
+                <h2>Create Account</h2>
+                <p>Join Console Projects to build and manage your engineering projects.</p>
+            </div>
+            <form id="signupForm">
+                <div id="signupError" class="login-error"></div>
+                <div class="login-field">
+                    <label>Full Name</label>
+                    <div class="login-input-wrapper">
+                        <input type="text" id="signupName" placeholder="John Doe" required>
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <div class="login-field">
+                    <label>Email Address</label>
+                    <div class="login-input-wrapper">
+                        <input type="email" id="signupEmail" placeholder="name@university.com" required>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+                <div class="login-field">
+                    <label>Phone Number</label>
+                    <div class="login-input-wrapper">
+                        <input type="tel" id="signupPhone" placeholder="+91 98765 43210" required>
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+                <div class="login-field">
+                    <label>Password</label>
+                    <div class="login-input-wrapper">
+                        <input type="password" id="signupPassword" placeholder="••••••••" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+                <div class="login-field">
+                    <label>Confirm Password</label>
+                    <div class="login-input-wrapper">
+                        <input type="password" id="signupConfirm" placeholder="••••••••" required>
+                        <i class="fas fa-check-double"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn-login-submit" id="btnSignup">Create Account</button>
+            </form>
+            <div class="modal-switch">
+                Already have an account? <a href="javascript:void(0)" onclick="switchToLogin()">Log In</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SDK & Logic -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        var supabase = supabase || null;
+        (function () {
+            const SUPABASE_URL = 'https://rdubzgyjyyumapvifwuq.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkdWJ6Z3lqeXl1bWFwdmlmd3VxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyOTI0OTAsImV4cCI6MjA4MDg2ODQ5MH0.ZNgFLKO0z5xpASKFAr1uXp8PPmNsdpwN58I7dP6ZIeM';
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // --- Domain Search Logic ---
-        const techDomains = [
-            // General Domains
-            { name: "Full Stack Development", icon: "fa-laptop-code" },
-            { name: "Frontend Development", icon: "fa-paints-roller" },
-            { name: "Backend Development", icon: "fa-server" },
-            { name: "Mobile App Development", icon: "fa-mobile-alt" },
-            { name: "Game Development", icon: "fa-gamepad" },
-            { name: "Artificial Intelligence", icon: "fa-brain" },
-            { name: "Machine Learning", icon: "fa-robot" },
-            { name: "Data Science", icon: "fa-chart-pie" },
-            { name: "Cloud Computing", icon: "fa-cloud" },
-            { name: "Cybersecurity", icon: "fa-shield-alt" },
-            { name: "Blockchain & Web3", icon: "fa-cube" },
-            { name: "Internet of Things (IoT)", icon: "fa-microchip" },
-            { name: "Robotics", icon: "fa-gears" },
-            { name: "DevOps", icon: "fa-infinity" },
-            { name: "UI/UX Design", icon: "fa-bezier-curve" },
-            { name: "E-Commerce", icon: "fa-shopping-cart" },
-            { name: "Embedded Systems", icon: "fa-memory" },
-            { name: "Natural Language Processing", icon: "fa-comment-dots" },
-            { name: "Computer Vision", icon: "fa-eye" },
-            { name: "FinTech", icon: "fa-hand-holding-dollar" },
-            { name: "EdTech", icon: "fa-graduation-cap" },
-            { name: "HealthTech", icon: "fa-heart-pulse" },
+            window.openLoginModal = function () { document.getElementById('loginModal').style.display = 'flex'; };
+            window.closeLoginModal = function () {
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('loginError').style.display = 'none';
+            };
+            window.openSignupModal = function () { document.getElementById('signupModal').style.display = 'flex'; };
+            window.closeSignupModal = function () {
+                document.getElementById('signupModal').style.display = 'none';
+                document.getElementById('signupError').style.display = 'none';
+            };
+            window.switchToSignup = function () { closeLoginModal(); openSignupModal(); };
+            window.switchToLogin = function () { closeSignupModal(); openLoginModal(); };
 
-            // Specific Technology Stacks
-            { name: "Python + Flask", icon: "fa-brands fa-python" },
-            { name: "Python + Django", icon: "fa-brands fa-python" },
-            { name: "Flutter App Development", icon: "fa-mobile-screen-button" },
-            { name: "React + Node.js (MERN)", icon: "fa-brands fa-react" },
-            { name: "Java + Spring Boot", icon: "fa-brands fa-java" },
-            { name: "PHP + Laravel", icon: "fa-brands fa-php" },
-            { name: "Angular + .NET Core", icon: "fa-brands fa-angular" },
-            { name: "WordPress Customization", icon: "fa-brands fa-wordpress" }
-        ].sort((a, b) => a.name.localeCompare(b.name));
+            window.openDomainModal = function () {
+                document.getElementById('domainModal').style.display = 'flex';
+                setTimeout(() => { document.getElementById('domainSearch').focus(); filterDomains(); }, 50);
+            };
+            window.closeDomainModal = function () { document.getElementById('domainModal').style.display = 'none'; };
+            window.openDateModal = function () {
+                document.getElementById('dateModal').style.display = 'flex';
+                const yearSelect = document.getElementById('calYear');
+                if (yearSelect.options.length === 0) {
+                    for (let y = currentYear; y <= currentYear + 10; y++) {
+                        const opt = document.createElement('option'); opt.value = y; opt.textContent = y; yearSelect.appendChild(opt);
+                    }
+                }
+                renderCalendar();
+            };
+            window.closeDateModal = function () { document.getElementById('dateModal').style.display = 'none'; };
+            window.updateCalendarView = function () {
+                currentMonth = parseInt(document.getElementById('calMonth').value);
+                currentYear = parseInt(document.getElementById('calYear').value);
+                renderCalendar();
+            };
+            window.changeMonth = function (delta) {
+                currentMonth += delta;
+                if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+                else if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+                renderCalendar();
+            };
+            window.setToday = function () {
+                const today = new Date();
+                const dStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                selectedDateValue = dStr; document.getElementById('deadline').value = dStr;
+                const btn = document.getElementById('deadlineBtn');
+                btn.textContent = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                btn.classList.add('selected'); closeDateModal();
+            };
+            window.filterDomains = function () {
+                const query = document.getElementById('domainSearch').value.trim().toLowerCase();
+                const list = document.getElementById('domainResults');
+                list.innerHTML = '';
+                techDomains.filter(d => d.name.toLowerCase().includes(query)).forEach(domain => {
+                    const div = document.createElement('div');
+                    div.className = `domain-item ${domain.name === selectedDomainValue ? 'active' : ''}`;
+                    div.innerHTML = `<i class="fas ${domain.icon}"></i> <span>${domain.name}</span>`;
+                    div.onclick = () => { selectedDomainValue = domain.name; filterDomains(); };
+                    list.appendChild(div);
+                });
+                if (query.length > 0) {
+                    const customDiv = document.createElement('div');
+                    const rawQuery = document.getElementById('domainSearch').value.trim();
+                    customDiv.className = `domain-item custom-option ${selectedDomainValue === rawQuery ? 'active' : ''}`;
+                    customDiv.style.marginTop = "8px";
+                    customDiv.innerHTML = `<i class="fas fa-check-circle"></i> <span>Use: "${rawQuery}"</span>`;
+                    customDiv.onclick = () => { selectedDomainValue = rawQuery; filterDomains(); };
+                    list.appendChild(customDiv);
+                }
+            };
+            window.confirmDomainSelection = function () {
+                if (selectedDomainValue) {
+                    const btn = document.getElementById('projTypeBtn');
+                    btn.textContent = selectedDomainValue; btn.classList.add('selected');
+                    document.getElementById('projType').value = selectedDomainValue; closeDomainModal();
+                }
+            };
 
-        let selectedDomainValue = null;
+            window.onclick = function (event) {
+                if (event.target.id == 'domainModal') closeDomainModal();
+                if (event.target.id == 'dateModal') closeDateModal();
+                if (event.target.id == 'loginModal') closeLoginModal();
+                if (event.target.id == 'signupModal') closeSignupModal();
+            };
 
-        function openDomainModal() {
-            const modal = document.getElementById('domainModal');
-            if (modal) {
-                modal.style.display = 'flex';
-                document.getElementById('domainSearch').value = '';
-                // Don't reset selectedDomainValue here, so user sees current choice
-                setTimeout(() => {
-                    document.getElementById('domainSearch').focus();
-                    filterDomains();
-                }, 50);
+            function renderCalendar() {
+                const grid = document.getElementById('calendarGrid'); grid.innerHTML = '';
+                document.getElementById('calMonth').value = currentMonth; document.getElementById('calYear').value = currentYear;
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+                ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].forEach(day => {
+                    const div = document.createElement('div'); div.className = 'weekday'; div.innerText = day; grid.appendChild(div);
+                });
+                for (let i = 0; i < firstDayIndex; i++) {
+                    const div = document.createElement('div'); div.className = 'day empty'; grid.appendChild(div);
+                }
+                const today = new Date(); today.setHours(0, 0, 0, 0);
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const div = document.createElement('div'); div.className = 'day'; div.innerText = i;
+                    const dObj = new Date(currentYear, currentMonth, i);
+                    const dStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                    if (dObj < today) { div.classList.add('disabled'); } else {
+                        if (selectedDateValue === dStr) div.classList.add('selected');
+                        if (today.getTime() === dObj.getTime()) div.classList.add('today');
+                        div.onclick = () => {
+                            selectedDateValue = dStr; document.getElementById('deadline').value = dStr;
+                            const btn = document.getElementById('deadlineBtn');
+                            btn.textContent = new Date(dStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                            btn.classList.add('selected'); closeDateModal();
+                        };
+                    }
+                    grid.appendChild(div);
+                }
             }
-        }
 
-        function closeDomainModal() {
-            document.getElementById('domainModal').style.display = 'none';
-        }
+            const techDomains = [
+                { name: "Full Stack Development", icon: "fa-laptop-code" },
+                { name: "Frontend Development", icon: "fa-paints-roller" },
+                { name: "Backend Development", icon: "fa-server" },
+                { name: "Mobile App Development", icon: "fa-mobile-alt" },
+                { name: "Game Development", icon: "fa-gamepad" },
+                { name: "Artificial Intelligence", icon: "fa-brain" },
+                { name: "Machine Learning", icon: "fa-robot" },
+                { name: "Data Science", icon: "fa-chart-pie" },
+                { name: "Cloud Computing", icon: "fa-cloud" },
+                { name: "Cybersecurity", icon: "fa-shield-alt" },
+                { name: "Blockchain & Web3", icon: "fa-cube" },
+                { name: "Internet of Things (IoT)", icon: "fa-microchip" },
+                { name: "Robotics", icon: "fa-gears" },
+                { name: "DevOps", icon: "fa-infinity" },
+                { name: "UI/UX Design", icon: "fa-bezier-curve" },
+                { name: "E-Commerce", icon: "fa-shopping-cart" },
+                { name: "Embedded Systems", icon: "fa-memory" },
+                { name: "Natural Language Processing", icon: "fa-comment-dots" },
+                { name: "Computer Vision", icon: "fa-eye" },
+                { name: "FinTech", icon: "fa-hand-holding-dollar" },
+                { name: "EdTech", icon: "fa-graduation-cap" },
+                { name: "HealthTech", icon: "fa-heart-pulse" }
+            ].sort((a, b) => a.name.localeCompare(b.name));
 
-        function filterDomains() {
-            const query = document.getElementById('domainSearch').value.trim().toLowerCase();
-            const list = document.getElementById('domainResults');
-            list.innerHTML = '';
-
-            const filtered = techDomains.filter(d => d.name.toLowerCase().includes(query));
-
-            // Add matches
-            filtered.forEach(domain => {
-                const div = document.createElement('div');
-                div.className = `domain-item ${domain.name === selectedDomainValue ? 'active' : ''}`;
-                div.innerHTML = `<i class="fas ${domain.icon}"></i> <span>${domain.name}</span>`;
-                div.onclick = () => {
-                    selectedDomainValue = domain.name;
-                    filterDomains();
-                };
-                list.appendChild(div);
+            // Event listeners for forms (using local variables from IIFE closure)
+            document.getElementById('projectForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const btn = document.getElementById('submitBtn'); const orig = btn.innerHTML;
+                btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Submitting...';
+                try {
+                    const fName = document.getElementById('firstName').value.trim();
+                    const mName = document.getElementById('middleName').value.trim();
+                    const lName = document.getElementById('lastName').value.trim();
+                    const fullName = `${fName} ${mName} ${lName}`.replace(/\s+/g, ' ').trim();
+                    const { error } = await supabase.from('project_requests').insert([{
+                        student_name: fullName, email: document.getElementById('studEmail').value,
+                        phone: document.getElementById('studPhone').value, college_name: document.getElementById('college').value,
+                        project_type: document.getElementById('projType').value, project_title: document.getElementById('projTitle').value,
+                        deadline: document.getElementById('deadline').value || null, budget_range: document.getElementById('budget').value,
+                        referral_code: document.getElementById('referralCode').value, design_link: document.getElementById('designLink').value,
+                        description: document.getElementById('desc').value
+                    }]);
+                    if (error) throw error;
+                    localStorage.setItem('user_project_email', document.getElementById('studEmail').value);
+                    document.getElementById('successModal').style.display = 'flex';
+                    this.reset();
+                } catch (err) { alert("Submission Error: " + err.message); } finally { btn.disabled = false; btn.innerHTML = orig; }
             });
 
-            // Add dynamic "Use Typed Name" option if query exists
-            if (query.length > 0) {
-                const customDiv = document.createElement('div');
-                const rawQuery = document.getElementById('domainSearch').value.trim();
-                customDiv.className = `domain-item custom-option ${selectedDomainValue === rawQuery ? 'active' : ''}`;
-                customDiv.style.marginTop = "8px";
-                customDiv.innerHTML = `<i class="fas fa-check-circle"></i> <span>Use: "${rawQuery}"</span>`;
-                customDiv.onclick = () => {
-                    selectedDomainValue = rawQuery;
-                    filterDomains();
-                };
-                list.appendChild(customDiv);
-            } else {
-                // Persistent "Others" hint when search is empty
-                const hintDiv = document.createElement('div');
-                hintDiv.className = "domain-item";
-                hintDiv.style.marginTop = "10px";
-                hintDiv.style.borderTop = "1px solid var(--border-light)";
-                hintDiv.style.color = "var(--text-sub)";
-                hintDiv.innerHTML = `<i class="fas fa-pen-to-square"></i> <span>Other (Type to specify)</span>`;
-                hintDiv.onclick = () => document.getElementById('domainSearch').focus();
-                list.appendChild(hintDiv);
-            }
-
-            if (filtered.length === 0 && query.length === 0) {
-                list.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8;">No results. Type your desired stack above.</div>';
-            }
-        }
-
-        function confirmDomainSelection() {
-            if (selectedDomainValue) {
-                const btn = document.getElementById('projTypeBtn');
-                btn.textContent = selectedDomainValue;
-                btn.classList.add('selected');
-                document.getElementById('projType').value = selectedDomainValue;
-                closeDomainModal();
-            } else {
-                // Focus search if nothing selected
-                document.getElementById('domainSearch').focus();
-            }
-        }
-
-        // Close modal on outside click
-        window.onclick = function (event) {
-            const domainModal = document.getElementById('domainModal');
-            const dateModal = document.getElementById('dateModal');
-            if (event.target == domainModal) {
-                closeDomainModal();
-            }
-            if (event.target == dateModal) {
-                closeDateModal();
-            }
-        }
-
-        // --- Date Picker Logic ---
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
-        let selectedDateValue = null;
-
-        function openDateModal() {
-            document.getElementById('dateModal').style.display = 'flex';
-
-            // Populate year selection (current year to +10 years)
-            const yearSelect = document.getElementById('calYear');
-            if (yearSelect.options.length === 0) {
-                const startYear = new Date().getFullYear();
-                for (let y = startYear; y <= startYear + 10; y++) {
-                    const opt = document.createElement('option');
-                    opt.value = y;
-                    opt.textContent = y;
-                    yearSelect.appendChild(opt);
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btnLogin'); const errArea = document.getElementById('loginError');
+                btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Verifying...';
+                errArea.style.display = 'none';
+                try {
+                    const { data, error } = await supabase.from('project_users').select('*')
+                        .eq('email', document.getElementById('loginEmail').value.trim())
+                        .eq('password', document.getElementById('loginPassword').value).single();
+                    if (error || !data) throw new Error("Incorrect email or password.");
+                    localStorage.setItem('user_project_email', data.email);
+                    window.location.href = 'users-dashboard.html';
+                } catch (err) {
+                    errArea.textContent = err.message; errArea.style.display = 'block';
+                    btn.disabled = false; btn.innerText = "Log In to Dashboard";
                 }
-            }
-
-            renderCalendar();
-        }
-
-        function closeDateModal() {
-            document.getElementById('dateModal').style.display = 'none';
-        }
-
-        function updateCalendarView() {
-            currentMonth = parseInt(document.getElementById('calMonth').value);
-            currentYear = parseInt(document.getElementById('calYear').value);
-            renderCalendar();
-        }
-
-        function renderCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            grid.innerHTML = '';
-
-            // Update dropdowns to match state
-            document.getElementById('calMonth').value = currentMonth;
-            document.getElementById('calYear').value = currentYear;
-
-            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-            const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
-
-            // Weekdays
-            const days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-            days.forEach(day => {
-                const div = document.createElement('div');
-                div.className = 'weekday';
-                div.innerText = day;
-                grid.appendChild(div);
             });
 
-            // Empty days
-            for (let i = 0; i < firstDayIndex; i++) {
-                const div = document.createElement('div');
-                div.className = 'day empty';
-                grid.appendChild(div);
-            }
+            document.getElementById('signupForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btnSignup'); const errArea = document.getElementById('signupError');
+                btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Creating...';
+                errArea.style.display = 'none';
+                try {
+                    const email = document.getElementById('signupEmail').value.trim();
+                    const password = document.getElementById('signupPassword').value;
+                    const confirm = document.getElementById('signupConfirm').value;
+                    const name = document.getElementById('signupName').value.trim();
+                    const phone = document.getElementById('signupPhone').value.trim();
 
-            // Actual days
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); // Reset time for accurate comparison
-
-            for (let i = 1; i <= daysInMonth; i++) {
-                const div = document.createElement('div');
-                div.className = 'day';
-                div.innerText = i;
-
-                const dateObj = new Date(currentYear, currentMonth, i);
-                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-
-                // Disable past dates
-                if (dateObj < today) {
-                    div.classList.add('disabled');
-                } else {
-                    if (selectedDateValue === dateStr) {
-                        div.classList.add('selected');
-                    }
-                    if (today.getTime() === dateObj.getTime()) {
-                        div.classList.add('today');
+                    if (password !== confirm) {
+                        throw new Error("Passwords do not match.");
                     }
 
-                    div.onclick = () => {
-                        selectedDateValue = dateStr;
-                        document.getElementById('deadline').value = dateStr;
+                    // Check if email already exists
+                    const { data: existingUser } = await supabase.from('project_users').select('email').eq('email', email).maybeSingle();
+                    if (existingUser) throw new Error("An account with this email already exists.");
 
-                        const btn = document.getElementById('deadlineBtn');
-                        const displayDate = new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                        btn.textContent = displayDate;
-                        btn.classList.add('selected');
+                    const { error } = await supabase.from('project_users').insert([{ email, password, name, phone }]);
+                    if (error) throw error;
 
-                        closeDateModal();
-                    };
+                    localStorage.setItem('user_project_email', email);
+                    window.location.href = 'users-dashboard.html';
+                } catch (err) {
+                    errArea.textContent = err.message; errArea.style.display = 'block';
+                    btn.disabled = false; btn.innerText = "Create Account";
                 }
-                grid.appendChild(div);
-            }
-        }
+            });
 
-        function changeMonth(delta) {
-            currentMonth += delta;
-            if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            } else if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            }
-            renderCalendar();
-        }
-
-        function setToday() {
-            const today = new Date();
-            const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-            selectedDateValue = dateStr;
-            document.getElementById('deadline').value = dateStr;
-            const btn = document.getElementById('deadlineBtn');
-            btn.textContent = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            btn.classList.add('selected');
-            closeDateModal();
-        }
-
-        document.getElementById('projectForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const fileInput = document.getElementById('abstractFile');
-            const file = fileInput.files[0];
-            const originalHTML = btn.innerHTML;
-
-            if (!file || file.type !== 'application/pdf' || file.size > 5 * 1024 * 1024) {
-                alert("Please upload a valid PDF Abstract (< 5MB).");
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Processing...';
-
-            if (!supabase) {
-                alert("Database connection is currently unavailable. Please check your internet or try again later.");
-                btn.disabled = false;
-                btn.innerHTML = originalHTML;
-                return;
-            }
-
-            try {
-                // Upload Stub
-                // const fileName = `${Date.now()}_${file.name}`;
-                // await supabase.storage.from('abstracts').upload(fileName, file);
-
-                // Combine Name Fields
-                const fName = document.getElementById('firstName').value.trim();
-                const mName = document.getElementById('middleName').value.trim();
-                const lName = document.getElementById('lastName').value.trim();
-                const fullName = `${fName} ${mName} ${lName}`.replace(/\s+/g, ' ').trim();
-
-                // Handle Custom Domain
-                const domain = document.getElementById('projType').value;
-
-                const { error } = await supabase.from('project_requests').insert([{
-                    student_name: fullName,
-                    email: document.getElementById('studEmail').value,
-                    phone: document.getElementById('studPhone').value,
-                    college_name: document.getElementById('college').value,
-                    project_type: domain, // Use resolved domain
-                    project_title: document.getElementById('projTitle').value,
-                    deadline: document.getElementById('deadline').value || null,
-                    budget_range: document.getElementById('budget').value,
-                    referral_code: document.getElementById('referralCode').value,
-                    design_link: document.getElementById('designLink').value,
-                    description: document.getElementById('desc').value
-                }]);
-
-                if (error) throw error;
-
-                // Save email for dashboard access
-                const userEmail = document.getElementById('studEmail').value;
-                localStorage.setItem('user_project_email', userEmail);
-
-                // Show Success Modal instead of alert
-                const successModal = document.getElementById('successModal');
-                if (successModal) {
-                    successModal.style.display = 'flex';
-                } else {
-                    alert("Request Submitted Successfully!");
-                }
-
-                this.reset();
-            } catch (err) {
-                alert("Error: " + err.message);
-                console.error(err);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalHTML;
-            }
-        });
-
-        // Initialize Supabase safely at the very end
-        try {
-            if (window.supabase) {
-                const SUPABASE_URL = 'https://rdubzgyjyyumapvifwuq.supabase.co';
-                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkdWJ6Z3lqeXl1bWFwdmlmd3VxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyOTI0OTAsImV4cCI6MjA4MDg2ODQ5MH0.ZNgFLKO0z5xpASKFAr1uXp8PPmNsdpwN58I7dP6ZIeM';
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            }
-        } catch (e) {
-            console.error("Supabase failed to initialize:", e);
-        }
+            // Initialize calendar variables
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+            let selectedDateValue = null;
+            let selectedDomainValue = null;
+        })();
     </script>
 </body>
 
