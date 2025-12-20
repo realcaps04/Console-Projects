@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Console Projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #396AFF;
+            --secondary: #343C6A;
+            --bg-body: #F5F7FA;
+            --sidebar-width: 250px;
+            --text-main: #343C6A;
+            --text-muted: #718EBF;
+            --border-light: #E6EFF5;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--white);
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 0;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .logo-section {
+            padding: 0 40px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            flex: 1;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 40px;
+            text-decoration: none;
+            color: #B1B1B1;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            font-weight: 700;
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 25px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px 40px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 250px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8BA3CB;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border-radius: 25px;
+            border: none;
+            background: #F5F7FA;
+            color: var(--secondary);
+            outline: none;
+        }
+
+        .action-icon {
+            width: 45px;
+            height: 45px;
+            background: #F5F7FA;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718EBF;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .action-icon:hover {
+            background: #eef1f6;
+        }
+
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .section-title a {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* My Cards */
+        .cards-container {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .credit-card {
+            min-width: 350px;
+            height: 235px;
+            border-radius: 25px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: white;
+            position: relative;
+        }
+
+        .credit-card.blue {
+            background: linear-gradient(107deg, #4C49ED 2.61%, #0A06F4 101.2%);
+        }
+
+        .credit-card.white {
+            background: white;
+            border: 1px solid var(--border-light);
+            color: var(--secondary);
+        }
+
+        .card-header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-balance p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .card-balance h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .chip-icon {
+            width: 35px;
+        }
+
+        .card-footer-info {
+            display: flex;
+            gap: 60px;
+        }
+
+        .info-group p {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .info-group h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .card-number-section {
+            background: rgba(255, 255, 255, 0.15);
+            margin: 0 -25px -25px -25px;
+            padding: 20px 25px;
+            border-radius: 0 0 25px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .white .card-number-section {
+            background: transparent;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .card-number {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        /* Recent Transactions */
+        .transactions-list {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            max-height: 235px;
+            overflow-y: auto;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .transaction-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .icon-yellow {
+            background: #FFF5D9;
+            color: #FFBB38;
+        }
+
+        .icon-blue {
+            background: #E7EDFF;
+            color: #396AFF;
+        }
+
+        .icon-green {
+            background: #DCFAF8;
+            color: #16DBCC;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-details h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .item-details p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .item-amount {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .amount-negative {
+            color: #FE5C73;
+        }
+
+        .amount-positive {
+            color: #41D433;
+        }
+
+        /* Charts Section */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            height: 320px;
+        }
+
+        /* Weekly Activity Mockup */
+        .bar-chart-mockup {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 200px;
+            padding-top: 20px;
+        }
+
+        .bar-group {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bars {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+            height: 150px;
+        }
+
+        .bar {
+            width: 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .bar-blue {
+            background: #232323;
+            height: 100px;
+        }
+
+        .bar-cyan {
+            background: #396AFF;
+            height: 70px;
+        }
+
+        .day-label {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Pie Chart Mockup */
+        .pie-chart-mockup {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .pie {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(#343C6A 0% 30%,
+                    #FC7900 30% 45%,
+                    #FA00FF 45% 65%,
+                    #396AFF 65% 100%);
+            position: relative;
+        }
+
+        /* Bottom Row */
+        .bottom-row {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .quick-transfer {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            height: 280px;
+        }
+
+        .user-scroller {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .transfer-user {
+            text-align: center;
+        }
+
+        .transfer-user img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .transfer-user h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .transfer-user p {
+            font-size: 0.8rem;
+            color: #718EBF;
+        }
+
+        .send-input-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .send-input-group p {
+            color: #718EBF;
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            background: #F5F7FA;
+            border-radius: 30px;
+            display: flex;
+            flex: 1;
+            align-items: center;
+            padding-left: 20px;
+        }
+
+        .input-wrapper input {
+            background: transparent;
+            border: none;
+            outline: none;
+            flex: 1;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .btn-send {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-send:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .balance-history {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            height: 280px;
+        }
+
+        .line-chart-mockup {
+            height: 180px;
+            width: 100%;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        /* SVG Line Chart Style */
+        .line-chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Identity Modal Style (Simplified) */
+        .identity-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .identity-modal {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            width: 450px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .identity-modal h2 {
+            margin-bottom: 10px;
+        }
+
+        .identity-modal p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        /* Profile Modal Style */
+        .profile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(52, 60, 106, 0.4);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .profile-modal {
+            background: white;
+            width: 500px;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 4px solid var(--border-light);
+            display: block;
+        }
+
+        .close-profile {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-profile:hover {
+            color: var(--secondary);
+        }
+
+        .profile-field {
+            margin-bottom: 20px;
+        }
+
+        .profile-field label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .profile-field input {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            background: #F5F7FA;
+            color: var(--secondary);
+            font-weight: 500;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .profile-field input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(57, 106, 255, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+
+            .dashboard-grid,
+            .charts-row,
+            .bottom-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Profile Management Modal -->
+    <div id="profileModal" class="profile-overlay">
+        <div class="profile-modal">
+            <i class="fas fa-times close-profile" onclick="closeProfileModal()"></i>
+            <div class="profile-header">
+                <img src="https://i.pravatar.cc/150?u=eddy" alt="User Avatar" class="profile-avatar-large">
+                <h2 style="color: var(--secondary); font-weight: 800;">My Profile</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Manage your account details</p>
+            </div>
+            <div class="profile-form">
+                <div class="profile-field">
+                    <label>Full Name</label>
+                    <input type="text" value="Eddy Cusuma" id="profileName">
+                </div>
+                <div class="profile-field">
+                    <label>Email Address</label>
+                    <input type="email" value="eddy.cusuma@gmail.com" id="profileEmail" disabled>
+                </div>
+                <div class="profile-field">
+                    <label>Phone Number</label>
+                    <input type="text" value="+1 234 567 890" id="profilePhone">
+                </div>
+                <button class="btn-send" style="width: 100%; justify-content: center; height: 55px; margin-top: 10px;">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Identity Verification Modal -->
+    <div id="identityModal" class="identity-overlay" style="display: none;">
+        <div class="identity-modal">
+            <div class="logo-icon" style="margin: 0 auto 20px;">CP</div>
+            <h2>Verify Account</h2>
+            <p>Please enter your email address to access your dashboard.</p>
+            <form id="identityForm">
+                <input type="email" id="userEmailInput"
+                    style="width: 100%; padding: 15px 20px; border-radius: 15px; border: 1px solid var(--border-light); margin-bottom: 20px; outline: none;"
+                    placeholder="name@example.com" required>
+                <button type="submit" class="btn-send" style="width: 100%; justify-content: center;">Access
+                    Dashboard</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon">CP</div>
+                <div class="logo-text">ConsoleDash</div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="nav-link active"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#" class="nav-link"><i class="fas fa-exchange-alt"></i> Transactions</a>
+                <a href="#" class="nav-link"><i class="fas fa-user-circle"></i> Accounts</a>
+                <a href="#" class="nav-link"><i class="fas fa-chart-line"></i> Investments</a>
+                <a href="#" class="nav-link"><i class="fas fa-credit-card"></i> Credit Cards</a>
+                <a href="#" class="nav-link"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+                <a href="#" class="nav-link"><i class="fas fa-concierge-bell"></i> Services</a>
+                <a href="#" class="nav-link"><i class="fas fa-shield-alt"></i> My Privileges</a>
+                <a href="#" class="nav-link"><i class="fas fa-cog"></i> Setting</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h1>Overview</h1>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search for something">
+                    </div>
+                    <div class="action-icon"><i class="fas fa-cog"></i></div>
+                    <div class="action-icon"><i class="fas fa-bell"></i></div>
+                    <img src="https://i.pravatar.cc/150?u=eddy" alt="User Profile" class="profile-img"
+                        onclick="openProfileModal()">
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- My Cards Section -->
+                <div>
+                    <div class="section-title">
+                        <h2>My Payments</h2>
+                        <a href="#">See All</a>
+                    </div>
+                    <div class="cards-container">
+                        <!-- Blue Card -->
+                        <div class="credit-card blue">
+                            <div class="card-header-info">
+                                <div class="card-balance">
+                                    <p>Balance</p>
+                                    <h3>$5,756</h3>
+                                </div>
+                                <img src="https://img.icons8.com/ios-filled/50/ffffff/sim-card-chip.png"
+                                    class="chip-icon" alt="Chip">
+                            </div>
+                            <div class="card-footer-info">
+                                <div class="info-group">
+                                    <p>Card Holder</p>
+                                    <h4>Eddy Cusuma</h4>
+                                </div>
+                                <div class="info-group">
+                                    <p>Valid Thru</p>
+                                    <h4>12/22</h4>
+                                </div>
+                            </div>
+                            <div class="card-number-section">
+                                <span class="card-number">3778 **** **** 1234</span>
+                                <img src="https://img.icons8.com/color/48/000000/mastercard.png" alt="MC">
+                            </div>
+                        </div>
+                        <!-- White Card -->
+                        <div class="credit-card white">
+                            <div class="card-header-info">
+                                <div class="card-balance">
+                                    <p>Balance</p>
+                                    <h3>$5,756</h3>
+                                </div>
+                                <img src="https://img.icons8.com/ios-filled/50/343C6A/sim-card-chip.png"
+                                    class="chip-icon" alt="Chip">
+                            </div>
+                            <div class="card-footer-info">
+                                <div class="info-group">
+                                    <p>Card Holder</p>
+                                    <h4>Eddy Cusuma</h4>
+                                </div>
+                                <div class="info-group">
+                                    <p>Valid Thru</p>
+                                    <h4>12/22</h4>
+                                </div>
+                            </div>
+                            <div class="card-number-section">
+                                <span class="card-number">3778 **** **** 1234</span>
+                                <img src="https://img.icons8.com/color/48/000000/mastercard.png" alt="MC">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div>
+                    <div class="section-title">
+                        <h2>Recent updates</h2>
+                    </div>
+                    <div class="transactions-list">
+                        <div class="transaction-item">
+                            <div class="item-icon icon-yellow"><i class="fas fa-credit-card"></i></div>
+                            <div class="item-details">
+                                <h4>Deposit from my Card</h4>
+                                <p>28 January 2021</p>
+                            </div>
+                            <div class="item-amount amount-negative">-$850</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="item-icon icon-blue"><i class="fab fa-paypal"></i></div>
+                            <div class="item-details">
+                                <h4>Deposit Paypal</h4>
+                                <p>25 January 2021</p>
+                            </div>
+                            <div class="item-amount amount-positive">+$2,500</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="item-icon icon-green"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="item-details">
+                                <h4>Jemi Wilson</h4>
+                                <p>21 January 2021</p>
+                            </div>
+                            <div class="item-amount amount-positive">+$5,400</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="charts-row">
+                <div>
+                    <div class="section-title">
+                        <h2>Weekly Activity</h2>
+                    </div>
+                    <div class="chart-card">
+                        <div class="bar-chart-mockup">
+                            <div class="bar-group">
+                                <div class="bars">
+                                    <div class="bar bar-blue" style="height: 120px;"></div>
+                                    <div class="bar bar-cyan" style="height: 80px;"></div>
+                                </div>
+                                <span class="day-label">Sat</span>
+                            </div>
+                            <div class="bar-group">
+                                <div class="bars">
+                                    <div class="bar bar-blue" style="height: 80px;"></div>
+                                    <div class="bar bar-cyan" style="height: 40px;"></div>
+                                </div>
+                                <span class="day-label">Sun</span>
+                            </div>
+                            <div class="bar-group">
+                                <div class="bars">
+                                    <div class="bar bar-blue" style="height: 100px;"></div>
+                                    <div class="bar bar-cyan" style="height: 70px;"></div>
+                                </div>
+                                <span class="day-label">Mon</span>
+                            </div>
+                            <div class="bar-group">
+                                <div class="bars">
+                                    <div class="bar bar-blue" style="height: 140px;"></div>
+                                    <div class="bar bar-cyan" style="height: 110px;"></div>
+                                </div>
+                                <span class="day-label">Tue</span>
+                            </div>
+                            <div class="bar-group">
+                                <div class="bars">
+                                    <div class="bar bar-blue" style="height: 50px;"></div>
+                                    <div class="bar bar-cyan" style="height: 80px;"></div>
+                                </div>
+                                <span class="day-label">Wed</span>
+                            </div>
+                            <div class="bar-group">
+                                <div class="bars">
+                                    <div class="bar bar-blue" style="height: 110px;"></div>
+                                    <div class="bar bar-cyan" style="height: 70px;"></div>
+                                </div>
+                                <span class="day-label">Thu</span>
+                            </div>
+                            <div class="bar-group">
+                                <div class="bars">
+                                    <div class="bar bar-blue" style="height: 120px;"></div>
+                                    <div class="bar bar-cyan" style="height: 90px;"></div>
+                                </div>
+                                <span class="day-label">Fri</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="section-title">
+                        <h2>Expense Statistics</h2>
+                    </div>
+                    <div class="chart-card">
+                        <div class="pie-chart-mockup">
+                            <div class="pie"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </main>
+    </div>
+
+    <!-- SDK & Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://rdubzgyjyyumapvifwuq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkdWJ6Z3lqeXl1bWFwdmlmd3VxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyOTI0OTAsImV4cCI6MjA4MDg2ODQ5MH0.ZNgFLKO0z5xpASKFAr1uXp8PPmNsdpwN58I7dP6ZIeM';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let currentUserEmail = localStorage.getItem('user_project_email');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!currentUserEmail) {
+                document.getElementById('identityModal').style.display = 'flex';
+            }
+        });
+
+        document.getElementById('identityForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('userEmailInput').value.trim();
+            if (email) {
+                localStorage.setItem('user_project_email', email);
+                location.reload();
+            }
+        });
+
+        // Profile Modal Logic
+        function openProfileModal() {
+            document.getElementById('profileModal').style.display = 'flex';
+            if (currentUserEmail) {
+                document.getElementById('profileEmail').value = currentUserEmail;
+            }
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').style.display = 'none';
+        }
+
+        // Close on overlay click
+        window.onclick = function (event) {
+            const profileModal = document.getElementById('profileModal');
+            if (event.target == profileModal) {
+                closeProfileModal();
+            }
+        }
+    </script>
+</body>
+
+</html>
