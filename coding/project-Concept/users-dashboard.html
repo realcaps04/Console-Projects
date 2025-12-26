@@ -225,11 +225,22 @@
         }
 
         /* My Cards */
+        /* My Cards */
         .cards-container {
             display: flex;
             gap: 30px;
             overflow-x: auto;
             padding-bottom: 10px;
+            /* Hide Scrollbar */
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE 10+ */
+        }
+
+        .cards-container::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari/Webkit */
         }
 
         .credit-card {
@@ -320,6 +331,16 @@
             padding: 25px;
             max-height: 235px;
             overflow-y: auto;
+            /* Hide Scrollbar */
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE 10+ */
+        }
+
+        .transactions-list::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari/Webkit */
         }
 
         .transaction-item {
@@ -1137,11 +1158,9 @@
             <i class="fas fa-times close-profile" onclick="closeProfileModal()"></i>
             <div class="profile-header">
                 <div class="profile-avatar-wrapper">
-                    <img src="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    <img src="" onerror="this.src='https://ui-avatars.com/api/?name=User&background=random';"
                         alt="User Avatar" class="profile-avatar-large" id="modalProfileImage">
-                    <div class="default-avatar-icon" style="display: none;">
-                        <i class="fas fa-user"></i>
-                    </div>
+
                     <label for="profileImageInput" class="profile-upload-btn">
                         <i class="fas fa-camera" style="font-size: 0.9rem;"></i>
                     </label>
@@ -1172,7 +1191,8 @@
                     <label>Phone Number</label>
                     <input type="text" value="+1 234 567 890" id="profilePhone">
                 </div>
-                <button class="btn-send" style="width: 100%; justify-content: center; height: 55px; margin-top: 10px;">
+                <button class="btn-send" id="btnSaveProfile"
+                    style="width: 100%; justify-content: center; height: 55px; margin-top: 10px;">
                     Save Changes
                 </button>
             </div>
@@ -1215,6 +1235,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Signup Modal -->
     <div id="signupModal" class="identity-overlay">
@@ -1319,7 +1340,7 @@
         <aside class="sidebar">
             <div class="logo-section">
                 <div class="logo-icon"><i class="fas fa-layer-group"></i></div>
-                <div class="logo-text">Console Dash</div>
+                <div class="logo-text" style="white-space: nowrap;">Console Dash</div>
             </div>
 
             <nav class="nav-menu">
@@ -1353,8 +1374,40 @@
                         <i class="fas fa-search"></i>
                         <input type="text" placeholder="Search for something">
                     </div>
-                    <div class="action-icon"><i class="fas fa-cog"></i></div>
-                    <div class="action-icon"><i class="fas fa-bell"></i></div>
+                    <div class="action-icon" onclick="showSection('settings')"><i class="fas fa-cog"></i></div>
+                    <div class="notification-wrapper" style="position: relative;">
+                        <div class="action-icon" onmouseover="openNotificationsDropdown()"
+                            onclick="openNotificationsDropdown()"><i class="fas fa-bell"></i>
+                        </div>
+
+                        <!-- Notifications Dropdown (Moved here for relative positioning) -->
+                        <div id="notificationsDropdown" class="notifications-dropdown"
+                            style="display: none; position: absolute; top: 120%; right: 0; width: 480px; background: white; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; z-index: 50; padding: 20px;">
+                            <div class="dropdown-header"
+                                style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                                <h3 style="margin: 0; font-size: 1.1rem; color: var(--secondary); font-weight: 700;">
+                                    Notifications</h3>
+                                <div style="display: flex; gap: 15px; align-items: center;">
+                                    <span style="font-size: 0.8rem; color: var(--primary); cursor: pointer;">Mark all
+                                        read</span>
+                                    <i class="fas fa-times" onclick="closeNotificationsDropdown()"
+                                        style="font-size: 1.1rem; color: #94a3b8; cursor: pointer;" title="Close"></i>
+                                </div>
+                            </div>
+                            <div class="notifications-list"
+                                style="display: flex; flex-direction: column; gap: 12px; max-height: 300px; overflow-y: auto;">
+                                <div
+                                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; color: var(--text-muted); text-align: center;">
+                                    <i class="fas fa-bell-slash"
+                                        style="font-size: 2rem; margin-bottom: 12px; color: #cbd5e1;"></i>
+                                    <p style="font-size: 0.95rem; font-weight: 500; margin: 0;">No Recent Notifications
+                                    </p>
+                                    <p style="font-size: 0.85rem; opacity: 0.8; margin-top: 4px;">We'll let you know
+                                        when something arrives.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <img src="https://i.pravatar.cc/150?u=eddy" alt="User Profile" class="profile-img"
                         onclick="openProfileModal()">
                 </div>
@@ -1366,7 +1419,7 @@
                     <div>
                         <div class="section-title">
                             <h2>My Payments</h2>
-                            <a href="#">See All</a>
+
                         </div>
                         <div class="cards-container">
                             <!-- Blue Card -->
@@ -1386,7 +1439,7 @@
                                     </div>
                                     <div class="info-group">
                                         <p>Valid Thru</p>
-                                        <h4>12/26</h4>
+                                        <h4>**/**</h4>
                                     </div>
                                 </div>
 
@@ -1408,7 +1461,7 @@
                                     </div>
                                     <div class="info-group">
                                         <p>Valid Thru</p>
-                                        <h4>12/26</h4>
+                                        <h4>**/**</h4>
                                     </div>
                                 </div>
 
@@ -1421,31 +1474,9 @@
                         <div class="section-title">
                             <h2>Recent updates</h2>
                         </div>
-                        <div class="transactions-list">
-                            <div class="transaction-item">
-                                <div class="item-icon icon-yellow"><i class="fas fa-credit-card"></i></div>
-                                <div class="item-details">
-                                    <h4>Deposit from my Card</h4>
-                                    <p>28 January 2021</p>
-                                </div>
-                                <div class="item-amount amount-negative">-&#8377; 850</div>
-                            </div>
-                            <div class="transaction-item">
-                                <div class="item-icon icon-blue"><i class="fab fa-paypal"></i></div>
-                                <div class="item-details">
-                                    <h4>Deposit Paypal</h4>
-                                    <p>25 January 2021</p>
-                                </div>
-                                <div class="item-amount amount-positive">+&#8377; 2,500</div>
-                            </div>
-                            <div class="transaction-item">
-                                <div class="item-icon icon-green">&#8377;</div>
-                                <div class="item-details">
-                                    <h4>Jemi Wilson</h4>
-                                    <p>21 January 2021</p>
-                                </div>
-                                <div class="item-amount amount-positive">+&#8377; 5,400</div>
-                            </div>
+                        <div class="transactions-list"
+                            style="display: flex; align-items: center; justify-content: center;">
+                            <p style="color: var(--text-muted); text-align: center;">No Recent Updates</p>
                         </div>
                     </div>
                 </div>
@@ -1456,69 +1487,17 @@
                         <div class="section-title">
                             <h2>Weekly Activity</h2>
                         </div>
-                        <div class="chart-card">
-                            <div class="bar-chart-mockup">
-                                <div class="bar-group">
-                                    <div class="bars">
-                                        <div class="bar bar-blue" style="height: 120px;"></div>
-                                        <div class="bar bar-cyan" style="height: 80px;"></div>
-                                    </div>
-                                    <span class="day-label">Sat</span>
-                                </div>
-                                <div class="bar-group">
-                                    <div class="bars">
-                                        <div class="bar bar-blue" style="height: 80px;"></div>
-                                        <div class="bar bar-cyan" style="height: 40px;"></div>
-                                    </div>
-                                    <span class="day-label">Sun</span>
-                                </div>
-                                <div class="bar-group">
-                                    <div class="bars">
-                                        <div class="bar bar-blue" style="height: 100px;"></div>
-                                        <div class="bar bar-cyan" style="height: 70px;"></div>
-                                    </div>
-                                    <span class="day-label">Mon</span>
-                                </div>
-                                <div class="bar-group">
-                                    <div class="bars">
-                                        <div class="bar bar-blue" style="height: 140px;"></div>
-                                        <div class="bar bar-cyan" style="height: 110px;"></div>
-                                    </div>
-                                    <span class="day-label">Tue</span>
-                                </div>
-                                <div class="bar-group">
-                                    <div class="bars">
-                                        <div class="bar bar-blue" style="height: 50px;"></div>
-                                        <div class="bar bar-cyan" style="height: 80px;"></div>
-                                    </div>
-                                    <span class="day-label">Wed</span>
-                                </div>
-                                <div class="bar-group">
-                                    <div class="bars">
-                                        <div class="bar bar-blue" style="height: 110px;"></div>
-                                        <div class="bar bar-cyan" style="height: 70px;"></div>
-                                    </div>
-                                    <span class="day-label">Thu</span>
-                                </div>
-                                <div class="bar-group">
-                                    <div class="bars">
-                                        <div class="bar bar-blue" style="height: 120px;"></div>
-                                        <div class="bar bar-cyan" style="height: 90px;"></div>
-                                    </div>
-                                    <span class="day-label">Fri</span>
-                                </div>
-                            </div>
+                        <div class="chart-card" style="display: flex; align-items: center; justify-content: center;">
+                            <p style="color: var(--text-muted);">No activity data available</p>
                         </div>
                     </div>
 
                     <div>
                         <div class="section-title">
-                            <h2>Expense Statistics</h2>
+                            <h2>Project Statistics</h2>
                         </div>
-                        <div class="chart-card">
-                            <div class="pie-chart-mockup">
-                                <div class="pie"></div>
-                            </div>
+                        <div class="chart-card" style="display: flex; align-items: center; justify-content: center;">
+                            <p style="color: var(--text-muted);">No statistics available</p>
                         </div>
                     </div>
                 </div>
@@ -1540,35 +1519,9 @@
                         </div>
                         <div style="flex: 1; overflow-y: auto; padding: 16px;">
                             <!-- Mock Contacts -->
-                            <div class="chat-contact"
-                                style="padding: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; border-radius: 12px; transition: 0.2s;">
-                                <img src="https://i.pravatar.cc/150?u=1"
-                                    style="width: 48px; height: 48px; border-radius: 50%;">
-                                <div>
-                                    <h4 style="font-size: 0.95rem; margin-bottom: 4px; color: #0f172a;">John Architect
-                                    </h4>
-                                    <p style="font-size: 0.8rem; color: #64748b;">Sure, let's meet tomorrow.</p>
-                                </div>
-                            </div>
-                            <div class="chat-contact active"
-                                style="padding: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; border-radius: 12px; background: #f8fafc;">
-                                <img src="https://i.pravatar.cc/150?u=2"
-                                    style="width: 48px; height: 48px; border-radius: 50%;">
-                                <div>
-                                    <h4 style="font-size: 0.95rem; margin-bottom: 4px; color: #0f172a;">Sarah Engineer
-                                    </h4>
-                                    <p style="font-size: 0.8rem; color: #64748b;">The blueprints are ready.</p>
-                                </div>
-                            </div>
-                            <div class="chat-contact"
-                                style="padding: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; border-radius: 12px; transition: 0.2s;">
-                                <img src="https://i.pravatar.cc/150?u=3"
-                                    style="width: 48px; height: 48px; border-radius: 50%;">
-                                <div>
-                                    <h4 style="font-size: 0.95rem; margin-bottom: 4px; color: #0f172a;">Mike
-                                        Construction</h4>
-                                    <p style="font-size: 0.8rem; color: #64748b;">Materials arriving on site.</p>
-                                </div>
+                            <div style="text-align: center; padding: 20px 0; color: #94a3b8;">
+                                <i class="fas fa-users-slash" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                                <p style="font-size: 0.9rem;">No contacts found</p>
                             </div>
                         </div>
                     </div>
@@ -1577,69 +1530,51 @@
                         <div
                             style="padding: 24px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;">
                             <div style="display: flex; align-items: center; gap: 16px;">
-                                <img src="https://i.pravatar.cc/150?u=2"
-                                    style="width: 48px; height: 48px; border-radius: 50%;">
                                 <div>
-                                    <h4 style="font-size: 1.1rem; color: #0f172a; font-weight: 700;">Sarah Engineer</h4>
-                                    <span
-                                        style="font-size: 0.85rem; color: #16a34a; display: flex; align-items: center; gap: 6px;">
-                                        <div style="width: 8px; height: 8px; background: #16a34a; border-radius: 50%;">
-                                        </div> Online
-                                    </span>
+                                    <h4 style="font-size: 1.1rem; color: #0f172a; font-weight: 700;">Messages</h4>
                                 </div>
                             </div>
-                            <div style="color: #64748b; font-size: 1.2rem; cursor: pointer; margin-right: 16px;"><i
-                                    class="fas fa-ellipsis-v"></i></div>
                         </div>
-                        <div style="flex: 1; background: #f8fafc; padding: 24px; overflow-y: auto;">
-                            <!-- Messages -->
-                            <div style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
-                                <div
-                                    style="display: flex; flex-direction: column; align-items: flex-end; max-width: 70%;">
-                                    <div
-                                        style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px; margin-right: 4px;">
-                                        You</div>
-                                    <div
-                                        style="background: #2563eb; color: white; padding: 16px 20px; border-radius: 20px 20px 4px 20px; line-height: 1.5; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);">
-                                        Hi Sarah, any updates on the structural analysis?
-                                    </div>
-                                </div>
+                        <div
+                            style="flex: 1; background: #f8fafc; padding: 24px; overflow-y: auto; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                            <div
+                                style="width: 60px; height: 60px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: #94a3b8; font-size: 1.5rem;">
+                                <i class="fas fa-comments"></i>
                             </div>
-                            <div style="display: flex; justify-content: flex-start; margin-bottom: 24px;">
-                                <img src="https://i.pravatar.cc/150?u=2"
-                                    style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px; margin-top: auto;">
-                                <div style="display: flex; flex-direction: column; max-width: 70%;">
-                                    <div
-                                        style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px; margin-left: 4px;">
-                                        Sarah Engineer</div>
-                                    <div
-                                        style="background: white; color: #0f172a; padding: 16px 20px; border-radius: 20px 20px 20px 4px; line-height: 1.5; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                                        Yes! I've just finished the preliminary review. Everything looks solid.
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: flex; justify-content: flex-start; margin-bottom: 24px;">
-                                <img src="https://i.pravatar.cc/150?u=2"
-                                    style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px; margin-top: auto;">
-                                <div style="display: flex; flex-direction: column; max-width: 70%;">
-                                    <div
-                                        style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px; margin-left: 4px;">
-                                        Sarah Engineer</div>
-                                    <div
-                                        style="background: white; color: #0f172a; padding: 16px 20px; border-radius: 20px 20px 20px 4px; line-height: 1.5; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                                        Sent you the files shortly.
-                                    </div>
-                                </div>
-                            </div>
+                            <h3 style="color: var(--secondary); margin-bottom: 8px;">No messages yet</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Select a contact to start chatting
+                            </p>
                         </div>
                         <div style="padding: 24px; background: white; border-top: 1px solid #e2e8f0;">
                             <div
                                 style="background: #f8fafc; border-radius: 16px; padding: 12px 24px; display: flex; align-items: center; gap: 16px;">
                                 <input type="text" placeholder="Type a message..."
                                     style="border: none; background: transparent; flex: 1; outline: none; padding: 8px 0; font-size: 1rem; color: #0f172a;">
-                                <i class="fas fa-paper-plane"
-                                    style="color: #2563eb; cursor: pointer; font-size: 1.2rem;"></i>
+                                <div style="display: flex; gap: 14px; align-items: center;">
+                                    <input type="file" id="chatAttachmentInput" hidden>
+                                    <i class="fas fa-paperclip"
+                                        onclick="document.getElementById('chatAttachmentInput').click()"
+                                        style="color: #94a3b8; cursor: pointer; font-size: 1.1rem;"
+                                        title="Attach file"></i>
+                                    <i class="fas fa-microphone" onclick="toggleVoiceRecording()"
+                                        style="color: #94a3b8; cursor: pointer; font-size: 1.1rem;"
+                                        title="Voice message"></i>
+                                    <i class="far fa-smile" onclick="toggleStickerPicker()"
+                                        style="color: #94a3b8; cursor: pointer; font-size: 1.1rem;"
+                                        title="Stickers"></i>
+                                    <div style="width: 1px; height: 20px; background: #e2e8f0; margin: 0 4px;"></div>
+                                    <i class="fas fa-paper-plane"
+                                        style="color: #2563eb; cursor: pointer; font-size: 1.2rem;" title="Send"></i>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <!-- Right Sidebar: Sender Details -->
+                    <div
+                        style="width: 250px; border-left: 1px solid #e2e8f0; background: white; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div style="text-align: center; color: #94a3b8;">
+                            <i class="far fa-id-card" style="font-size: 2rem; margin-bottom: 12px; color: #cbd5e1;"></i>
+                            <p style="font-size: 0.9rem;">Select a contact to view details</p>
                         </div>
                     </div>
                 </div>
@@ -1765,6 +1700,213 @@
     </div>
 
     <!-- SDK & Logic -->
+    <!-- CropperJS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <style>
+        /* Image Editor Modal Styles */
+        .image-editor-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            /* Darker overlay for better focus */
+            backdrop-filter: blur(8px);
+            z-index: 5000;
+            /* Higher than profile modal */
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        .image-editor-modal {
+            background: #ffffff;
+            width: 90%;
+            max-width: 600px;
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .editor-header h3 {
+            margin: 0;
+            color: var(--secondary);
+            font-size: 1.25rem;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 400px;
+            /* Fixed height for the editor */
+            background: #f1f5f9;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+            /* Important for CropperJS */
+        }
+
+        .editor-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .zoom-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .control-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary);
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .control-btn:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+        .filter-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid var(--border-light);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .editor-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 10px;
+            border-top: 1px solid var(--border-light);
+            padding-top: 20px;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-cancel:hover {
+            color: var(--secondary);
+            background: #f1f5f9;
+        }
+
+        .btn-save-image {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-save-image:hover {
+            background: #2948ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(57, 106, 255, 0.3);
+        }
+    </style>
+
+    <!-- Image Editor Modal -->
+    <div id="imageEditorModal" class="image-editor-overlay">
+        <div class="image-editor-modal">
+            <div class="editor-header">
+                <h3>Edit Profile Picture</h3>
+            </div>
+
+            <div class="image-container">
+                <img id="editorImage" src="" alt="Image to edit">
+            </div>
+
+            <div class="editor-controls">
+                <!-- Zoom Controls -->
+                <div class="zoom-controls">
+                    <button class="control-btn" onclick="editorZoom(0.1)" title="Zoom In"><i
+                            class="fas fa-search-plus"></i></button>
+                    <button class="control-btn" onclick="editorZoom(-0.1)" title="Zoom Out"><i
+                            class="fas fa-search-minus"></i></button>
+                    <button class="control-btn" onclick="editorRotate(-90)" title="Rotate Left"><i
+                            class="fas fa-undo"></i></button>
+                    <button class="control-btn" onclick="editorRotate(90)" title="Rotate Right"><i
+                            class="fas fa-redo"></i></button>
+                </div>
+
+                <!-- Filters (Simulated via Canvas) -->
+                <div class="filter-controls">
+                    <button class="filter-btn active" onclick="applyFilter('none')">Normal</button>
+                    <button class="filter-btn" onclick="applyFilter('grayscale(100%)')">Grayscale</button>
+                    <button class="filter-btn" onclick="applyFilter('sepia(60%)')">Warm</button>
+                    <button class="filter-btn" onclick="applyFilter('contrast(120%) brightness(110%)')">Vivid</button>
+                    <button class="filter-btn" onclick="applyFilter('brightness(110%)')">Bright</button>
+                </div>
+            </div>
+
+            <div class="editor-actions">
+                <button class="btn-cancel" onclick="closeImageEditor()">Cancel</button>
+                <button class="btn-save-image" id="btnSaveImage" onclick="saveEditedImage()">
+                    <i class="fas fa-check"></i> Apply & Save
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = 'https://rdubzgyjyyumapvifwuq.supabase.co';
@@ -1773,36 +1915,259 @@
 
         let currentUserEmail = localStorage.getItem('user_project_email');
 
+        // --- EDITOR VARIABLES ---
+        let cropper = null;
+        let currentFilter = 'none';
+
+        // --- FETCH USER INFO ---
         async function fetchAndDisplayUserInfo() {
             if (!currentUserEmail) return;
+            let displayName = currentUserEmail.split('@')[0];
+            const nameElements = document.querySelectorAll('.user-display-name');
+            nameElements.forEach(el => el.textContent = displayName);
+
             try {
+                // Fetch including profile_image_url
                 const { data, error } = await sbClient
                     .from('project_users')
-                    .select('first_name, middle_name, last_name, profile_image_url')
-                    .eq('email', currentUserEmail)
-                    .single();
+                    .select('first_name, middle_name, last_name, phone, profile_image_url')
+                    .ilike('email', currentUserEmail.trim())
+                    .maybeSingle();
 
-                if (data && (data.first_name || data.last_name)) {
-                    // Update all elements with class 'user-display-name'
-                    const fullName = `${data.first_name || ''} ${data.middle_name || ''} ${data.last_name || ''}`.replace(/\s+/g, ' ').trim();
-                    const nameElements = document.querySelectorAll('.user-display-name');
-                    nameElements.forEach(el => el.textContent = fullName);
+                if (error) throw error;
 
-                    // Store data for profile modal
+                if (data) {
+                    const parts = [data.first_name, data.middle_name, data.last_name].filter(Boolean);
+                    if (parts.length > 0) displayName = parts.join(' ').trim();
+                    nameElements.forEach(el => el.textContent = displayName);
+
                     window.currentUserData = data;
 
+                    const profileImgs = document.querySelectorAll('.profile-img');
+                    const profileAvatarLarge = document.querySelector('.profile-avatar-large');
+                    const defaultAvatarUrl = "https://ui-avatars.com/api/?name=" + encodeURIComponent(displayName) + "&background=396AFF&color=FFFFFF";
+
                     if (data.profile_image_url) {
-                        const profileimgs = document.querySelectorAll('.profile-img');
-                        profileimgs.forEach(img => img.src = data.profile_image_url);
-                        const profileAvatarLarge = document.querySelector('.profile-avatar-large');
-                        if (profileAvatarLarge) profileAvatarLarge.src = data.profile_image_url;
+                        profileImgs.forEach(img => img.src = data.profile_image_url);
+                        if (profileAvatarLarge) {
+                            profileAvatarLarge.src = data.profile_image_url;
+                            profileAvatarLarge.style.display = 'block';
+                        }
                     } else {
-                        // Fallback to icon if needed, but currently keeping default placeholder image
-                        // or we can set it to a default avatar
+                        profileImgs.forEach(img => img.src = defaultAvatarUrl);
+                        if (profileAvatarLarge) {
+                            profileAvatarLarge.src = defaultAvatarUrl;
+                            profileAvatarLarge.style.display = 'block';
+                        }
                     }
                 }
             } catch (err) {
                 console.error('Error fetching user info:', err);
+            }
+        }
+
+        // --- IMAGE UPLOAD & EDITING LOGIC ---
+
+        function handleImageUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (!currentUserEmail) {
+                showNotification("Login Required", "You must be logged in to upload a profile image.", "error");
+                input.value = ''; // Reset
+                return;
+            }
+
+            // Read file and open editor
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                openImageEditor(e.target.result);
+            };
+            reader.readAsDataURL(file);
+            input.value = ''; // Reset so same file can be selected again if cancelled
+        }
+
+        function openImageEditor(imageSrc) {
+            const modal = document.getElementById('imageEditorModal');
+            const imgElement = document.getElementById('editorImage');
+
+            imgElement.src = imageSrc;
+            modal.style.display = 'flex';
+
+            // Wait for image load before initializing cropper
+            if (cropper) {
+                cropper.destroy();
+            }
+
+            // Initialize Cropper
+            // Wrap in small timeout to ensure DOM is ready
+            setTimeout(() => {
+                cropper = new Cropper(imgElement, {
+                    aspectRatio: 1, // Profile pictures should be square
+                    viewMode: 1,    // Restrict crop box to canvas
+                    dragMode: 'move',
+                    autoCropArea: 0.8,
+                    restore: false,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                });
+            }, 100);
+
+            // Reset Filter
+            currentFilter = 'none';
+            updateFilterButtons();
+        }
+
+        function closeImageEditor() {
+            const modal = document.getElementById('imageEditorModal');
+            modal.style.display = 'none';
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+        }
+
+        // Editor Controls
+        function editorZoom(ratio) {
+            if (cropper) cropper.zoom(ratio);
+        }
+
+        function editorRotate(degree) {
+            if (cropper) cropper.rotate(degree);
+        }
+
+        function applyFilter(filterVal) {
+            currentFilter = filterVal;
+            // Visual feedback on the crop box is tricky with cropperjs directly via CSS filters on the img
+            // because Cropper wraps the img. We can apply it to the cropper-container or view-box.
+            // A simple hack is applying it to the .cropper-view-box img, but that's internal.
+            // Better: Just store the filter and apply it during "Save".
+            // Visual feedback: we can try applying to the main image or wrapper
+
+            // To show preview, we can modify the canvas style.
+            const container = document.querySelector('.cropper-container');
+            if (container) {
+                container.style.filter = currentFilter;
+            }
+            updateFilterButtons();
+        }
+
+        function updateFilterButtons() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                const val = btn.getAttribute('onclick').match(/'([^']+)'/)[1];
+                if (val === currentFilter) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+        }
+
+        async function saveEditedImage() {
+            if (!cropper) return;
+            const btn = document.getElementById('btnSaveImage');
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            try {
+                // 1. Get cropped canvas
+                let canvas = cropper.getCroppedCanvas({
+                    width: 400, // Reasonable size for profile
+                    height: 400,
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high',
+                });
+
+                // 2. Apply Filters (if any)
+                if (currentFilter && currentFilter !== 'none') {
+                    const filterCanvas = document.createElement('canvas');
+                    filterCanvas.width = canvas.width;
+                    filterCanvas.height = canvas.height;
+                    const ctx = filterCanvas.getContext('2d');
+
+                    ctx.filter = currentFilter;
+                    ctx.drawImage(canvas, 0, 0);
+                    canvas = filterCanvas;
+                }
+
+                // 3. Convert to Blob
+                canvas.toBlob(async (blob) => {
+                    if (blob) {
+                        await uploadProfileImage(blob);
+                        closeImageEditor();
+                    }
+                    btn.innerHTML = '<i class="fas fa-check"></i> Apply & Save';
+                    btn.disabled = false;
+                }, 'image/jpeg', 0.9);
+
+            } catch (err) {
+                console.error("Processing error:", err);
+                showNotification("Error", "Failed to process image.", "error");
+                btn.innerHTML = '<i class="fas fa-check"></i> Apply & Save';
+                btn.disabled = false;
+            }
+        }
+
+        // --- ACTUAL UPLOAD FUNCTION ---
+        async function uploadProfileImage(fileBlob) {
+            showNotification("Uploading", "Uploading final profile image...", "info");
+
+            try {
+                const fileExt = "jpg"; // We converted to jpeg
+                const safeEmail = currentUserEmail.replace(/[^a-zA-Z0-9]/g, '_');
+                const fileName = `${safeEmail}-${Date.now()}.${fileExt}`;
+                const filePath = `${fileName}`;
+
+                // 1. Upload
+                const { data: uploadData, error: uploadError } = await sbClient.storage
+                    .from('avatars')
+                    .upload(filePath, fileBlob, {
+                        contentType: 'image/jpeg',
+                        cacheControl: '3600',
+                        upsert: false
+                    });
+
+                if (uploadError) throw uploadError;
+
+                // 2. Get URL
+                const { data } = sbClient.storage
+                    .from('avatars')
+                    .getPublicUrl(filePath);
+
+                const publicUrl = data.publicUrl;
+
+                // 3. Update DB
+                const { error: dbError } = await sbClient
+                    .from('project_users')
+                    .update({ profile_image_url: publicUrl })
+                    .ilike('email', currentUserEmail.trim());
+
+                if (dbError) throw dbError;
+
+                // Update UI
+                if (window.currentUserData) {
+                    window.currentUserData.profile_image_url = publicUrl;
+                }
+                const profileImgs = document.querySelectorAll('.profile-img');
+                profileImgs.forEach(img => {
+                    img.src = publicUrl;
+                    // Reset any filters on the display elements specifically if we burnt the filter into the image
+                    img.style.filter = 'none';
+                });
+                const largeAvatar = document.querySelector('.profile-avatar-large');
+                if (largeAvatar) largeAvatar.src = publicUrl;
+
+                showNotification("Success", "Profile image updated successfully!", "success");
+
+            } catch (err) {
+                console.error('Error uploading profile image:', err);
+                // detailed error for column missing
+                if (err.code === 'PGRST204') {
+                    showNotification("Database Error", "The 'profile_image_url' column is missing in your database.", "error");
+                } else {
+                    showNotification("Upload Failed", "Could not upload image. " + err.message, "error");
+                }
             }
         }
 
@@ -1912,10 +2277,12 @@
                 const fname = document.getElementById('profileFirstName');
                 const mname = document.getElementById('profileMiddleName');
                 const lname = document.getElementById('profileLastName');
+                const phone = document.getElementById('profilePhone');
 
                 if (fname) fname.value = window.currentUserData.first_name || '';
                 if (mname) mname.value = window.currentUserData.middle_name || '';
                 if (lname) lname.value = window.currentUserData.last_name || '';
+                if (phone) phone.value = window.currentUserData.phone || '';
             }
         }
 
@@ -1929,6 +2296,11 @@
         };
 
         function showSection(sectionId, element) {
+            // Auto-detect nav link if not provided (e.g. from header icon)
+            if (!element) {
+                element = document.querySelector(`.nav-link[onclick*="'${sectionId}'"]`);
+            }
+
             // Update Active Link
             document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
             if (element) element.classList.add('active');
@@ -2106,42 +2478,80 @@
             }
         });
 
-        // Close on overlay click
-        async function handleImageUpload(input) {
-            const file = input.files[0];
-            if (!file) return;
+        // Save Profile Changes Logic
+        document.getElementById('btnSaveProfile').addEventListener('click', async () => {
+            const btn = document.getElementById('btnSaveProfile');
+            const fname = document.getElementById('profileFirstName').value.trim();
+            const mname = document.getElementById('profileMiddleName').value.trim();
+            const lname = document.getElementById('profileLastName').value.trim();
+            const phone = document.getElementById('profilePhone').value.trim();
 
-            // In a real app, upload 'file' to Supabase Storage bucket
-            // For now, we'll just show it locally as a preview
-            const reader = new FileReader();
-            reader.onload = async function (e) {
-                const newUrl = e.target.result;
+            if (!currentUserEmail) return;
 
-                // Update local views
-                document.getElementById('modalProfileImage').src = newUrl;
-                document.getElementById('modalProfileImage').style.display = 'block';
-                document.querySelector('.default-avatar-icon').style.display = 'none';
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Saving...';
 
-                document.querySelectorAll('.profile-img').forEach(img => img.src = newUrl);
+            try {
+                const updates = {
+                    first_name: fname,
+                    middle_name: mname,
+                    last_name: lname,
+                    phone: phone,
+                    updated_at: new Date()
+                };
 
-                // Update DB with the new URL (simulated with local data URI for this demo, 
-                // in production this would be the Supabase Storage URL)
                 const { error } = await sbClient
                     .from('project_users')
-                    .update({ profile_image_url: newUrl })
-                    .eq('email', currentUserEmail);
+                    .update(updates)
+                    .ilike('email', currentUserEmail.trim());
 
-                if (error) {
-                    console.error('Error updating profile image:', error);
-                    showNotification("Upload Failed", "Failed to update profile image.", "error");
-                }
-            };
-            reader.readAsDataURL(file);
+                if (error) throw error;
+
+                showNotification("Profile Updated", "Your changes have been saved successfully.", "success");
+
+                // Refresh local data
+                fetchAndDisplayUserInfo();
+                closeProfileModal();
+
+            } catch (err) {
+                console.error('Error updating profile:', err);
+                showNotification("Update Failed", "Could not save changes. Please try again.", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Save Changes";
+            }
+        });
+
+        // Close on overlay click
+
+
+        // Notification Dropdown Logic
+        function openNotificationsDropdown() {
+            // Simplified logic: just show the dropdown
+            document.getElementById('notificationsDropdown').style.display = 'block';
+        }
+
+        function closeNotificationsDropdown() {
+            document.getElementById('notificationsDropdown').style.display = 'none';
         }
 
         window.onclick = function (event) {
             const profileModal = document.getElementById('profileModal');
+            const notifDropdown = document.getElementById('notificationsDropdown');
+
+            // Logic to close notification dropdown if clicked outside
+            const isInsideDropdown = event.target.closest('#notificationsDropdown');
+            const isTrigger = event.target.closest('.notification-wrapper');
+
+            if (!isInsideDropdown && !isTrigger) {
+                if (notifDropdown && notifDropdown.style.display === 'block') {
+                    closeNotificationsDropdown();
+                }
+            }
+
+            // Profile Modal Logic
             if (event.target == profileModal) closeProfileModal();
+
             if (event.target.id == 'signupModal') window.location.href = 'Project-work-request.html';
             if (event.target.id == 'identityModal') window.location.href = 'Project-work-request.html';
         }
