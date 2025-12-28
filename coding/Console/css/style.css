@@ -1,5 +1,40 @@
-*{
-    color: #fff;
+/* Theme Variables */
+:root {
+    /* Dark Theme (Default) */
+    --bg-primary: #0d0c0a;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #262626;
+    --border-color: #262626;
+    --text-primary: #ffffff;
+    --text-secondary: #999999;
+    --text-muted: #C9C8E1;
+    --accent-purple: #631aff;
+    --accent-purple-light: #6219ff;
+    --button-text: #000000;
+}
+
+html[data-theme="light"] {
+    /* Light Theme */
+    --bg-primary: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f1f3f5 100%);
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f8f9fa;
+    --border-color: #dee2e6;
+    --text-primary: #1a1a1a;
+    --text-secondary: #495057;
+    --text-muted: #6c757d;
+    --accent-purple: #631aff;
+    --accent-purple-light: #6219ff;
+    --button-text: #000000;
+}
+
+/* Light theme body gradient background */
+html[data-theme="light"] body {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f1f3f5 100%);
+    background-attachment: fixed;
+}
+
+* {
+    color: var(--text-primary);
     list-style: none;
     text-decoration: none;
     font-family: 'Inter Regular';
@@ -8,43 +43,51 @@
     margin: 0;
     padding: 0;
     background: none;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
-input{
+
+input {
     background: transparent;
 }
-body{
-    background: #0d0c0a;
+
+body {
+    background: var(--bg-primary);
     position: relative;
 }
-.wrapper{
+
+.wrapper {
     display: block;
     margin: 0 3.5vw;
 }
-button{
+
+button {
     cursor: pointer;
     background-color: transparent;
 }
-a{
-    
-}
-.hide{
+
+a {}
+
+.hide {
     display: none;
 }
-hr.line{
+
+hr.line {
     display: block;
     width: 100%;
     height: 4px;
-    background: #1a1a1a;
+    background: var(--bg-secondary);
 }
-hr.vline{
-    background: #262626;
+
+hr.vline {
+    background: var(--bg-tertiary);
     height: 1.8px;
     width: 100%;
 }
-hr.nline{
+
+hr.nline {
     display: block;
     width: 100%;
-    background: #262626;
+    background: var(--bg-tertiary);
     height: 2px;
 }
 
@@ -54,137 +97,158 @@ section.notificationalert {
     top: 5vh;
     right: 8vw;
     border-radius: 12px;
-    border: 2px solid #262626;
-    background: #1a1a1a;
+    border: 2px solid var(--border-color);
+    background: var(--bg-secondary);
     width: 24vw;
 }
+
 section.notificationalert section.wrapper {
     margin: 0 0.2vw;
     padding: 8px;
 }
+
 section.notificationalert section.wrapper section.top {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 section.notificationalert section.wrapper section.top div.left {
-    display: flex
-;
+    display: flex;
     align-items: center;
 }
+
 section.notificationalert section.wrapper section.top div.left h2 {
     margin-right: 6px;
     font-size: 14px;
 }
-section.notificationalert section.wrapper section.top div.left span.count{
+
+section.notificationalert section.wrapper section.top div.left span.count {
     cursor: pointer;
     position: relative;
 }
-section.notificationalert section.wrapper section.top div.left span.count img {
 
-}
+section.notificationalert section.wrapper section.top div.left span.count img {}
+
 section.notificationalert section.wrapper section.top div.left span.count h3 {
     position: absolute;
     top: 4px;
     font-size: 12px;
     left: 8px;
 }
+
 section.notificationalert section.wrapper section.top div.right {
     display: flex;
     align-items: center;
 }
+
 section.notificationalert section.wrapper section.top div.right h3.mark {
     font-size: 13px;
     color: #6219ff;
     cursor: pointer;
 }
+
 section.notificationalert section.wrapper section.top div.right img {
-        cursor: pointer;
+    cursor: pointer;
 }
+
 section.notificationalert section.wrapper section.pinnedmsg {
     display: flex;
     justify-content: space-between;
 }
+
 section.notificationalert section.wrapper section.pinnedmsg div.left {}
-section.notificationalert section.wrapper section.pinnedmsg div.left img
- {
+
+section.notificationalert section.wrapper section.pinnedmsg div.left img {
     display: block;
     height: 4vh;
     border-radius: 50%;
     margin-right: 8px;
 }
+
 section.notificationalert section.wrapper section.pinnedmsg div.center {}
+
 section.notificationalert section.wrapper section.pinnedmsg div.center h3.content {
     font-size: 9px;
     line-height: 1.6em;
     margin-bottom: 0.6vh;
 }
+
 section.notificationalert section.wrapper section.pinnedmsg div.center h3.time {
-    color: #C9C8E1;
+    color: var(--text-muted);
     font-size: 12px;
 }
+
 section.notificationalert section.wrapper section.pinnedmsg div.right {}
-section.notificationalert section.wrapper section.pinnedmsg div.right img
- {
+
+section.notificationalert section.wrapper section.pinnedmsg div.right img {
     display: block;
     height: 2.5vh;
 }
+
 section.notificationalert section.wrapper section.notimsg {
-    display: flex
-;
+    display: flex;
     justify-content: space-between;
 }
+
 section.notificationalert section.wrapper section.notimsg div.left {}
+
 section.notificationalert section.wrapper section.notimsg div.left img {
     display: block;
     height: 5vh;
     margin-right: 8px;
 }
+
 section.notificationalert section.wrapper section.notimsg div.right {}
 
 section.notificationalert section.wrapper section.notimsg div.right h2.ownername {
     font-size: 14px;
     margin-bottom: 5px;
 }
+
 section.notificationalert section.wrapper section.notimsg div.right h4.message {
     font-size: 12px;
     margin-bottom: 14px;
 }
+
 section.notificationalert section.wrapper section.notimsg div.right span.buttons {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     max-width: 60%;
     margin-bottom: 0.8vh;
 }
+
 section.notificationalert section.wrapper section.notimsg div.right span.buttons a.connectmail.mailemail {
     padding: 7px 12px;
-    background: #631aff;
+    background: var(--accent-purple);
     border-radius: 8px;
     font-size: 15px;
     /* border: 2px solid #631aff; */
     font-family: 'Inter SemiBold';
 }
+
 section.notificationalert section.wrapper section.notimsg div.right span.buttons h3.cancel {
-    border: 2px solid #262626;
+    border: 2px solid var(--border-color);
     padding: 7px 16px;
     font-size: 15px;
     border-radius: 8px;
     cursor: pointer;
 }
+
 section.notificationalert section.wrapper section.notimsg div.right h3.time {
-    color: #C9C8E1;
+    color: var(--text-muted);
     font-size: 12px;
 }
+
 section.notificationalert section.wrapper section.end {}
+
 section.notificationalert section.wrapper section.end section.mm {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
+
 section.notificationalert section.wrapper section.end section.mm img {
     margin-right: 8px;
 }
@@ -194,18 +258,21 @@ section.notificationalert section.wrapper section.end section.mm h3 {
 }
 
 header {}
+
 header section.wrapper {
     padding: 28px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 header section.wrapper section.left {}
+
 header section.wrapper section.left span.logo {
-    display: flex
-;
+    display: flex;
     align-items: flex-end;
 }
+
 header section.wrapper section.left span.logo img {
     margin-right: 8px;
     display: block;
@@ -216,6 +283,7 @@ header section.wrapper section.left span.logo h2 {
     font-size: 18px;
     font-family: 'Gropled';
 }
+
 header section.wrapper section.center {}
 
 header section.wrapper section.center nav {}
@@ -228,18 +296,22 @@ header section.wrapper section.center nav ul {
 header section.wrapper section.center nav ul li {
     margin-right: 48px;
 }
+
 header section.wrapper section.center nav ul li:last-child {
     margin-right: 0px;
 }
+
 header section.wrapper section.center nav ul li a {}
 
 header section.wrapper section.center nav ul li a h3 {
     font-size: 14px;
 }
+
 header section.wrapper section.right {
     display: flex;
     align-items: center;
 }
+
 header section.wrapper section.right button.mailemail.connectus {
     display: flex;
     align-items: center;
@@ -255,10 +327,12 @@ header section.wrapper section.right button.mailemail.connectus h3 {
     margin-right: 12px;
     font-size: 13px;
 }
+
 header section.wrapper section.right button.mailemail.connectus img.ellipse {
     display: block;
     height: 3.5vh;
 }
+
 header section.wrapper section.right button.mailemail.connectus img.ArrowRightOutline {
     position: absolute;
     right: 15px;
@@ -278,12 +352,14 @@ header section.wrapper section.right div.notify {
 header section.wrapper section.right div.notify img {
     z-index: 1;
 }
+
 header section.wrapper section.right div.notify h4.notificationcount {
     position: absolute;
     top: 4px;
-    right:10px;
+    right: 10px;
     font-size: 12px;
 }
+
 header section.wrapper section.right section.profile {
     margin-left: 16px;
 }
@@ -291,10 +367,339 @@ header section.wrapper section.right section.profile {
 header section.wrapper section.right section.profile span.picon {
     cursor: pointer;
 }
+
 header section.wrapper section.right section.profile span.picon img.picon {
     display: block;
     height: 5vh;
 }
+
+/* Theme Toggle Button */
+header section.wrapper section.right section.theme-toggle {
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+header section.wrapper section.right section.theme-toggle button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+header section.wrapper section.right section.theme-toggle button:hover {
+    transform: scale(1.1);
+    border-color: var(--accent-purple);
+}
+
+header section.wrapper section.right section.theme-toggle button svg {
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+}
+
+header section.wrapper section.right section.theme-toggle button .sun-icon {
+    display: none;
+}
+
+header section.wrapper section.right section.theme-toggle button .moon-icon {
+    display: block;
+}
+
+html[data-theme="light"] header section.wrapper section.right section.theme-toggle button .sun-icon {
+    display: block;
+}
+
+html[data-theme="light"] header section.wrapper section.right section.theme-toggle button .moon-icon {
+    display: none;
+}
+
+/* Light Theme Specific Overrides for Better Contrast */
+html[data-theme="light"] header section.wrapper section.right button.mailemail.connectus h3 {
+    color: #000000;
+}
+
+html[data-theme="light"] section.hero section.wrapper section.left a.browseprojects h3 {
+    color: #000000;
+}
+
+html[data-theme="light"] section.projects section.wrapper section.top section.right a.viewallprojects h3 {
+    color: #000000;
+}
+
+html[data-theme="light"] section.testimonials section.wrapper section.top div.right a.viewalltestimonials h3 {
+    color: #000000;
+}
+
+html[data-theme="light"] section.projects section.wrapper section.bottom ul li section.top span.projectname {
+    color: #000000;
+    background: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+}
+
+html[data-theme="light"] section.projects section.wrapper section.bottom ul li section.bottom div.left span.lone h3 {
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+html[data-theme="light"] section.notificationalert section.wrapper section.notimsg div.right span.buttons a.connectmail.mailemail {
+    color: #ffffff;
+}
+
+html[data-theme="light"] section.explore section.wrapper ul li {
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px;
+}
+
+html[data-theme="light"] section.journey section.wrapper section.right ul li {
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px;
+}
+
+html[data-theme="light"] section.testimonials section.wrapper section.bottom ul li {
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px;
+}
+
+/* Light Theme Footer Overrides */
+html[data-theme="light"] footer {
+    background: #ffffff;
+    border-top: 1px solid var(--border-color);
+}
+
+html[data-theme="light"] footer section.wrapper section.center div.vision h2,
+html[data-theme="light"] footer section.wrapper section.top section.left span.logo h2 {
+    color: #1a1a1a;
+}
+
+html[data-theme="light"] footer section.wrapper section.top section.right div.one ul li a h3 {
+    color: #495057;
+}
+
+html[data-theme="light"] footer section.wrapper section.top section.right div.two a.support h3 {
+    color: #000000;
+}
+
+html[data-theme="light"] footer section.wrapper section.center div.connections span.email input[type="email"] {
+    color: #1a1a1a;
+    border-color: var(--border-color);
+}
+
+html[data-theme="light"] footer section.wrapper section.center div.connections span.email input[type="email"]::placeholder {
+    color: #6c757d;
+}
+
+html[data-theme="light"] footer section.wrapper section.bottom section.left h3 {
+    color: #495057;
+}
+
+html[data-theme="light"] footer section.wrapper section.bottom section.right ul li h3 {
+    color: #495057;
+}
+
+html[data-theme="light"] footer section.wrapper hr.fline {
+    background: var(--border-color);
+}
+
+/* Light Theme FAQ Section Overrides */
+html[data-theme="light"] section.faq {
+    background: linear-gradient(135deg, #f8f9ff 0%, #fff5f8 100%);
+}
+
+html[data-theme="light"] section.faq section.wrapper section.mtop section.left h2 {
+    background: linear-gradient(135deg, #5226e6 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+html[data-theme="light"] section.faq section.wrapper section.mtop section.right h5 {
+    color: #6366f1;
+}
+
+html[data-theme="light"] section.faq section.wrapper section.mtop section.right a.viewallfaqs {
+    background: linear-gradient(135deg, #5226e6 0%, #7c3aed 100%);
+    width: auto;
+    min-width: 180px;
+    padding-left: 20px;
+    padding-right: 50px;
+    transition: all 0.3s ease;
+}
+
+html[data-theme="light"] section.faq section.wrapper section.mtop section.right a.viewallfaqs:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(82, 38, 230, 0.3);
+}
+
+html[data-theme="light"] section.faq section.wrapper section.mtop section.right a.viewallfaqs h3 {
+    color: #ffffff;
+}
+
+html[data-theme="light"] section.faq section.wrapper section.bottom {
+    background: transparent;
+    box-shadow: none;
+}
+
+html[data-theme="light"] section.faq section.wrapper section.bottom ul li {
+    background: #ffffff;
+    border: 2px solid #e0e7ff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+}
+
+html[data-theme="light"] section.faq section.wrapper section.bottom ul li:hover {
+    border-color: #a5b4fc;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
+    transform: translateY(-2px);
+}
+
+html[data-theme="light"] section.faq section.wrapper section.bottom ul li section.nflex section.left h3 {
+    color: #1e293b;
+}
+
+html[data-theme="light"] section.faq section.wrapper section.bottom ul li hr.fline {
+    background: linear-gradient(90deg, #e0e7ff 0%, #fce7f3 100%);
+}
+
+html[data-theme="light"] hr.fline {
+    background: linear-gradient(90deg, #e0e7ff 0%, #fce7f3 100%);
+}
+
+/* Light Theme Footer Overrides */
+html[data-theme="light"] footer {
+    background: #ffffff;
+    border-top: 1px solid #e0e7ff;
+}
+
+html[data-theme="light"] footer section.wrapper section.center div.vision h2 {
+    background: linear-gradient(135deg, #5226e6 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+html[data-theme="light"] footer section.wrapper section.top section.left span.logo h2 {
+    color: #5226e6;
+}
+
+html[data-theme="light"] footer section.wrapper section.top section.right div.one ul li a h3 {
+    color: #64748b;
+    transition: color 0.3s ease;
+}
+
+html[data-theme="light"] footer section.wrapper section.top section.right div.one ul li a:hover h3 {
+    color: #5226e6;
+}
+
+html[data-theme="light"] footer section.wrapper section.top section.right div.two a.support {
+    background: linear-gradient(135deg, #5226e6 0%, #7c3aed 100%);
+    width: auto;
+    min-width: 140px;
+    padding-left: 20px;
+    padding-right: 50px;
+    transition: all 0.3s ease;
+}
+
+html[data-theme="light"] footer section.wrapper section.top section.right div.two a.support:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(82, 38, 230, 0.3);
+}
+
+html[data-theme="light"] footer section.wrapper section.top section.right div.two a.support h3 {
+    color: #ffffff;
+}
+
+html[data-theme="light"] footer section.wrapper section.center div.connections span.email input[type="email"] {
+    color: #1e293b;
+    border: 2px solid #e0e7ff;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+}
+
+html[data-theme="light"] footer section.wrapper section.center div.connections span.email input[type="email"]:focus {
+    border-color: #5226e6;
+    box-shadow: 0 0 0 3px rgba(82, 38, 230, 0.1);
+}
+
+html[data-theme="light"] footer section.wrapper section.center div.connections span.email input[type="email"]::placeholder {
+    color: #94a3b8;
+}
+
+html[data-theme="light"] footer section.wrapper section.bottom section.left h3 {
+    color: #64748b;
+}
+
+html[data-theme="light"] footer section.wrapper section.bottom section.right ul li h3 {
+    color: #64748b;
+    transition: color 0.3s ease;
+}
+
+html[data-theme="light"] footer section.wrapper section.bottom section.right ul li:hover h3 {
+    color: #5226e6;
+}
+
+html[data-theme="light"] footer section.wrapper hr.fline {
+    background: linear-gradient(90deg, #e0e7ff 0%, #fce7f3 100%);
+}
+
+/* Vibrant Colors for Hero and Other Sections */
+html[data-theme="light"] section.hero section.wrapper section.left div.vision h2 {
+    background: linear-gradient(135deg, #2d3561 0%, #5226e6 50%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+html[data-theme="light"] section.hero section.wrapper section.left div.vision h5 {
+    color: #64748b;
+}
+
+html[data-theme="light"] section.ventures section.wrapper section.top h2,
+html[data-theme="light"] section.testimonials section.wrapper section.top h2,
+html[data-theme="light"] section.projects section.wrapper section.top h2 {
+    background: linear-gradient(135deg, #5226e6 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+html[data-theme="light"] a.viewallventures h3,
+html[data-theme="light"] a.viewallprojects h3 {
+    background: linear-gradient(135deg, #5226e6 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+}
+
+html[data-theme="light"] section.ventures section.wrapper section.bottom ul li,
+html[data-theme="light"] section.projects section.wrapper section.bottom ul li {
+    border: 2px solid #e0e7ff;
+    transition: all 0.3s ease;
+}
+
+html[data-theme="light"] section.ventures section.wrapper section.bottom ul li:hover,
+html[data-theme="light"] section.projects section.wrapper section.bottom ul li:hover {
+    border-color: #a5b4fc;
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+    transform: translateY(-4px);
+}
+
+html[data-theme="light"] section.ventures section.wrapper section.bottom ul li section.bottom h3,
+html[data-theme="light"] section.projects section.wrapper section.bottom ul li section.bottom h3 {
+    color: #1e293b;
+}
+
+html[data-theme="light"] section.ventures section.wrapper section.bottom ul li section.bottom h5,
+html[data-theme="light"] section.projects section.wrapper section.bottom ul li section.bottom h5 {
+    color: #64748b;
+}
+
 header section.wrapper section.right section.mobilehamburgur {
     display: none;
 }
@@ -306,26 +711,31 @@ header section.wrapper section.right section.mobilehamburgur img {}
 section.hero {
     margin-top: 14vh;
 }
+
 section.hero section.wrapper {
     display: flex;
     /* align-items: center; */
     justify-content: space-between;
 }
+
 section.hero section.wrapper section.left {
-    width: 48%; 
+    width: 48%;
 }
 
 section.hero section.wrapper section.left div.vision {}
+
 section.hero section.wrapper section.left div.vision h2 {
     font-family: 'Gropled';
     font-size: 60px;
 }
+
 section.hero section.wrapper section.left div.vision span.bp {
     display: flex;
     align-items: center;
     margin-top: 0.6vh;
     margin-bottom: 3.3vh;
 }
+
 section.hero section.wrapper section.left div.vision span.bp h2 {
     font-family: 'Gropled';
 }
@@ -333,26 +743,29 @@ section.hero section.wrapper section.left div.vision span.bp h2 {
 section.hero section.wrapper section.left div.vision span.bp img {
     margin: 0 8px;
 }
+
 section.hero section.wrapper section.left h4 {
     font-family: 'Inter Medium1';
     width: 111%;
     font-size: 13px;
     line-height: 1.5em;
     margin-bottom: 4vh;
+    color: var(--text-secondary);
 }
+
 section.hero section.wrapper section.left a.browseprojects {
-    display: flex
-;
+    display: flex;
     align-items: center;
     background: #fff;
     padding: 12px 60px;
-    border-radius: 31px;    
+    border-radius: 31px;
     width: fit-content;
     padding-left: 13px;
     margin-bottom: 5vh;
 }
+
 section.hero section.wrapper section.left a.browseprojects h3 {
-    color: #000 ;
+    color: #000;
     font-size: 14px;
 }
 
@@ -360,6 +773,7 @@ section.hero section.wrapper section.left a.browseprojects h2 {
     position: relative;
 
 }
+
 section.hero section.wrapper section.left a.browseprojects h2 img.one {
     position: absolute;
     z-index: 1;
@@ -368,6 +782,7 @@ section.hero section.wrapper section.left a.browseprojects h2 img.one {
     height: 3.5vh;
     right: -51px;
 }
+
 section.hero section.wrapper section.left a.browseprojects h2 img.two {
     position: absolute;
     top: -14px;
@@ -378,18 +793,18 @@ section.hero section.wrapper section.left a.browseprojects h2 img.two {
 section.hero section.wrapper section.left section.exellence {
     margin-bottom: 4vh;
 }
+
 section.hero section.wrapper section.left section.exellence ul {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     max-width: 80%;
 }
+
 section.hero section.wrapper section.left section.exellence ul li {
     border: 2px solid #fff;
     border-radius: 12px;
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -401,43 +816,46 @@ section.hero section.wrapper section.left section.exellence ul li h2 {
 }
 
 section.hero section.wrapper section.left section.exellence ul li h5 {
-    color: #999999;
+    color: var(--text-secondary);
 }
 
 
 section.hero section.wrapper section.left section.exellence ul li.click {
-    border: 2px solid #262523;
-    background: #262523;
-}   
+    border: 2px solid var(--bg-tertiary);
+    background: var(--bg-tertiary);
+}
 
 section.hero section.wrapper section.left section.te {
     position: relative;
 }
+
 section.hero section.wrapper section.left section.te hr.hline {
     display: block;
     height: 2px;
     width: 9vw;
     position: absolute;
-    background: #262626;
+    background: var(--bg-tertiary);
     transform: rotate(90deg);
     left: 18.2vw;
     top: 80px;
 }
+
 section.hero section.wrapper section.left section.te ul {
-    display: flex;  
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 section.hero section.wrapper section.left section.te ul li {
     max-width: 45%;
 }
-section.hero section.wrapper section.left section.te ul li div.top
- {
-    display: flex
-;
+
+section.hero section.wrapper section.left section.te ul li div.top {
+    display: flex;
     align-items: center;
     margin-bottom: 2vh;
 }
+
 section.hero section.wrapper section.left section.te ul li div.top img {
     margin-right: 16px;
     display: block;
@@ -455,6 +873,7 @@ section.hero section.wrapper section.right {
     display: flex;
     justify-content: flex-end;
 }
+
 section.hero section.wrapper section.right img {
     width: 80%;
     height: 60vh;
@@ -466,16 +885,17 @@ section.hero section.wrapper section.right img {
 section.explore {}
 
 section.explore section.wrapper {}
+
 section.explore section.wrapper ul {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 5vh 0;
 
 }
+
 section.explore section.wrapper ul li {
-    border: 2px solid #262626;
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     padding: 12px;
     width: 20.33%;
@@ -484,9 +904,10 @@ section.explore section.wrapper ul li {
     justify-content: center;
     flex-direction: column;
     position: relative;
-    background: #1a1a1a;
+    background: var(--bg-secondary);
 }
-section.explore section.wrapper ul li span.connectme{
+
+section.explore section.wrapper ul li span.connectme {
     cursor: pointer;
     position: absolute;
     right: 14px;
@@ -498,9 +919,9 @@ section.explore section.wrapper ul li span.connectme img {
     display: block;
     height: 2.5vh;
 }
+
 section.explore section.wrapper ul li div.top {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -508,10 +929,12 @@ section.explore section.wrapper ul li div.top {
     margin-bottom: 4.5vh;
     margin-top: 2.6vh;
 }
+
 section.explore section.wrapper ul li div.top img.one {
     display: block;
     height: 4vh;
 }
+
 section.explore section.wrapper ul li div.top img.two {
     position: absolute;
 }
@@ -519,7 +942,8 @@ section.explore section.wrapper ul li div.top img.two {
 section.explore section.wrapper ul li div.bottom {
     margin-bottom: 2vh;
 }
-section.explore section.wrapper ul li div.bottom h3{
+
+section.explore section.wrapper ul li div.bottom h3 {
     font-size: 16px;
 }
 
@@ -527,31 +951,35 @@ section.explore section.wrapper ul li div.bottom h3{
 section.projects {}
 
 section.projects section.wrapper {}
+
 section.projects section.wrapper section.top {
     margin-top: 8vh;
     display: flex;
     justify-content: space-between;
 }
+
 section.projects section.wrapper section.top section.left {}
-section.projects section.wrapper section.top section.left h2
- {
+
+section.projects section.wrapper section.top section.left h2 {
     font-family: 'Gropled';
     font-size: 32px;
     margin-bottom: 24px;
 }
+
 section.projects section.wrapper section.top section.right {
     display: flex;
     max-width: 65%;
 }
+
 section.projects section.wrapper section.top section.right h5 {
-    color: #999999;
+    color: var(--text-secondary);
     font-size: 12px;
     margin-right: 12px;
     line-height: 1.5em;
 }
+
 section.projects section.wrapper section.top section.right a.viewallprojects {
-    display: flex
-;
+    display: flex;
     align-items: center;
     background: #fff;
     padding: 0px 40px;
@@ -561,12 +989,14 @@ section.projects section.wrapper section.top section.right a.viewallprojects {
     position: relative;
     height: 5vh;
 }
+
 section.projects section.wrapper section.top section.right a.viewallprojects h3 {
     color: #000;
     font-size: 14px;
 }
 
 section.projects section.wrapper section.top section.right a.viewallprojects h2 {}
+
 section.projects section.wrapper section.top section.right a.viewallprojects h2 img.one {
     position: absolute;
     z-index: 1;
@@ -575,30 +1005,36 @@ section.projects section.wrapper section.top section.right a.viewallprojects h2 
     top: 8px;
     right: 18px;
 }
+
 section.projects section.wrapper section.top section.right a.viewallprojects h2 img.two {
     position: absolute;
     z-index: 2;
     top: 8px;
     right: 18px;
 }
+
 section.projects section.wrapper section.bottom {}
+
 section.projects section.wrapper section.bottom ul {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 8vh;
 }
+
 section.projects section.wrapper section.bottom ul li {}
 
 section.projects section.wrapper section.bottom ul li section.top {
     margin-bottom: 3vh;
     position: relative;
 }
+
 section.projects section.wrapper section.bottom ul li section.top img.projecthomeimg {
     display: block;
     height: 20vh;
     border-radius: 18px;
 }
+
 section.projects section.wrapper section.bottom ul li section.top span.projectname {
     position: absolute;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -613,25 +1049,26 @@ section.projects section.wrapper section.bottom ul li section.top span.projectna
     padding-left: 14px;
     font-family: 'Inter SemiBold';
 }
+
 section.projects section.wrapper section.bottom ul li section.bottom {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
-section.projects section.wrapper section.bottom ul li section.bottom div.left
- {
-    display: flex
-;
+
+section.projects section.wrapper section.bottom ul li section.bottom div.left {
+    display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #631AFF;
+    background: var(--accent-purple);
     padding: 5px 12px;
     border-radius: 28px;
     margin-right: 7px;
     padding-left: 8px;
 }
+
 section.projects section.wrapper section.bottom ul li section.bottom div.left span.lone {}
+
 section.projects section.wrapper section.bottom ul li section.bottom div.left span.lone h3 {
     margin-right: 8px;
     background: #000;
@@ -639,9 +1076,11 @@ section.projects section.wrapper section.bottom ul li section.bottom div.left sp
     font-size: 14px;
     border-radius: 19px;
 }
+
 section.projects section.wrapper section.bottom ul li section.bottom div.left h3.pvalue {
     font-size: 16px;
 }
+
 section.projects section.wrapper section.bottom ul li section.bottom div.right {}
 
 section.projects section.wrapper section.bottom ul li section.bottom div.right a {}
@@ -662,44 +1101,51 @@ section.journey section.wrapper {
 }
 
 section.journey section.wrapper section.left {}
+
 section.journey section.wrapper section.left img {
     display: block;
     height: 42vh;
     border-radius: 12px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
+
 section.journey section.wrapper section.right {
     width: 54%;
 }
-section.journey section.wrapper section.right h2{
+
+section.journey section.wrapper section.right h2 {
     font-family: 'Gropled';
     font-size: 32px;
     margin-bottom: 16px;
 }
+
 section.journey section.wrapper section.right h5 {
-    color: #999999;
+    color: var(--text-secondary);
     line-height: 1.5em;
     font-size: 14px;
     margin-bottom: 32px;
 }
+
 section.journey section.wrapper section.right ul {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     max-width: 70%;
 }
+
 section.journey section.wrapper section.right ul li {
-    border: 2px solid #262626;
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     padding: 12px;
     width: 25.33%;
-    background: #1a1a1a;
+    background: var(--bg-secondary);
 }
+
 section.journey section.wrapper section.right ul li h2 {
     margin-bottom: 4px;
     font-family: 'Inter Regular';
 }
+
 section.journey section.wrapper section.right ul li h5 {
     margin-bottom: 0;
 }
@@ -713,18 +1159,22 @@ section.testimonials {
 }
 
 section.testimonials section.wrapper {}
+
 section.testimonials section.wrapper section.top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 7vh;
 }
+
 section.testimonials section.wrapper section.top div.left {}
+
 section.testimonials section.wrapper section.top div.left h2 {
     font-family: 'Gropled';
     font-size: 32px;
     margin-bottom: 24px;
 }
+
 section.testimonials section.wrapper section.top div.right {
     display: flex;
     align-items: center;
@@ -733,15 +1183,14 @@ section.testimonials section.wrapper section.top div.right {
 }
 
 section.testimonials section.wrapper section.top div.right h5 {
-    color: #999999;
+    color: var(--text-secondary);
     font-size: 12px;
     margin-right: 12px;
     line-height: 1.5em;
 }
 
 section.testimonials section.wrapper section.top div.right a.viewalltestimonials {
-    display: flex
-;
+    display: flex;
     align-items: center;
     background: #fff;
     padding: 0px 40px;
@@ -751,10 +1200,12 @@ section.testimonials section.wrapper section.top div.right a.viewalltestimonials
     position: relative;
     height: 5vh;
 }
+
 section.testimonials section.wrapper section.top div.right a.viewalltestimonials h3 {
     color: #000;
     font-size: 14px;
 }
+
 section.testimonials section.wrapper section.top div.right a.viewalltestimonials h2 {}
 
 section.testimonials section.wrapper section.top div.right a.viewalltestimonials h2 img.one {
@@ -765,12 +1216,14 @@ section.testimonials section.wrapper section.top div.right a.viewalltestimonials
     top: 8px;
     right: 18px;
 }
+
 section.testimonials section.wrapper section.top div.right a.viewalltestimonials h2 img.two {
     position: absolute;
     z-index: 2;
     top: 8px;
     right: 18px;
 }
+
 section.testimonials section.wrapper section.bottom {}
 
 section.testimonials section.wrapper section.bottom ul {
@@ -780,17 +1233,19 @@ section.testimonials section.wrapper section.bottom ul {
 }
 
 section.testimonials section.wrapper section.bottom ul li {
-    border: 2px solid #262626;
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     padding: 12px;
     width: 23.33%;
-    background: #1a1a1a;
+    background: var(--bg-secondary);
     margin-right: 12px;
     min-height: 22vh;
 }
-section.testimonials section.wrapper section.bottom ul li:last-child{
+
+section.testimonials section.wrapper section.bottom ul li:last-child {
     margin-right: 0;
 }
+
 section.testimonials section.wrapper section.bottom ul li div.top {
     display: flex;
     align-items: center;
@@ -815,10 +1270,11 @@ section.testimonials section.wrapper section.bottom ul li div.top span.right h3 
     font-size: 12.5px;
     margin-top: 6px;
 }
-section.testimonials section.wrapper section.bottom ul li div.center
- {
+
+section.testimonials section.wrapper section.bottom ul li div.center {
     margin: 6px 0;
 }
+
 section.testimonials section.wrapper section.bottom ul li div.center h3 {}
 
 section.testimonials section.wrapper section.bottom ul li div.bottom {}
@@ -826,22 +1282,22 @@ section.testimonials section.wrapper section.bottom ul li div.bottom {}
 section.testimonials section.wrapper section.bottom ul li div.bottom h5 {
     font-size: 12px;
 }
-section.testimonials section.wrapper hr.smallgrey
- {
+
+section.testimonials section.wrapper hr.smallgrey {
     display: block;
     height: 2px;
     width: 100%;
     background: #262627;
     margin: 50px 0 24px;
 }
-section.testimonials section.wrapper section.arrow
- {
-    display: flex
-;
+
+section.testimonials section.wrapper section.arrow {
+    display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 8vh;
 }
+
 section.testimonials section.wrapper section.arrow span.left {}
 
 section.testimonials section.wrapper section.arrow span.left img {
@@ -852,7 +1308,7 @@ section.testimonials section.wrapper section.arrow span.left img {
 section.testimonials section.wrapper section.arrow span.right {}
 
 section.testimonials section.wrapper section.arrow span.right img {
-     cursor: pointer;   
+    cursor: pointer;
 }
 
 
@@ -862,35 +1318,38 @@ section.faq {
 }
 
 section.faq section.wrapper {}
+
 section.faq section.wrapper section.mtop {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 8vh;
 }
+
 section.faq section.wrapper section.mtop section.left {}
+
 section.faq section.wrapper section.mtop section.left h2 {
     font-family: 'Gropled';
     font-size: 32px;
     margin-bottom: 24px;
 }
+
 section.faq section.wrapper section.mtop section.right {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     width: 58%;
 }
+
 section.faq section.wrapper section.mtop section.right h5 {
     color: #999999;
     font-size: 12px;
     margin-right: 12px;
     line-height: 1.5em;
 }
-section.faq section.wrapper section.mtop section.right a.viewallfaqs
- {
-    display: flex
-;
+
+section.faq section.wrapper section.mtop section.right a.viewallfaqs {
+    display: flex;
     align-items: center;
     background: #fff;
     padding: 0px 40px;
@@ -900,6 +1359,7 @@ section.faq section.wrapper section.mtop section.right a.viewallfaqs
     position: relative;
     height: 5vh;
 }
+
 section.faq section.wrapper section.mtop section.right a.viewallfaqs h3 {
     color: #000;
     font-size: 14px;
@@ -922,12 +1382,14 @@ section.faq section.wrapper section.mtop section.right a.viewallfaqs h2 img.two 
     top: 8px;
     right: 18px;
 }
+
 section.faq section.wrapper section.bottom {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     background: #1a1a1a;
     border-radius: 16px;
     padding: 26px;
 }
+
 section.faq section.wrapper section.bottom ul {
     /* width: 100%;
     display: flex
@@ -936,9 +1398,11 @@ section.faq section.wrapper section.bottom ul {
     justify-content: center;
     flex-direction: column; */
 }
+
 section.faq section.wrapper section.bottom ul li {
     width: 100%;
 }
+
 section.faq section.wrapper section.bottom ul li hr.fline {
     display: block;
     height: 2px;
@@ -946,9 +1410,9 @@ section.faq section.wrapper section.bottom ul li hr.fline {
     background: #262627;
     margin: 6px 0 12px;
 }
+
 section.faq section.wrapper section.bottom ul li .nflex {
-    display: flex
-;
+    display: flex;
     align-items: center;
     width: 100%;
     justify-content: center;
@@ -957,34 +1421,37 @@ section.faq section.wrapper section.bottom ul li .nflex {
 section.faq section.wrapper section.bottom ul li .nflex section.left {
     width: 85%;
 }
+
 section.faq section.wrapper section.bottom ul li .nflex section.left h3 {
     font-size: 15px;
 }
+
 section.faq section.wrapper section.bottom ul li .nflex section.right {}
 
 section.faq section.wrapper section.bottom ul li .nflex section.right span.expand {
     cursor: pointer;
 }
-section.faq section.wrapper section.bottom ul li .nflex section.right span.expand img
- {
+
+section.faq section.wrapper section.bottom ul li .nflex section.right span.expand img {
     display: block;
     height: 4vh;
 }
 
 
 
-footer{
+footer {
     background: #121110;
 }
+
 footer section.wrapper {}
-footer section.wrapper section.top  
- {
+
+footer section.wrapper section.top {
     padding: 4vh 0;
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 footer section.wrapper section.top section.left {}
 
 footer section.wrapper section.top section.left span.logo {
@@ -1002,51 +1469,56 @@ footer section.wrapper section.top section.left span.logo h2 {
     font-size: 18px;
     font-family: 'Gropled';
 }
-footer section.wrapper section.top section.right
- {
-    display: flex
-;
+
+footer section.wrapper section.top section.right {
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 footer section.wrapper section.top section.right div.one {
     margin-right: 8vw
 }
-footer section.wrapper section.top section.right div.one ul
- {
-    display: flex
-;
+
+footer section.wrapper section.top section.right div.one ul {
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 footer section.wrapper section.top section.right div.one ul li {
     margin-right: 16px;
 }
+
 footer section.wrapper section.top section.right div.one ul li:last-child {
     margin-right: 0px;
 }
+
 footer section.wrapper section.top section.right div.one ul li a {}
+
 footer section.wrapper section.top section.right div.one ul li a h3 {
     font-size: 15px;
 }
+
 section.liveprojects section.wrapper ul li section.top {
     margin: 0;
     margin-bottom: 3vh;
     position: relative;
 }
+
 section.liveprojects section.wrapper ul li section.top img.projecthomeimg {
     display: block;
     height: 20vh;
     border-radius: 18px;
 }
+
 footer section.wrapper section.top section.right div.two {
-    display: flex
-;
+    display: flex;
     align-items: center;
 }
+
 footer section.wrapper section.top section.right div.two a.support {
-    display: flex
-;
+    display: flex;
     align-items: center;
     background: #fff;
     padding: 0px 40px;
@@ -1057,6 +1529,7 @@ footer section.wrapper section.top section.right div.two a.support {
     height: 5vh;
     margin-right: 12px;
 }
+
 footer section.wrapper section.top section.right div.two a.support h3 {
     color: #000;
     font-size: 14px;
@@ -1083,25 +1556,27 @@ footer section.wrapper section.top section.right div.two a.support h2 img.two {
 footer section.wrapper section.top section.right div.two h1.upscroll {
     cursor: pointer;
 }
+
 footer section.wrapper section.top section.right div.two h1.upscroll img {
     display: block;
     height: 5vh;
 }
+
 footer section.wrapper section.center {
-    display: flex
-;
+    display: flex;
     /* align-items: center; */
     justify-content: space-between;
 }
 
 footer section.wrapper section.center div.vision {}
+
 footer section.wrapper section.center div.vision h2 {
     font-family: 'Gropled';
     font-size: 60px;
 }
+
 footer section.wrapper section.center div.vision span.bp {
-    display: flex
-;
+    display: flex;
     align-items: center;
     margin-top: 0.6vh;
     margin-bottom: 3.3vh;
@@ -1114,28 +1589,33 @@ footer section.wrapper section.center div.vision span.bp img {
 }
 
 footer section.wrapper section.center div.connections {}
-footer section.wrapper section.center div.connections ul
- {
-    display: flex
-;
-align-items: center;
+
+footer section.wrapper section.center div.connections ul {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 16px;
 }
+
 footer section.wrapper section.center div.connections ul li {
     margin-right: 16px;
 }
-footer section.wrapper section.center div.connections ul li:last-child{
+
+footer section.wrapper section.center div.connections ul li:last-child {
     margin-right: 0px;
 }
+
 footer section.wrapper section.center div.connections ul li a {}
+
 footer section.wrapper section.center div.connections ul li a img {
     display: block;
     height: 5vh;
 }
+
 footer section.wrapper section.center div.connections span.email {
     background: #0d0c0a;
-    border: 2px solid #262627;;
+    border: 2px solid #262627;
+    ;
     padding: 10px 36px;
     border-radius: 21px;
     display: flex;
@@ -1143,11 +1623,13 @@ footer section.wrapper section.center div.connections span.email {
     justify-content: space-between;
     padding-left: 12px;
 }
+
 footer section.wrapper section.center div.connections span.email input[type="email"] {
     outline: none;
     background: none;
 
 }
+
 footer section.wrapper section.center div.connections span.email img {
     position: relative;
     right: -20px;
@@ -1155,6 +1637,7 @@ footer section.wrapper section.center div.connections span.email img {
     height: 3vh;
     cursor: pointer;
 }
+
 footer section.wrapper hr.fline {
     display: block;
     height: 2px;
@@ -1162,13 +1645,14 @@ footer section.wrapper hr.fline {
     background: #262627;
     margin: 15px 0 28px;
 }
+
 footer section.wrapper section.bottom {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     padding-bottom: 24px;
 }
+
 footer section.wrapper section.bottom section.left {
     display: flex;
     align-items: center;
@@ -1200,15 +1684,18 @@ footer section.wrapper section.bottom section.right ul li h3 {
 }
 
 
-#chatbase-message-bubbles,#chatbase-bubble-window{
-        width: 364px !important;
-    height: 58dvh !important;
-}
-.group .h-full .max-h-dvh{
+#chatbase-message-bubbles,
+#chatbase-bubble-window {
     width: 364px !important;
     height: 58dvh !important;
 }
-#chatbase-bubble-button{
+
+.group .h-full .max-h-dvh {
+    width: 364px !important;
+    height: 58dvh !important;
+}
+
+#chatbase-bubble-button {
     bottom: 4rem !important;
     right: 3rem !important;
 }
@@ -1227,47 +1714,49 @@ section.liveprojects section.wrapper section.top {
     justify-content: space-between;
     margin-bottom: 3vh;
 }
-section.liveprojects section.wrapper hr.line{
+
+section.liveprojects section.wrapper hr.line {
     margin-bottom: 36px;
 }
+
 section.liveprojects section.wrapper section.top section.left {}
+
 section.liveprojects section.wrapper section.top section.left h2 {
     font-family: 'Gropled';
     font-size: 36px;
 }
+
 section.liveprojects section.wrapper section.top section.right {
-    max-width: 70%
-;
-    display: flex
-;
+    max-width: 70%;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 section.liveprojects section.wrapper section.top section.right h5 {
     color: #999999;
     font-size: 13px;
     margin-right: 12px;
     line-height: 1.5em;
 }
+
 section.liveprojects section.wrapper section.top section.right section.search {
-    display: flex
-;
+    display: flex;
     align-items: center;
     right: -35px;
     position: relative;
 }
 
 section.liveprojects section.wrapper section.top section.right section.search div.left {
-    display: flex
-;
-        align-items: center;
-        border: 2px solid #262626;
-        border-radius: 18px;
-        padding: 6px 12px;
-        width: 78.33%;
-        position: relative;
-        background: #1a1a1a;
-        padding-left: 10px;
+    display: flex;
+    align-items: center;
+    border: 2px solid #262626;
+    border-radius: 18px;
+    padding: 6px 12px;
+    width: 78.33%;
+    position: relative;
+    background: #1a1a1a;
+    padding-left: 10px;
 }
 
 section.liveprojects section.wrapper section.top section.right section.search div.left input[type="search"] {
@@ -1283,21 +1772,23 @@ section.liveprojects section.wrapper section.top section.right section.search di
 
 section.liveprojects section.wrapper section.top section.right section.search div.right h2.close-hamburgur img {
     display: block;
-        height: 5vh;
+    height: 5vh;
 }
+
 section.liveprojects section.wrapper ul {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: flex-start;
     margin-bottom: 8vh;
     flex-wrap: wrap;
 }
+
 section.liveprojects section.wrapper ul li {
     margin-right: 24px;
     margin-bottom: 5vh;
     width: 23.66%;
 }
+
 section.liveprojects section.wrapper ul li:nth-child(4),
 section.liveprojects section.wrapper ul li:nth-child(8),
 section.liveprojects section.wrapper ul li:nth-child(12),
@@ -1307,7 +1798,7 @@ section.liveprojects section.wrapper ul li:nth-child(24),
 section.liveprojects section.wrapper ul li:nth-child(28),
 section.liveprojects section.wrapper ul li:nth-child(32),
 section.liveprojects section.wrapper ul li:nth-child(36),
-section.liveprojects section.wrapper ul li:nth-child(40){
+section.liveprojects section.wrapper ul li:nth-child(40) {
     margin-right: 0;
 }
 
@@ -1318,6 +1809,7 @@ section.liveprojects section.wrapper ul li section.top {
 section.liveprojects section.wrapper ul li section.top img.projecthomeimg {
     width: 100%;
 }
+
 section.liveprojects section.wrapper ul li section.top span.projectname {
     position: absolute;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -1332,15 +1824,15 @@ section.liveprojects section.wrapper ul li section.top span.projectname {
     padding-left: 14px;
     font-family: 'Inter SemiBold';
 }
+
 section.liveprojects section.wrapper ul li section.bottom {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 section.liveprojects section.wrapper ul li section.bottom div.left {
-        display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     background: #631AFF;
@@ -1351,6 +1843,7 @@ section.liveprojects section.wrapper ul li section.bottom div.left {
 }
 
 section.liveprojects section.wrapper ul li section.bottom div.left span.lone {}
+
 section.liveprojects section.wrapper ul li section.bottom div.left span.lone h3 {
     margin-right: 8px;
     background: #000;
@@ -1358,6 +1851,7 @@ section.liveprojects section.wrapper ul li section.bottom div.left span.lone h3 
     font-size: 14px;
     border-radius: 19px;
 }
+
 section.liveprojects section.wrapper ul li section.bottom div.left h3.pvalue {
     font-size: 16px;
 }
@@ -1370,16 +1864,19 @@ section.liveprojects section.wrapper ul li section.bottom div.right a img {
     display: block;
     height: 5vh;
 }
+
 section.liveprojects section.wrapper section.noprojectsfound {
     text-align: center;
 }
+
 section.liveprojects section.wrapper section.noprojectsfound img {
     display: block;
     height: 48vh;
     margin: 0 auto;
     margin-bottom: 16px;
 }
-section.liveprojects section.wrapper section.noprojectsfound h3{
+
+section.liveprojects section.wrapper section.noprojectsfound h3 {
     color: #999999;
     font-size: 14px;
     margin-right: 12px;
@@ -1418,17 +1915,18 @@ section.serviceslist {
 section.serviceslist section.wrapper {}
 
 section.serviceslist section.wrapper ul {}
-section.serviceslist section.wrapper ul li
- {
-    display: flex
-;
+
+section.serviceslist section.wrapper ul li {
+    display: flex;
     justify-content: space-between;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     border-radius: 12px;
     margin-bottom: 56px;
     border: 2px solid #262626;
 }
+
 section.serviceslist section.wrapper ul li section.left {}
+
 section.serviceslist section.wrapper ul li section.left img {
     display: block;
     height: 28vh;
@@ -1436,6 +1934,7 @@ section.serviceslist section.wrapper ul li section.left img {
     border-radius: 12px 0 0 12px;
     width: 28vw;
 }
+
 section.serviceslist section.wrapper ul li section.right {
     padding: 12px;
 }
@@ -1443,6 +1942,7 @@ section.serviceslist section.wrapper ul li section.right {
 section.serviceslist section.wrapper ul li section.right h2.servicename {
     margin-bottom: 12px;
 }
+
 section.serviceslist section.wrapper ul li section.right h3.servicedescribe {
     color: #999999;
     font-size: 14px;
@@ -1457,6 +1957,7 @@ section.serviceslist section.wrapper ul li section.right ul.languages {
     justify-content: flex-start;
     margin-bottom: 18px
 }
+
 section.serviceslist section.wrapper ul li section.right ul.languages li {
     display: block;
     width: fit-content;
@@ -1465,11 +1966,14 @@ section.serviceslist section.wrapper ul li section.right ul.languages li {
     background: #262523;
     margin-right: 16px;
 }
+
 section.serviceslist section.wrapper ul li section.right ul.languages li a {}
+
 section.serviceslist section.wrapper ul li section.right ul.languages li a h3 {
     padding: 8px 16px;
     font-size: 14px;
 }
+
 section.serviceslist section.wrapper ul li section.right h1.knowdetails {
     width: 6vw;
     background: #fff;
@@ -1501,52 +2005,52 @@ section.learningsection section.wrapper section.top {
 }
 
 section.learningsection section.wrapper section.top section.left {}
+
 section.learningsection section.wrapper section.top section.left h2 {
     font-family: 'Gropled';
     font-size: 36px;
 }
+
 section.learningsection section.wrapper section.top section.right {
     max-width: 70%;
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 section.learningsection section.wrapper section.top section.right section.search {
-    display: flex
-;
+    display: flex;
     align-items: center;
     right: -35px;
     position: relative;
 }
 
 section.learningsection section.wrapper section.top section.right section.search div.left {
-    display: flex
-;
+    display: flex;
     align-items: center;
     border: 2px solid #262626;
     border-radius: 18px;
     padding: 6px 12px;
     width: 78.33%;
     position: relative;
-    background: #1a1a1a;    
+    background: #1a1a1a;
     padding-left: 10px;
 }
 
 section.learningsection section.wrapper section.top section.right section.search div.left input[type="search"] {
-        background: none;
+    background: none;
     width: 16vw;
 }
 
 section.learningsection section.wrapper section.top section.right section.search div.left img {}
+
 section.learningsection section.wrapper ul.learningtopics {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: flex-start;
     margin-bottom: 28px;
 }
+
 section.learningsection section.wrapper ul.learningtopics li {
     display: block;
     width: fit-content;
@@ -1556,10 +2060,12 @@ section.learningsection section.wrapper ul.learningtopics li {
     margin-right: 16px;
     cursor: pointer;
 }
+
 section.learningsection section.wrapper ul.learningtopics li h3 {
     padding: 8px 16px;
     font-size: 14px;
 }
+
 section.learningsection section.wrapper hr.line {
     margin-bottom: 36px;
 }
@@ -1569,14 +2075,15 @@ section.learningsection section.wrapper hr.line {
 section.topicvideos {}
 
 section.topicvideos section.wrapper {}
+
 section.topicvideos section.wrapper ul {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
 
 }
+
 section.topicvideos section.wrapper ul li {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     border-radius: 12px;
@@ -1586,6 +2093,7 @@ section.topicvideos section.wrapper ul li {
     min-height: 39.4vh;
     margin-bottom: 4vh;
 }
+
 section.topicvideos section.wrapper ul li:nth-child(4),
 section.topicvideos section.wrapper ul li:nth-child(8),
 section.topicvideos section.wrapper ul li:nth-child(12),
@@ -1595,10 +2103,12 @@ section.topicvideos section.wrapper ul li:nth-child(24),
 section.topicvideos section.wrapper ul li:nth-child(28),
 section.topicvideos section.wrapper ul li:nth-child(32),
 section.topicvideos section.wrapper ul li:nth-child(36),
-section.topicvideos section.wrapper ul li:nth-child(40){
+section.topicvideos section.wrapper ul li:nth-child(40) {
     margin-right: 0;
 }
+
 section.topicvideos section.wrapper ul li section.top {}
+
 section.topicvideos section.wrapper ul li section.top img {
     display: block;
     height: 22vh;
@@ -1606,12 +2116,15 @@ section.topicvideos section.wrapper ul li section.top img {
     margin-bottom: 6px;
     border-radius: 12px 12px 0 0;
 }
+
 section.topicvideos section.wrapper ul li section.bottom {
     padding: 12px;
 }
+
 section.topicvideos section.wrapper ul li section.bottom h2.topicname {
     font-size: 18px;
 }
+
 section.topicvideos section.wrapper ul li section.bottom h3.topicdes {
     color: #999999;
     font-size: 12px;
@@ -1622,9 +2135,9 @@ section.topicvideos section.wrapper ul li section.bottom h3.topicdes {
     display: block;
     margin-top: 6px;
 }
+
 section.topicvideos section.wrapper ul li section.bottom a {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
     background: #fff;
@@ -1632,18 +2145,22 @@ section.topicvideos section.wrapper ul li section.bottom a {
     width: 100%;
     padding: 5px 0px;
 }
+
 section.topicvideos section.wrapper ul li section.bottom a h1.viewvideos {
     color: #000;
     font-size: 14px;
 }
+
 section.topicvideos section.wrapper ul li section.bottom a img {
     display: block;
     height: 2.5vh;
     margin-left: 12px;
 }
+
 section.topicvideos section.wrapper section.notopicsfound {
     text-align: center;
 }
+
 section.topicvideos section.wrapper section.notopicsfound img {
     display: block;
     height: 48vh;
@@ -1661,7 +2178,7 @@ section.topicvideos section.wrapper section.notopicsfound h3 {
 section.topicvideos section.wrapper section.notopicsfound section.connectbtns {}
 
 section.topicvideos section.wrapper section.notopicsfound section.connectbtns h2.connectus.mailemail {
-        margin: 0 auto;
+    margin: 0 auto;
     background: #fff;
     color: #000;
     margin-top: 24px;
@@ -1675,16 +2192,16 @@ section.topicvideos section.wrapper section.notopicsfound section.connectbtns h2
 
 
 
- section.topicvideos section.wrapper ul li.translateup {
-            transition: all 0.3s ease;
-            /* Initial state */
-            transform: translateY(0) scale(1);
-        }
-        
-        /* Hover state - moves up 20px and scales to 1.1x size */
-         section.topicvideos section.wrapper ul li.translateup:hover {
-            transform: translateY(-15px) scale(1);
-        }
+section.topicvideos section.wrapper ul li.translateup {
+    transition: all 0.3s ease;
+    /* Initial state */
+    transform: translateY(0) scale(1);
+}
+
+/* Hover state - moves up 20px and scales to 1.1x size */
+section.topicvideos section.wrapper ul li.translateup:hover {
+    transform: translateY(-15px) scale(1);
+}
 
 
 /*learn.html */
@@ -1713,23 +2230,20 @@ section.alllearningsection section.wrapper section.top section.left h2 {
 
 section.alllearningsection section.wrapper section.top section.right {
     max-width: 70%;
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 section.alllearningsection section.wrapper section.top section.right section.search {
-    display: flex
-;
+    display: flex;
     align-items: center;
     right: -35px;
     position: relative;
 }
 
 section.alllearningsection section.wrapper section.top section.right section.search div.left {
-    display: flex
-;
+    display: flex;
     align-items: center;
     border: 2px solid #262626;
     border-radius: 18px;
@@ -1748,8 +2262,9 @@ section.alllearningsection section.wrapper section.top section.right section.sea
 section.alllearningsection section.wrapper section.top section.right section.search div.left img {}
 
 section.alllearningsection section.wrapper hr.line {
-        margin-bottom: 36px;
+    margin-bottom: 36px;
 }
+
 section.alltopicsarea {}
 
 section.alltopicsarea section.wrapper {}
@@ -1774,6 +2289,7 @@ section.alltopicsarea section.wrapper ul li.topichoverborder {
     border-image: initial;
     cursor: pointer;
 }
+
 section.alltopicsarea section.wrapper ul li.topichoverborder:nth-child(4),
 section.alltopicsarea section.wrapper ul li.topichoverborder:nth-child(8),
 section.alltopicsarea section.wrapper ul li.topichoverborder:nth-child(12),
@@ -1783,14 +2299,16 @@ section.alltopicsarea section.wrapper ul li.topichoverborder:nth-child(24),
 section.alltopicsarea section.wrapper ul li.topichoverborder:nth-child(28),
 section.alltopicsarea section.wrapper ul li.topichoverborder:nth-child(32),
 section.alltopicsarea section.wrapper ul li.topichoverborder:nth-child(36),
-section.alltopicsarea section.wrapper ul li.topichoverborder:nth-child(40){
+section.alltopicsarea section.wrapper ul li.topichoverborder:nth-child(40) {
     margin-right: 0;
 }
-section.alltopicsarea section.wrapper ul li.topichoverborder:hover{
+
+section.alltopicsarea section.wrapper ul li.topichoverborder:hover {
     border: 2px solid #fff;
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
+
 section.alltopicsarea section.wrapper ul li.topichoverborder section.top {
     position: relative;
 }
@@ -1821,13 +2339,12 @@ section.alltopicsarea section.wrapper ul li.topichoverborder section.top img.vid
     height: 8.5vh;
     width: 8.5vh;
     top: 35%;
-    left: 38%
-;
+    left: 38%;
 }
 
 section.alltopicsarea section.wrapper ul li.topichoverborder section.bottom {
-        padding: 12px;
-        position: relative;
+    padding: 12px;
+    position: relative;
 }
 
 section.alltopicsarea section.wrapper ul li.topichoverborder section.bottom h2.topicname {
@@ -1865,6 +2382,7 @@ section.alltopicsarea section.wrapper ul li.topichoverborder section.bottom a im
     height: 2.5vh;
     margin-left: 12px;
 }
+
 section.alltopicsarea section.wrapper ul li.topichoverborder section.bottom a.downloadentire {
     background: none;
     width: 30px;
@@ -1874,7 +2392,8 @@ section.alltopicsarea section.wrapper ul li.topichoverborder section.bottom a.do
     background: transparent;
     padding: 0;
 }
-section.alltopicsarea section.wrapper ul li.topichoverborder section.bottom a.downloadentire img{
+
+section.alltopicsarea section.wrapper ul li.topichoverborder section.bottom a.downloadentire img {
     display: block;
     width: 30px;
     height: 30px;
@@ -1889,13 +2408,14 @@ section.alltopicsareaunique {
 }
 
 section.alltopicsareaunique section.wrapper {}
+
 section.alltopicsareaunique section.wrapper ul {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
+
 section.alltopicsareaunique section.wrapper ul li.downloaduni {
     display: flex;
     align-items: center;
@@ -1912,21 +2432,25 @@ section.alltopicsareaunique section.wrapper ul li.downloaduni {
     background: #0d0c0a;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
-section.alertunibg{
+
+section.alertunibg {
     position: absolute;
     height: 160vh;
     width: 100%;
     background: #0b0b0bdb;
     z-index: 999;
 }
-section.alltopicsareaunique section.wrapper ul li.downloaduni:hover{
+
+section.alltopicsareaunique section.wrapper ul li.downloaduni:hover {
     border-color: rgb(255, 255, 255);
 }
+
 section.alltopicsareaunique section.wrapper ul li.downloaduni img.consolelogo {
     display: block;
     height: 30px;
     margin-right: 24px;
 }
+
 section.alltopicsareaunique section.wrapper ul li.downloaduni h2 {
     margin-right: 28px;
     font-family: 'Gropled';
@@ -1942,15 +2466,15 @@ section.alltopicsareaunique section.wrapper ul li.downloaduni h2 {
 }
 
 section.alltopicsareaunique section.wrapper ul li.downloaduni a.downloadsingle {}
+
 section.alltopicsareaunique section.wrapper ul li.downloaduni a.downloadsingle img {
     display: block;
     height: 22px;
 }
 
 
-section.alertunibg {
+section.alertunibg {}
 
-}
 section.alertmainuni {
     border: 2px solid #262626;
     border-radius: 8px;
@@ -1965,10 +2489,12 @@ section.alertmainuni {
     transition: opacity 0.3s ease;
     top: 40vh;
 }
+
 section.alertmainuni section.wrapper {
-        margin: 0 0.5vw;
+    margin: 0 0.5vw;
     padding: 12px;
 }
+
 section.alertmainuni section.wrapper h2 {
     font-family: 'Inter Regular';
     color: #fff;
@@ -1980,7 +2506,7 @@ section.alertmainuni section.wrapper h2 {
 }
 
 section.alertmainuni hr.pcline {
-        display: block;
+    display: block;
     background: #5e5e5e;
     height: 2px;
     width: 100%;
@@ -2007,8 +2533,7 @@ section.htmlplayvideo {}
 section.htmlplayvideo section.wrapper {}
 
 section.htmlplayvideo section.wrapper section.top {
-    display: flex
-;
+    display: flex;
     justify-content: space-between;
     margin-bottom: 3vh;
 }
@@ -2023,13 +2548,16 @@ section.htmlplayvideo section.wrapper section.top section.left h2 {
 section.htmlplayvideo section.wrapper hr.line {
     margin-bottom: 36px;
 }
+
 section.playvideoarea {}
 
 section.playvideoarea section.wrapper {}
+
 section.playvideoarea section.wrapper section.top {
     display: flex;
     justify-content: space-between;
 }
+
 section.playvideoarea section.wrapper section.top div.youtube-container {
     width: 65%;
     border: 2px solid #fff;
@@ -2037,11 +2565,13 @@ section.playvideoarea section.wrapper section.top div.youtube-container {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     height: 58vh;
 }
+
 section.playvideoarea section.wrapper section.top div.youtube-container iframe {
     width: 100%;
     height: 100%;
     border-radius: 10px;
 }
+
 section.playvideoarea section.wrapper section.top div.describearea {
     width: 22%;
     border: 2px solid #262626;
@@ -2050,29 +2580,34 @@ section.playvideoarea section.wrapper section.top div.describearea {
     background: #1a1a1a;
     cursor: pointer;
 }
-section.playvideoarea section.wrapper section.top div.describearea:hover{
+
+section.playvideoarea section.wrapper section.top div.describearea:hover {
     border: 2px solid #fff;
 }
+
 section.playvideoarea section.wrapper section.top div.describearea ul {}
 
 section.playvideoarea section.wrapper section.top div.describearea ul li {}
+
 section.playvideoarea section.wrapper section.top div.describearea ul li h2 {
     font-family: 'Gropled';
     font-size: 22px;
     margin-bottom: 6px;
-    display: flex
-;
+    display: flex;
     align-items: center;
 }
-section.playvideoarea section.wrapper section.top div.describearea ul li h2.minh2{
+
+section.playvideoarea section.wrapper section.top div.describearea ul li h2.minh2 {
     font-size: 18px;
 }
+
 section.playvideoarea section.wrapper section.top div.describearea ul li img.underline {
     display: block;
     margin-bottom: 34px;
     height: 8px;
     width: 5vw;
 }
+
 section.playvideoarea section.wrapper section.top div.describearea ul li img {}
 
 section.playvideoarea section.wrapper section.top div.describearea ul li h2 img {
@@ -2080,6 +2615,7 @@ section.playvideoarea section.wrapper section.top div.describearea ul li h2 img 
     height: 2.6vh;
     margin-right: 10px;
 }
+
 section.playvideoarea section.wrapper section.top div.describearea ul li h3 {
     color: #999999;
     line-height: 1.5em;
@@ -2087,6 +2623,7 @@ section.playvideoarea section.wrapper section.top div.describearea ul li h3 {
     margin-bottom: 12px;
     margin-left: 32px;
 }
+
 section.playvideoarea section.wrapper section.top div.describearea ul li div.contentintopic {
     width: 100%;
     display: flex;
@@ -2094,28 +2631,34 @@ section.playvideoarea section.wrapper section.top div.describearea ul li div.con
     justify-content: center;
     margin-top: 2vh;
 }
+
 section.playvideoarea section.wrapper section.top div.describearea ul li div.contentintopic ul {
     display: flex;
     flex-direction: column;
     width: 90%;
 }
+
 section.playvideoarea section.wrapper section.top div.describearea ul li div.contentintopic ul li {
     margin-bottom: 14px;
     display: flex;
     align-items: flex-start;
 }
+
 section.playvideoarea section.wrapper section.top div.describearea ul li div.contentintopic ul li img {
     display: block;
     height: 1.7vh;
     margin-right: 8px;
 }
+
 section.playvideoarea section.wrapper section.top div.describearea ul li div.contentintopic ul li h4 {
     font-size: 11px;
     line-height: 1.6em;
 }
+
 section.playvideoarea section.wrapper section.bottom {}
 
 section.playvideoarea section.wrapper section.bottom section.main {}
+
 section.playvideoarea section.wrapper section.bottom section.main h2 {
     font-family: 'Gropled';
     font-size: 22px;
@@ -2123,19 +2666,21 @@ section.playvideoarea section.wrapper section.bottom section.main h2 {
     display: flex;
     align-items: center;
 }
+
 section.playvideoarea section.wrapper section.bottom section.main img.underline {
     display: block;
     margin-bottom: 24px;
     height: 8px;
     width: 5vw;
 }
+
 section.playvideoarea section.wrapper section.bottom div.one {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     max-width: 11%;
 }
+
 section.playvideoarea section.wrapper section.bottom div.one h3.lang {
     background: #fff;
     color: #000;
@@ -2145,6 +2690,7 @@ section.playvideoarea section.wrapper section.bottom div.one h3.lang {
     border-radius: 23px;
     cursor: pointer;
 }
+
 section.playvideoarea section.wrapper section.bottom div.one h3.pcat {
     color: #fff;
     padding: 8px 32px;
@@ -2164,6 +2710,7 @@ section.playvideoarea section.wrapper section.bottom div.two h3 {
     font-size: 16px;
     margin-top: 15px;
 }
+
 section.playvideoarea hr.line {
     margin: 5vh 0;
 }
@@ -2188,73 +2735,86 @@ section.abouthero section.wrapper {
     justify-content: center;
     flex-direction: column;
 }
+
 section.abouthero section.wrapper h2 {
     font-size: 44px;
     margin-bottom: 16px;
 }
+
 section.abouthero section.wrapper h3 {
     color: #999999;
     line-height: 1.6em;
     font-size: 16px;
 }
+
 section.abouthero section.wrapper h3 span {
     color: #6b26ff;
     font-family: 'Gropled';
     font-size: 26px;
     margin: 0 6px;
 }
+
 section.abouthero section.wrapper section.listup {
     margin-top: 4vh;
     margin-bottom: 2.7vh;
 }
+
 section.abouthero section.wrapper section.listup ul {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 section.abouthero section.wrapper section.listup ul li {
-    display: flex
-;
+    display: flex;
     align-items: center;
     background: #fff;
     margin-right: 28px;
     border-radius: 8px;
     padding: 8px;
 }
-section.abouthero section.wrapper section.listup ul li:nth-child(2){
+
+section.abouthero section.wrapper section.listup ul li:nth-child(2) {
     margin-right: 0;
 }
+
 section.abouthero section.wrapper section.listup ul li div.left {}
+
 section.abouthero section.wrapper section.listup ul li div.left img {
     display: block;
     height: 36px;
     width: 44px;
     margin-right: 16px;
 }
+
 section.abouthero section.wrapper section.listup ul li div.right {}
+
 section.abouthero section.wrapper section.listup ul li div.right h5 {
     color: #000;
     font-size: 13px;
 }
+
 section.abouthero section.wrapper section.listup ul li div.right h3 {
     color: #656565;
 }
+
 section.abouthero section.wrapper ul.featurehero {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 section.abouthero section.wrapper ul.featurehero li {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-right: 24px;
 }
-section.abouthero section.wrapper ul.featurehero li:last-child{
+
+section.abouthero section.wrapper ul.featurehero li:last-child {
     margin-right: 0;
 }
+
 section.abouthero section.wrapper ul.featurehero li img {
     display: block;
     height: 1.6vh;
@@ -2272,14 +2832,14 @@ section.bannerarea {
     height: 60vh;
     position: relative;
 }
+
 section.bannerarea section.wrapper {
-    display: flex
-;
+    display: flex;
     align-items: center;
     position: relative;
 }
-section.bannerarea section.wrapper img.one
- {
+
+section.bannerarea section.wrapper img.one {
     display: block;
     height: 56vh;
     position: absolute;
@@ -2287,6 +2847,7 @@ section.bannerarea section.wrapper img.one
     top: 60px;
     z-index: 1;
 }
+
 section.bannerarea section.wrapper img.two {
     display: block;
     height: 56vh;
@@ -2295,6 +2856,7 @@ section.bannerarea section.wrapper img.two {
     left: 36%;
     z-index: 2;
 }
+
 section.bannerarea section.wrapper img.three {
     display: block;
     height: 76vh;
@@ -2304,10 +2866,11 @@ section.bannerarea section.wrapper img.three {
     top: -100px;
 }
 
-section.bannerarea .box{
+section.bannerarea .box {
     display: block;
     width: 100%;
 }
+
 section.bannerarea .box img.limage {
     position: absolute;
     bottom: 0;
@@ -2318,6 +2881,7 @@ section.bannerarea .box img.limage {
 section.abtfeactures {
     padding: 10vh 0;
 }
+
 section.abtfeactures section.wrapper {
     display: flex;
     align-items: center;
@@ -2325,6 +2889,7 @@ section.abtfeactures section.wrapper {
     width: 100%;
     margin: 0;
 }
+
 section.abtfeactures section.wrapper ul {
     width: 65%;
 }
@@ -2335,6 +2900,7 @@ section.abtfeactures section.wrapper ul li {
     margin-bottom: 64px;
     border: 2px solid #0d0c0a;
 }
+
 section.abtfeactures section.wrapper ul li:hover {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border: 2px solid #fff;
@@ -2346,8 +2912,8 @@ section.abtfeactures section.wrapper ul li:last-child {
 }
 
 section.abtfeactures section.wrapper ul li section.left {}
-section.abtfeactures section.wrapper ul li section.left img
- {
+
+section.abtfeactures section.wrapper ul li section.left img {
     display: block;
     height: 27vh;
     width: 24vw;
@@ -2355,39 +2921,44 @@ section.abtfeactures section.wrapper ul li section.left img
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 12px;
 }
-section.abtfeactures section.wrapper ul li section.left img:hover
- {
+
+section.abtfeactures section.wrapper ul li section.left img:hover {
     border-radius: 12px 0 0 12px;
 }
+
 section.abtfeactures section.wrapper ul li section.right {
     padding: 12px;
 }
+
 section.abtfeactures section.wrapper ul li section.right div.top {
-    display: flex
-;
+    display: flex;
     align-items: center;
     margin-bottom: 16px;
 }
+
 section.abtfeactures section.wrapper ul li section.right div.top img {
     display: block;
     height: 4vh;
     margin-right: 12px;
 }
+
 section.abtfeactures section.wrapper ul li section.right div.top h2 {}
-section.abtfeactures section.wrapper ul li section.right h4{
+
+section.abtfeactures section.wrapper ul li section.right h4 {
     color: #999999;
     line-height: 1.5em;
     font-size: 15px;
     margin-bottom: 10px;
 }
+
 section.abtfeactures section.wrapper ul li section.right ul {
     width: 100%;
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
 }
+
 section.abtfeactures section.wrapper ul li section.right ul li {
     margin-right: 14px;
     display: block;
@@ -2396,8 +2967,8 @@ section.abtfeactures section.wrapper ul li section.right ul li {
     border-radius: 8px;
     background: #262523;
 }
-section.abtfeactures section.wrapper ul li section.right ul li h3
- {
+
+section.abtfeactures section.wrapper ul li section.right ul li h3 {
     padding: 8px 16px;
     font-size: 14px;
 }
@@ -2407,15 +2978,16 @@ section.abtfeactures section.wrapper ul li section.right ul li h3
 section.cases {
     margin-bottom: 10vh;
 }
-section.cases section.casewrapper{
-    display: flex
-;
+
+section.cases section.casewrapper {
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     margin: 0;
     flex-direction: column;
 }
+
 section.cases section.wrapper {
     background: #16161a;
     padding: 16px;
@@ -2424,15 +2996,16 @@ section.cases section.wrapper {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     margin: 0;
 }
-section.cases section.wrapper  h2 {
+
+section.cases section.wrapper h2 {
     font-family: 'Gropled';
     font-size: 36px;
     margin-bottom: 36px;
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
+
 section.cases section.wrapper section.top {
     background: #16161a;
     padding: 5px 10px;
@@ -2444,11 +3017,13 @@ section.cases section.wrapper section.top {
     justify-content: center;
     margin-bottom: 8vh;
 }
+
 section.cases section.wrapper section.top ul {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 section.cases section.wrapper section.top ul li {
     display: flex;
     align-items: center;
@@ -2456,6 +3031,7 @@ section.cases section.wrapper section.top ul li {
     border-radius: 8px;
     cursor: pointer;
 }
+
 section.cases section.wrapper section.top ul li:hover {
     background: #303033;
 }
@@ -2467,27 +3043,30 @@ section.cases section.wrapper section.top ul li img {
 section.cases section.wrapper section.top ul li h3 {
     font-size: 14px;
 }
-section.cases section.wrapper section.bottom
- {
-    display: flex
-;
+
+section.cases section.wrapper section.bottom {
+    display: flex;
     justify-content: space-between;
     padding-bottom: 16px;
 }
+
 section.cases section.wrapper section.bottom section.left {}
+
 section.cases section.wrapper section.bottom section.left h3 {
     font-size: 16px;
     max-width: 68%;
     line-height: 1.6em;
     margin-bottom: 2vh;
 }
+
 section.cases section.wrapper section.bottom section.left ul {}
+
 section.cases section.wrapper section.bottom section.left ul li {
-    display: flex
-;
+    display: flex;
     align-items: center;
     margin-bottom: 3vh;
 }
+
 section.cases section.wrapper section.bottom section.left ul li img {
     margin-right: 8px;
 }
@@ -2509,7 +3088,7 @@ section.cases section.wrapper section.bottom section.left a.getstarted {
 }
 
 section.cases section.wrapper section.bottom section.left a.getstarted h4 {
-    color: #8d8d99 ;
+    color: #8d8d99;
     font-size: 14.5px;
 }
 
@@ -2518,6 +3097,7 @@ section.cases section.wrapper section.bottom section.left a.getstarted img {
 }
 
 section.cases section.wrapper section.bottom section.right {}
+
 section.cases section.wrapper section.bottom section.right img {
     display: block;
     height: 30vh;
@@ -2529,18 +3109,20 @@ section.cases section.wrapper section.bottom section.right img {
 section.abtfeatures {
     margin-bottom: 10vh;
 }
+
 section.abtfeatures section.wrapper {
     margin: 0 14.5vw;
 }
+
 section.abtfeatures section.wrapper h2.fnam {
     font-family: 'Gropled';
     font-size: 36px;
     margin-bottom: 36px;
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
+
 section.abtfeatures section.wrapper section.top {}
 
 section.abtfeatures section.wrapper section.top ul {
@@ -2549,6 +3131,7 @@ section.abtfeatures section.wrapper section.top ul {
     justify-content: space-between;
     margin-bottom: 2.5vh;
 }
+
 section.abtfeatures section.wrapper section.top ul li {
     background: #16161a;
     border-radius: 13px;
@@ -2557,25 +3140,28 @@ section.abtfeatures section.wrapper section.top ul li {
     position: relative;
     min-height: 30vh;
 }
+
 section.abtfeatures section.wrapper section.top ul li span.flogo {}
 
-section.abtfeatures section.wrapper section.top ul li span.flogo img
- {
+section.abtfeatures section.wrapper section.top ul li span.flogo img {
     padding: 7px;
     background: #26262b;
     border: 2px solid #4d4d54;
     border-radius: 8px;
     margin-bottom: 12px;
 }
+
 section.abtfeatures section.wrapper section.top ul li h2 {
     font-size: 18px;
     margin-bottom: 8px;
 }
+
 section.abtfeatures section.wrapper section.top ul li h3 {
     margin-bottom: 24px;
     font-size: 15px;
     color: #8D8D99;
 }
+
 section.abtfeatures section.wrapper section.top ul li img.backgroundfimage {
     position: absolute;
     bottom: 0;
@@ -2583,16 +3169,17 @@ section.abtfeatures section.wrapper section.top ul li img.backgroundfimage {
     display: block;
     height: 28vh;
 }
-section.abtfeatures section.wrapper section.bottom
- {
-    display: flex
-;
+
+section.abtfeatures section.wrapper section.bottom {
+    display: flex;
     justify-content: space-between;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fleft {
     width: 38%;
     margin-right: 2.5vw;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fleft ul {}
 
 section.abtfeatures section.wrapper section.bottom section.fleft ul li {
@@ -2603,10 +3190,13 @@ section.abtfeatures section.wrapper section.bottom section.fleft ul li {
     position: relative;
     margin-bottom: 2.5vh;
 }
-section.abtfeatures section.wrapper section.bottom section.fleft ul li:last-child{
+
+section.abtfeatures section.wrapper section.bottom section.fleft ul li:last-child {
     margin-bottom: 0;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fleft ul li span.flogo {}
+
 section.abtfeatures section.wrapper section.bottom section.fleft ul li span.flogo img {
     padding: 7px;
     background: #26262b;
@@ -2614,10 +3204,12 @@ section.abtfeatures section.wrapper section.bottom section.fleft ul li span.flog
     border-radius: 8px;
     margin-bottom: 12px;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fleft ul li h2 {
     font-size: 18px;
     margin-bottom: 8px;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fleft ul li span.flist {}
 
 section.abtfeatures section.wrapper section.bottom section.fleft ul li span.flist div.fone {
@@ -2625,11 +3217,13 @@ section.abtfeatures section.wrapper section.bottom section.fleft ul li span.flis
     align-items: center;
     margin-top: 2.5vh;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fleft ul li span.flist div.fone img {
     display: block;
     height: 2vh;
     margin-right: 8px;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fleft ul li span.flist div.fone h3 {
     font-size: 13px;
     color: #898996;
@@ -2651,28 +3245,34 @@ section.abtfeatures section.wrapper section.bottom section.fleft ul li span.flis
     font-size: 13px;
     color: #898996;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fleft ul li h3.flistarea {
     font-size: 13px;
     color: #898996;
     margin-bottom: 2vh;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fleft ul li span.applogo {
     display: flex;
     align-items: center;
     justify-content: space-between;
     max-width: 50%;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fleft ul li span.applogo img {
     display: block;
     height: 3.2vh;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fright {
     width: 56%;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fright ul {
     display: flex;
     justify-content: space-between;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fright ul li {
     background: #16161a;
     border-radius: 13px;
@@ -2683,6 +3283,7 @@ section.abtfeatures section.wrapper section.bottom section.fright ul li {
 }
 
 section.abtfeatures section.wrapper section.bottom section.fright ul li span.flogo {}
+
 section.abtfeatures section.wrapper section.bottom section.fright ul li span.flogo img {
     padding: 7px;
     background: #26262b;
@@ -2690,30 +3291,33 @@ section.abtfeatures section.wrapper section.bottom section.fright ul li span.flo
     border-radius: 8px;
     margin-bottom: 12px;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fright ul li h2 {
     font-size: 18px;
     margin-bottom: 8px;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fright ul li span.flist {}
+
 section.abtfeatures section.wrapper section.bottom section.fright ul li span.flist div.fone {
-    display: flex
-;
+    display: flex;
     align-items: center;
     margin-top: 2.5vh;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fright ul li span.flist div.fone img {
     display: block;
     height: 2vh;
     margin-right: 8px;
 }
-section.abtfeatures section.wrapper section.bottom section.fright ul li span.flist div.fone h3
- {
+
+section.abtfeatures section.wrapper section.bottom section.fright ul li span.flist div.fone h3 {
     font-size: 13px;
     color: #898996;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fright ul li span.flist div.ftwo {
-    display: flex
-;
+    display: flex;
     align-items: center;
     margin-top: 2.5vh;
 }
@@ -2728,6 +3332,7 @@ section.abtfeatures section.wrapper section.bottom section.fright ul li span.fli
     font-size: 13px;
     color: #898996;
 }
+
 section.abtfeatures section.wrapper section.bottom section.fright ul li img.rbg {
     display: block;
     height: 20vh;
@@ -2749,11 +3354,12 @@ section.works section.wrapper section.top {
 section.works section.wrapper section.top h2 {
     font-family: 'Gropled';
     font-size: 36px;
-    margin-bottom:16px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 section.works section.wrapper section.top h3 {
     color: #999999;
     line-height: 1.6em;
@@ -2763,30 +3369,36 @@ section.works section.wrapper section.top h3 {
     justify-content: center;
     margin-bottom: 48px;
 }
+
 section.works section.wrapper section.top section.template {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 section.works section.wrapper section.top section.template section.left {}
+
 section.works section.wrapper section.top section.template section.left img {
     display: block;
     height: 28vh;
 }
+
 section.works section.wrapper section.top section.template section.right {}
+
 section.works section.wrapper section.top section.template section.right h4.des {
     color: #fff;
     margin-left: 2.7vw;
     margin-bottom: 2vw;
     font-size: 14px;
 }
+
 section.works section.wrapper section.top section.template section.right span.tem {
-    display: flex
-;
+    display: flex;
     align-items: center;
     position: relative;
     margin-bottom: 12px;
 }
+
 section.template section.right span.tem h3 {
     margin-right: 12px;
     margin-bottom: 0;
@@ -2799,6 +3411,7 @@ section.template section.right span.tem h3 {
     font-size: 13px;
     padding: 6px 12px;
 }
+
 section.works section.wrapper section.top section.template section.right span.tem h3::before {
     content: "";
     position: absolute;
@@ -2806,21 +3419,23 @@ section.works section.wrapper section.top section.template section.right span.te
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to right,#2e2e30,#5a5a5c);
+    background: linear-gradient(to right, #2e2e30, #5a5a5c);
     z-index: -1;
     border-radius: 50%;
 }
+
 section.works section.wrapper section.top section.template section.right span.tem h2 {
     font-family: 'Inter Regular';
     font-size: 22px;
     margin-bottom: 0;
     display: block;
-    background: linear-gradient(to right,#2e2e30,#5a5a5c);
+    background: linear-gradient(to right, #2e2e30, #5a5a5c);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 section.works section.wrapper section.top section.template section.right a.getstarted {
     background: #26262b;
     display: flex;
@@ -2831,11 +3446,13 @@ section.works section.wrapper section.top section.template section.right a.getst
     padding-left: 16px;
     margin-left: 2.7vw;
 }
+
 section.works section.wrapper section.top section.template section.right a.getstarted h4 {
 
     color: #8d8d99;
     font-size: 14.5px;
 }
+
 section.works section.wrapper section.top section.template section.right a.getstarted img {
     margin-left: 0.7vw;
 }
@@ -2850,18 +3467,21 @@ section.works section.wrapper section.bottom ul li {
     justify-content: space-between;
     margin-bottom: 4vh;
 }
+
 section.works section.wrapper section.bottom ul li section.left {}
+
 section.works section.wrapper section.bottom ul li section.left img.order1 {
     display: block;
     height: 28vh;
 }
+
 section.works section.wrapper section.bottom ul li section.left span.head {
-    display: flex
-;
+    display: flex;
     align-items: center;
     position: relative;
     margin-bottom: 12px;
 }
+
 section.works section.wrapper section.bottom ul li section.left span.head h3 {
     margin-right: 12px;
     margin-bottom: 0;
@@ -2874,17 +3494,19 @@ section.works section.wrapper section.bottom ul li section.left span.head h3 {
     font-size: 13px;
     padding: 6px 12px;
 }
-section.works section.wrapper section.bottom ul li section.left span.head h3::before{
+
+section.works section.wrapper section.bottom ul li section.left span.head h3::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to right,#2e2e30,#5a5a5c);
+    background: linear-gradient(to right, #2e2e30, #5a5a5c);
     z-index: -1;
-    border-radius: 50%;   
+    border-radius: 50%;
 }
+
 section.works section.wrapper section.bottom ul li section.left span.head h2 {
     font-family: 'Inter Regular';
     font-size: 22px;
@@ -2906,8 +3528,7 @@ section.works section.wrapper section.bottom ul li section.left h4 {
 
 section.works section.wrapper section.bottom ul li section.left a.getstarted {
     background: #26262b;
-    display: flex
-;
+    display: flex;
     align-items: center;
     padding: 12px 12px;
     border-radius: 27px;
@@ -2915,27 +3536,30 @@ section.works section.wrapper section.bottom ul li section.left a.getstarted {
     padding-left: 16px;
     margin-left: 2.7vw;
 }
-section.works section.wrapper section.bottom ul li section.left a.getstarted1{
+
+section.works section.wrapper section.bottom ul li section.left a.getstarted1 {
     max-width: 28%;
 }
+
 section.works section.wrapper section.bottom ul li section.left a.getstarted h4 {
     color: #8d8d99;
     font-size: 14.5px;
     margin-bottom: 0;
     margin-left: 0;
 }
+
 section.works section.wrapper section.bottom ul li section.left a.getstarted img {}
 
 section.works section.wrapper section.bottom ul li section.right {}
+
 section.works section.wrapper section.bottom ul li section.right span.head {
-    display: flex
-;
+    display: flex;
     align-items: center;
     position: relative;
     margin-bottom: 12px;
 }
-section.works section.wrapper section.bottom ul li section.right span.head h3
- {
+
+section.works section.wrapper section.bottom ul li section.right span.head h3 {
     margin-right: 12px;
     margin-bottom: 0;
     position: relative;
@@ -2947,18 +3571,20 @@ section.works section.wrapper section.bottom ul li section.right span.head h3
     font-size: 13px;
     padding: 6px 12px;
 }
-section.works section.wrapper section.bottom ul li section.right span.head h3:before{
+
+section.works section.wrapper section.bottom ul li section.right span.head h3:before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to right,#2e2e30,#5a5a5c);
+    background: linear-gradient(to right, #2e2e30, #5a5a5c);
     z-index: -1;
-    border-radius: 50%;   
+    border-radius: 50%;
 }
-section.works section.wrapper section.bottom ul li section.right span.head h2{
+
+section.works section.wrapper section.bottom ul li section.right span.head h2 {
     font-family: 'Inter Regular';
     font-size: 22px;
     margin-bottom: 0;
@@ -2969,20 +3595,22 @@ section.works section.wrapper section.bottom ul li section.right span.head h2{
     color: transparent;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 section.works section.wrapper section.bottom ul li section.right h4 {
     color: #fff;
     margin-left: 2.7vw;
     margin-bottom: 2vw;
     font-size: 14px;
 }
+
 section.works section.wrapper section.bottom ul li section.right img {
     display: block;
     height: 28vh;
 }
+
 section.works section.wrapper section.bottom ul li section.right a.getstarted {
     background: #26262b;
-    display: flex
-;
+    display: flex;
     align-items: center;
     padding: 12px 12px;
     border-radius: 27px;
@@ -2990,12 +3618,14 @@ section.works section.wrapper section.bottom ul li section.right a.getstarted {
     padding-left: 16px;
     margin-left: 2.7vw;
 }
+
 section.works section.wrapper section.bottom ul li section.right a.getstarted h4 {
     color: #8d8d99;
     font-size: 14.5px;
     margin-bottom: 0;
     margin-left: 0;
 }
+
 section.works section.wrapper section.bottom ul li section.right a.getstarted img {
     height: auto;
 }
@@ -3003,12 +3633,13 @@ section.works section.wrapper section.bottom ul li section.right a.getstarted im
 section.abtexplore {
     margin-bottom: 8vh;
 }
+
 section.abtexplore section.wrapper {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
+
 section.abtexplore section.wrapper h2 {
     font-family: 'Gropled';
     font-size: 36px;
@@ -3019,7 +3650,8 @@ section.abtexplore section.bottom {}
 
 section.abtexplore section.bottom img {
     display: block;
-    width: 100%;;
+    width: 100%;
+    ;
 }
 
 
@@ -3027,12 +3659,13 @@ section.abtexplore section.bottom img {
 section.personilize {
     margin-bottom: 14vh;
 }
+
 section.personilize section.wrapper {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 section.personilize section.wrapper section.left {
     position: relative;
 }
@@ -3048,18 +3681,16 @@ section.personilize section.wrapper section.left h2 {
     left: 38%;
     width: 32vw;
 }
+
 section.personilize section.wrapper section.right {
     position: relative;
 }
 
-section.personilize section.wrapper section.right img.pbg2 {
-    
-}
+section.personilize section.wrapper section.right img.pbg2 {}
 
 section.personilize section.wrapper section.right span.hostch {
     background: #fff;
-    display: flex
-;
+    display: flex;
     align-items: center;
     border-radius: 6px;
     padding: 8px;
@@ -3068,6 +3699,7 @@ section.personilize section.wrapper section.right span.hostch {
     top: 12vh;
     left: -4vw;
 }
+
 section.personilize section.wrapper section.right span.hostch img {
     margin-right: 8px;
 }
@@ -3093,14 +3725,17 @@ section.unlockliveprojects section.wrapper {}
 section.unlockliveprojects section.wrapper section.top {}
 
 section.unlockliveprojects section.wrapper section.top section.left {}
+
 section.unlockliveprojects section.wrapper section.top section.left h2 {
     font-family: 'Gropled';
     font-size: 34px;
     margin-bottom: 3vh;
 }
+
 section.unlockliveprojects section.wrapper hr.line {
     margin-bottom: 6vh;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea {
     display: block;
     width: 57%;
@@ -3108,6 +3743,7 @@ section.unlockliveprojects section.wrapper section.projectunlockarea {
     position: relative;
     z-index: 0;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea img.unlockbg {
     display: block;
     width: 100%;
@@ -3116,22 +3752,23 @@ section.unlockliveprojects section.wrapper section.projectunlockarea img.unlockb
     z-index: 0;
     position: relative;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea section.logounlock {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
     top: 28px;
     left: 40%;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea section.logounlock img {
     margin-right: 14px;
 }
 
 section.unlockliveprojects section.wrapper section.projectunlockarea section.logounlock h2 {}
-section.unlockliveprojects section.wrapper section.projectunlockarea h1
- {
+
+section.unlockliveprojects section.wrapper section.projectunlockarea h1 {
     position: absolute;
     top: 11vh;
     left: 27%;
@@ -3144,6 +3781,7 @@ section.unlockliveprojects section.wrapper section.projectunlockarea h1
     color: transparent;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea h4 {
     color: #B2EBF2;
     position: absolute;
@@ -3151,12 +3789,14 @@ section.unlockliveprojects section.wrapper section.projectunlockarea h4 {
     left: 45%;
     font-size: 14px;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea {
     position: absolute;
     top: 22vh;
     left: 27%;
 }
-section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea div.countdown{
+
+section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea div.countdown {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -3166,32 +3806,38 @@ section.unlockliveprojects section.wrapper section.projectunlockarea section.tim
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     width: 25vw;
 }
-section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea div.countdown div.time-box
- {
+
+section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea div.countdown div.time-box {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     margin-right: 36px;
 }
-section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea div.countdown div.time-box1{
+
+section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea div.countdown div.time-box1 {
     margin-right: 0;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea div.countdown div.time-box div.time {
     font-size: 48px;
     font-family: 'Inter Bold';
     margin-bottom: 8px;
 }
-section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea div.countdown img.export{
+
+section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea div.countdown img.export {
     margin-right: 16px;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea section.timerarea div.countdown div.time-box div.label {}
+
 section.unlockliveprojects section.wrapper section.projectunlockarea h3.ambo {
     font-size: 12px;
     position: absolute;
     top: 36.5vh;
     left: 34%;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea div.email {
     background: #070417;
     border: 2px solid #fff;
@@ -3203,11 +3849,13 @@ section.unlockliveprojects section.wrapper section.projectunlockarea div.email {
     padding-left: 16px;
     left: 21%;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea div.email input[type="email"] {
     background: none;
     position: relative;
     width: 90%;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea div.email img {
     position: absolute;
     display: block;
@@ -3216,6 +3864,7 @@ section.unlockliveprojects section.wrapper section.projectunlockarea div.email i
     right: 16px;
     cursor: pointer;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea div.password {
     background: #070417;
     border: 2px solid #fff;
@@ -3227,13 +3876,15 @@ section.unlockliveprojects section.wrapper section.projectunlockarea div.passwor
     padding-left: 16px;
     left: 21%;
 }
-section.unlockliveprojects section.wrapper section.projectunlockarea div.password input[type="password"],section.unlockliveprojects section.wrapper section.projectunlockarea div.password input {
+
+section.unlockliveprojects section.wrapper section.projectunlockarea div.password input[type="password"],
+section.unlockliveprojects section.wrapper section.projectunlockarea div.password input {
     background: none;
     position: relative;
     width: 90%;
 }
-section.unlockliveprojects section.wrapper section.projectunlockarea div.password img
- {
+
+section.unlockliveprojects section.wrapper section.projectunlockarea div.password img {
     position: absolute;
     display: block;
     height: 2vh;
@@ -3241,6 +3892,7 @@ section.unlockliveprojects section.wrapper section.projectunlockarea div.passwor
     right: 16px;
     cursor: pointer;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea button.unlockproject {
     font-size: 19px;
     position: relative;
@@ -3253,6 +3905,7 @@ section.unlockliveprojects section.wrapper section.projectunlockarea button.unlo
     z-index: 22;
     left: 38%;
 }
+
 section.unlockliveprojects section.wrapper section.projectunlockarea button.unlockproject::before {
     content: "";
     position: absolute;
@@ -3260,11 +3913,9 @@ section.unlockliveprojects section.wrapper section.projectunlockarea button.unlo
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-        to right,
-        #9A50E1,
-        #7050E0, #D1C4E9, #F8BBD0,#B2EBF2
-    );
+    background: linear-gradient(to right,
+            #9A50E1,
+            #7050E0, #D1C4E9, #F8BBD0, #B2EBF2);
     z-index: -1;
     border-radius: 5px;
 }
@@ -3285,14 +3936,17 @@ section.projectunlockarea h3.errormessage {
     font-size: 10px;
     color: #D84226;
     left: 22%;
-}     
-section.projectunlockarea h3.enteremail,section.projectunlockarea h3.checkemail{
+}
+
+section.projectunlockarea h3.enteremail,
+section.projectunlockarea h3.checkemail {
     position: absolute;
     top: 39.2vh;
     font-size: 10px;
     color: #D84226;
     left: 24%;
 }
+
 section.projectunlockarea h3.enterpass {
     position: absolute;
     top: 46.3vh;
@@ -3300,6 +3954,7 @@ section.projectunlockarea h3.enterpass {
     color: #D84226;
     left: 24%;
 }
+
 /*unlockproject.html */
 
 
@@ -3308,11 +3963,13 @@ section.projectunlockarea h3.enterpass {
 /*moduleshome.html */
 
 section.viewmodules section.wrapper section.top section.left {}
+
 section.viewmodules section.wrapper section.top section.left h2 {
     font-family: 'Gropled';
     font-size: 34px;
     margin-bottom: 3vh;
 }
+
 section.viewmodules section.wrapper hr.line {
     margin-bottom: 6vh;
 }
@@ -3330,8 +3987,7 @@ section.modulearea section.wrapper {
 
 
 section.modulearea section.wrapper ul {
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 18vh;
@@ -3346,13 +4002,16 @@ section.modulearea section.wrapper ul li {
     margin-right: 36px;
     min-height: 30vh;
 }
-section.modulearea section.wrapper ul li:last-child{
+
+section.modulearea section.wrapper ul li:last-child {
     margin-right: 0;
 }
+
 section.modulearea section.wrapper ul li section.top {
     position: relative;
     height: 14vh;
 }
+
 section.modulearea section.wrapper ul li section.top img.modulehome {
     display: block;
     height: 22vh;
@@ -3361,7 +4020,12 @@ section.modulearea section.wrapper ul li section.top img.modulehome {
     position: relative;
     top: -10vh;
 }
-section.modulearea section.wrapper ul li section.top img.lone, section.modulearea section.wrapper ul li section.top img.ltwo, section.modulearea section.wrapper ul li section.top img.lfour, section.modulearea section.wrapper ul li section.top img.lfive, section.modulearea section.wrapper ul li section.top img.lsix {
+
+section.modulearea section.wrapper ul li section.top img.lone,
+section.modulearea section.wrapper ul li section.top img.ltwo,
+section.modulearea section.wrapper ul li section.top img.lfour,
+section.modulearea section.wrapper ul li section.top img.lfive,
+section.modulearea section.wrapper ul li section.top img.lsix {
     display: block;
     height: 18px;
     width: 18px;
@@ -3374,8 +4038,9 @@ section.modulearea section.wrapper ul li section.top img.lone, section.moduleare
     border-radius: 50%;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
+
 section.modulearea section.wrapper ul li section.top img.lone {
-    right: 170px; 
+    right: 170px;
 }
 
 section.modulearea section.wrapper ul li section.top img.ltwo {
@@ -3398,11 +4063,11 @@ section.modulearea section.wrapper ul li section.top img.lsix {}
 section.modulearea section.wrapper ul li section.bottom {}
 
 section.modulearea section.wrapper ul li section.bottom div.moduletitle {
-    display: flex
-;
+    display: flex;
     align-items: center;
     margin-bottom: 1.6vh;
 }
+
 section.modulearea section.wrapper ul li section.bottom div.moduletitle h2.modulename {}
 
 section.modulearea section.wrapper ul li section.bottom div.moduletitle img.moduleimage {
@@ -3414,6 +4079,7 @@ section.modulearea section.wrapper ul li section.bottom div.moduletitle img.modu
 section.modulearea section.wrapper ul li section.bottom h3.pvalue {
     margin-bottom: 0.5vh;
 }
+
 section.modulearea section.wrapper ul li section.bottom h4.uploadeddate {
     background: linear-gradient(to right, #3f3f3f, #9c9c9f);
     -webkit-background-clip: text;
@@ -3422,6 +4088,7 @@ section.modulearea section.wrapper ul li section.bottom h4.uploadeddate {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin-bottom: 2vh;
 }
+
 section.modulearea section.wrapper ul li section.bottom a.redirectbutton {
     font-size: 14px;
     position: relative;
@@ -3435,6 +4102,7 @@ section.modulearea section.wrapper ul li section.bottom a.redirectbutton {
     margin-bottom: 2.6vh;
     left: 23%;
 }
+
 section.modulearea section.wrapper ul li section.bottom a.redirectbutton::before {
     content: "";
     position: absolute;
@@ -3484,6 +4152,7 @@ section.learningunsection section.wrapper section.unlocklearn {
     z-index: 10;
     position: relative;
 }
+
 section.learningunsection img.learnbg {
     position: absolute;
     display: block;
@@ -3493,6 +4162,7 @@ section.learningunsection img.learnbg {
     top: 18vh;
     left: 35%;
 }
+
 section.learningunsection section.wrapper section.unlocklearn h2 {
     margin-bottom: 3vh;
 }
@@ -3505,10 +4175,12 @@ section.learningunsection section.wrapper section.unlocklearn section.enterlearn
     justify-content: center;
     flex-direction: column;
 }
+
 section.learningunsection section.wrapper section.unlocklearn section.enterlearnemailid div.emailid label {
     margin-bottom: -10px;
     font-size: 12px;
 }
+
 section.learningunsection section.wrapper section.unlocklearn section.enterlearnemailid div.emailid input[type="email"] {
     padding: 9px 24px;
     border: 2px solid #41403f;
@@ -3517,17 +4189,20 @@ section.learningunsection section.wrapper section.unlocklearn section.enterlearn
     border-radius: 8px;
     padding-left: 12px;
 }
+
 section.learningunsection section.wrapper section.unlocklearn section.enterlearnemailid div.fpassword {
     display: flex;
     /* align-items: center; */
     justify-content: center;
     flex-direction: column;
 }
-section.learningunsection section.wrapper section.unlocklearn section.enterlearnemailid div.fpassword label{
+
+section.learningunsection section.wrapper section.unlocklearn section.enterlearnemailid div.fpassword label {
     margin-bottom: -10px;
     font-size: 12px;
 }
-section.learningunsection section.wrapper section.unlocklearn section.enterlearnemailid div.fpassword input{
+
+section.learningunsection section.wrapper section.unlocklearn section.enterlearnemailid div.fpassword input {
     padding: 9px 24px;
     border: 2px solid #41403f;
     margin: 1.6vh 0;
@@ -3535,6 +4210,7 @@ section.learningunsection section.wrapper section.unlocklearn section.enterlearn
     border-radius: 8px;
     padding-left: 12px;
 }
+
 section.learningunsection section.wrapper section.unlocklearn section.enterlearnemailid div.checkboxlearn {
     display: flex;
     align-items: center;
@@ -3553,10 +4229,9 @@ section.learningunsection section.wrapper section.unlocklearn section.enterlearn
     font-weight: 600;
     font-size: 13px;
 }
-section.learningunsection section.wrapper section.unlocklearn section.enterlearnemailid button.gotolearn
- {
-    display: flex
-;
+
+section.learningunsection section.wrapper section.unlocklearn section.enterlearnemailid button.gotolearn {
+    display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -3568,12 +4243,14 @@ section.learningunsection section.wrapper section.unlocklearn section.enterlearn
     padding: 8px 18px;
     border-radius: 6px;
 }
+
 section.learningunsection section.wrapper section.unlocklearn .sampleemailandpass {
     position: absolute;
     bottom: 24px;
     font-size: 10px;
     opacity: 40%;
 }
+
 /*learnpath.html */
 
 
@@ -3590,9 +4267,11 @@ section.jobpoup {
     top: 12vh;
     z-index: 10;
 }
+
 section.jobpoup section.wrapper {
     margin: 0 0.5vw;
 }
+
 section.jobpoup section.wrapper form {}
 
 section.jobpoup section.wrapper form h2 {
@@ -3612,6 +4291,7 @@ section.jobpoup section.wrapper form h4 {
     text-align: center;
     margin-bottom: 2vh;
 }
+
 section.jobpoup section.wrapper form div.name {
     display: flex;
     flex-direction: column;
@@ -3628,15 +4308,18 @@ section.jobpoup section.wrapper form div.name input[type="text"] {
     padding: 6px 12px;
     border-radius: 6px;
 }
+
 section.jobpoup section.wrapper form div.designation {
     display: flex;
     flex-direction: column;
     margin-bottom: 1.3vh;
 }
-section.jobpoup section.wrapper form div.designation label{
+
+section.jobpoup section.wrapper form div.designation label {
     font-size: 13px;
     margin-bottom: 4px;
 }
+
 section.jobpoup section.wrapper form div.designation input {
     border: 2px solid #262626;
     padding: 6px 12px;
@@ -3665,6 +4348,7 @@ section.jobpoup section.wrapper form div.contactinfo input[type="email"] {
     padding: 6px 12px;
     border-radius: 6px;
 }
+
 section.jobpoup section.wrapper form div.contactinfo input[type="email"]:hover,
 section.jobpoup section.wrapper form div.designation input#browser:hover,
 section.jobpoup section.wrapper form div.name input[type="text"]:hover,
@@ -3675,6 +4359,7 @@ section.jobpoup section.wrapper form div.mbnumer input[type="text"]:hover {
     border: 2px solid #fff;
     cursor: pointer;
 }
+
 section.jobpoup section.wrapper form div.mbnumer {
     display: flex;
     flex-direction: column;
@@ -3708,6 +4393,7 @@ section.jobpoup section.wrapper form div.shortdescribe textarea {
     padding: 6px 12px;
     border-radius: 6px;
 }
+
 section.jobpoup section.wrapper form button[type="submit"] {
     background: #0d0c0a;
     border: 2px solid #262627;
@@ -3718,7 +4404,8 @@ section.jobpoup section.wrapper form button[type="submit"] {
     display: flex;
     align-items: center;
 }
-section.jobpoup section.wrapper form button:hover{
+
+section.jobpoup section.wrapper form button:hover {
     border: 2px solid #fff;
 }
 
@@ -3742,6 +4429,7 @@ section.jobpoup section.wrapper form button:hover{
 .jobpoup {
     backdrop-filter: blur(5px);
 }
+
 section.jobgrey {
     height: 100vh;
     width: 100%;
@@ -3762,11 +4450,13 @@ section.jobconfirmalert {
     top: 12vh;
     z-index: 10;
 }
+
 section.jobconfirmalert h2.as {
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 section.jobconfirmalert div.one {
     display: flex;
     align-items: center;
@@ -3787,7 +4477,8 @@ section.jobconfirmalert h4 {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #999999;;
+    color: #999999;
+    ;
     font-size: 12px;
     margin-top: 6px;
 }
@@ -3799,6 +4490,7 @@ section.jobconfirmalert hr.jobalertline {
     background: #262626;
     margin: 8px 0;
 }
+
 section.jobconfirmalert h5 {
     color: #a584f8;
     font-size: 12px;
