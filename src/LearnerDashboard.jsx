@@ -1,4 +1,49 @@
 import React, { useState } from 'react';
+import { 
+  Flame, 
+  Zap, 
+  Target, 
+  Users, 
+  Calendar, 
+  Keyboard, 
+  FileCode,
+  LayoutDashboard,
+  BookOpen,
+  ClipboardList,
+  StickyNote,
+  HelpCircle,
+  Video,
+  CheckSquare,
+  Star,
+  Layers,
+  Settings,
+  LogOut,
+  Search,
+  Bell,
+  PanelLeftClose,
+  PanelLeftOpen,
+  ChevronLeft,
+  X,
+  ChevronRight,
+  Play,
+  SlidersHorizontal,
+  User,
+  Plus,
+  Code,
+  Database,
+  UserPlus,
+  UploadCloud,
+  CheckCircle2,
+  Clock,
+  Menu,
+  Bookmark,
+  Share2,
+  Lock,
+  ChevronDown,
+  Sparkles,
+  PlayCircle,
+  Clipboard
+} from 'lucide-react';
 import './LearnerDashboard.css';
 
 const LearnerDashboard = ({ setActivePage }) => {
@@ -14,6 +59,83 @@ const LearnerDashboard = ({ setActivePage }) => {
   const [activeNav, setActiveNav] = useState('dashboard');
   const [resourceIdx, setResourceIdx] = useState(0);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [courseFilter, setCourseFilter] = useState('all');
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploadUrl, setUploadUrl] = useState('');
+  const [uploadError, setUploadError] = useState('');
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+
+  const handleUploadSubmit = () => {
+    if (!uploadUrl) {
+      setUploadError('Please enter a link.');
+      return;
+    }
+    const lowerUrl = uploadUrl.toLowerCase();
+    const isValid = lowerUrl.includes('github.com') ||
+                    lowerUrl.includes('docs.google.com') ||
+                    lowerUrl.includes('vercel.app') ||
+                    lowerUrl.includes('netlify.app');
+    
+    if (!isValid) {
+      setUploadError('Only GitHub, Google Docs, Vercel, or Netlify links are permitted.');
+      return;
+    }
+    
+    // Success scenario
+    setUploadError('');
+    setShowUploadModal(false);
+    setUploadUrl('');
+    
+    // Show success popup
+    setShowSuccessPopup(true);
+    setTimeout(() => {
+      setShowSuccessPopup(false);
+    }, 3000);
+  };
+
+  const COURSES = [
+    {
+      id: 1,
+      level: 'INTERMEDIATE',
+      title: 'Mastering React 18 & Ecosystem',
+      instructor: 'Sarah Drasner',
+      module: 4,
+      progress: 68,
+      img: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&q=80',
+      status: 'progress',
+    },
+    {
+      id: 2,
+      level: 'ADVANCED',
+      title: 'System Architecture Design',
+      instructor: 'Marcus Holloway',
+      module: 2,
+      progress: 24,
+      img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80',
+      status: 'progress',
+    },
+    {
+      id: 3,
+      level: 'FOUNDATIONS',
+      title: 'UI/UX Fundamentals',
+      instructor: 'Elena Rodriguez',
+      module: 12,
+      progress: 92,
+      img: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=600&q=80',
+      status: 'completed',
+    },
+    {
+      id: 4,
+      level: 'INTERMEDIATE',
+      title: 'Modern Node.js Backend',
+      instructor: 'Tom Preston',
+      module: 1,
+      progress: 5,
+      img: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=600&q=80',
+      status: 'progress',
+    },
+  ];
 
   const handleLogout = () => {
     // Wipe all learner-related identity items from sessionStorage
@@ -27,16 +149,16 @@ const LearnerDashboard = ({ setActivePage }) => {
   };
 
   const TASKS = [
-    { icon: '📅', title: 'Complete HTML/CSS Module 4', due: 'Due Today, 5:00 PM', color: '#ef4444' },
-    { icon: '⌨️', title: 'Git Fundamentals Quiz', due: 'Due Tomorrow', color: '#f59e0b' },
-    { icon: 'Λ', title: 'Submit Portfolio V1', due: 'Due Friday', color: '#8b5cf6' },
+    { icon: <Calendar size={14} />, title: 'Complete HTML/CSS Module 4', due: 'Due Today, 5:00 PM', color: '#ef4444' },
+    { icon: <Keyboard size={14} />, title: 'Git Fundamentals Quiz', due: 'Due Tomorrow', color: '#f59e0b' },
+    { icon: <FileCode size={14} />, title: 'Submit Portfolio V1', due: 'Due Friday', color: '#8b5cf6' },
   ];
 
   const MILESTONES = [
-    { icon: '🔥', name: '7-Day Streak', sub: 'Consistency King', done: true },
-    { icon: '⊙', name: 'First Commit', sub: 'Hello World Moment', done: true },
-    { icon: '🎯', name: 'Fast Learner', sub: '20 Hours This Week', done: true },
-    { icon: '👥', name: 'Community Ally', sub: '5 Peer Reviews Done', done: false },
+    { icon: <Flame size={18} />, name: '7-Day Streak', sub: 'Consistency King', done: true, color: '#f97316' },
+    { icon: <Zap size={18} />, name: 'First Commit', sub: 'Hello World Moment', done: true, color: '#eab308' },
+    { icon: <Target size={18} />, name: 'Fast Learner', sub: '20 Hours This Week', done: true, color: '#3b5fe2' },
+    { icon: <Users size={18} />, name: 'Community Ally', sub: '5 Peer Reviews Done', done: false, color: '#0d9488' },
   ];
 
   const RESOURCES = [
@@ -91,14 +213,14 @@ const LearnerDashboard = ({ setActivePage }) => {
         </nav>
         <div className="ld-header-right">
           <div className="ld-header-search">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+            <Search size={14} color="#94a3b8" />
             <input placeholder="Search resources..." className="ld-header-search-input" />
           </div>
           <button className="ld-header-icon-btn" title="Notifications">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
+            <Bell size={17} />
           </button>
           <button className="ld-header-icon-btn" title="Help">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+            <HelpCircle size={17} />
           </button>
           <div className="ld-header-avatar">{initials || 'CL'}</div>
         </div>
@@ -113,76 +235,22 @@ const LearnerDashboard = ({ setActivePage }) => {
           onClick={() => setSidebarCollapsed(c => !c)}
           title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
-          {sidebarCollapsed ? (
-            /* Panel-open icon (chevrons right) */
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <line x1="9" y1="3" x2="9" y2="21" />
-              <polyline points="14 9 17 12 14 15" />
-            </svg>
-          ) : (
-            /* Panel-close icon (chevrons left) */
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <line x1="9" y1="3" x2="9" y2="21" />
-              <polyline points="11 9 8 12 11 15" />
-            </svg>
-          )}
+          {sidebarCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
         </button>
 
         {/* Nav */}
         <nav className="ld-nav">
           {[
-            {
-              key: 'dashboard', label: 'Dashboard', icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
-              )
-            },
-            {
-              key: 'courses', label: 'My Courses', icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>
-              )
-            },
-            {
-              key: 'assignments', label: 'Assignments', icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><rect x="8" y="2" width="8" height="4" rx="1" ry="1" /></svg>
-              )
-            },
-            {
-              key: 'notes', label: 'Notes', icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-              )
-            },
-            {
-              key: 'support', label: 'Support', icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
-              )
-            },
-            {
-              key: 'live', label: 'Live Sessions', icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 7l-7 5 7 5V7z" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" /><circle cx="8.5" cy="12" r="1.5" /></svg>
-              )
-            },
-            {
-              key: 'quizzes', label: 'Quiz', icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>
-              )
-            },
-            {
-              key: 'new', label: 'New to you', icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
-              )
-            },
-            {
-              key: 'projects', label: 'Projects', icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></svg>
-              )
-            },
-            {
-              key: 'settings', label: 'Settings', icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34" /><path d="M4 6h.01" /><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35" /></svg>
-              )
-            },
+            { key: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
+            { key: 'courses', label: 'My Courses', icon: <BookOpen size={18} /> },
+            { key: 'assignments', label: 'Assignments', icon: <ClipboardList size={18} /> },
+            { key: 'notes', label: 'Notes', icon: <StickyNote size={18} /> },
+            { key: 'support', label: 'Support', icon: <HelpCircle size={18} /> },
+            { key: 'live', label: 'Live Sessions', icon: <Video size={18} /> },
+            { key: 'quizzes', label: 'Quiz', icon: <CheckSquare size={18} /> },
+            { key: 'new', label: 'New to you', icon: <Star size={18} /> },
+            { key: 'projects', label: 'Projects', icon: <Layers size={18} /> },
+            { key: 'settings', label: 'Settings', icon: <Settings size={18} /> },
           ].map(n => (
             <button
               key={n.key}
@@ -196,12 +264,12 @@ const LearnerDashboard = ({ setActivePage }) => {
         </nav>
 
         <button className="ld-logout-btn" onClick={handleLogout}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+          <LogOut size={14} strokeWidth={2.5} />
           <span className="ld-nav-label">Logout</span>
         </button>
 
         <button className="ld-help">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+          <HelpCircle size={16} />
           Help Center
         </button>
       </aside>
@@ -212,6 +280,105 @@ const LearnerDashboard = ({ setActivePage }) => {
         {/* ── Content ── */}
         <main className="ld-content">
 
+          {/* ═══════════════════════════════
+               MY COURSES VIEW
+          ═══════════════════════════════ */}
+          {activeNav === 'courses' && (() => {
+            const filtered = COURSES.filter(c => {
+              if (courseFilter === 'progress') return c.status === 'progress';
+              if (courseFilter === 'completed') return c.status === 'completed';
+              return true;
+            });
+            return (
+              <div className="mc-page">
+                {/* Page Header */}
+                <div className="mc-header">
+                  <div>
+                    <h1 className="mc-title">My Courses</h1>
+                    <p className="mc-subtitle">Continue where you left off. You have 3 active modules today.</p>
+                  </div>
+                </div>
+
+                {/* Filter Bar */}
+                <div className="mc-filter-bar">
+                  <div className="mc-tabs">
+                    {[['all', 'All Courses'], ['progress', 'In Progress'], ['completed', 'Completed']].map(([key, label]) => (
+                      <button
+                        key={key}
+                        className={`mc-tab ${courseFilter === key ? 'mc-tab--active' : ''}`}
+                        onClick={() => setCourseFilter(key)}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <button className="mc-sort-btn">
+                    <SlidersHorizontal size={14} />
+                    Sort by: Recent
+                  </button>
+                </div>
+
+                {/* Courses Grid */}
+                <div className="mc-grid">
+                  {filtered.map(course => (
+                    <div key={course.id} className="mc-card">
+                      {/* Thumbnail */}
+                      <div className="mc-card-img-wrap">
+                        <img src={course.img} alt={course.title} className="mc-card-img" />
+                        <span className="mc-level-badge">{course.level}</span>
+                      </div>
+
+                      {/* Body */}
+                      <div className="mc-card-body">
+                        {/* Title row */}
+                        <div className="mc-card-title-row">
+                          <h3 className="mc-card-title">{course.title}</h3>
+                          <span className="mc-module-badge">Module<br />{course.module}</span>
+                        </div>
+
+                        {/* Instructor */}
+                        <div className="mc-instructor">
+                          <User size={12} />
+                          <span>{course.instructor}</span>
+                        </div>
+
+                        {/* Progress */}
+                        <div className="mc-progress-wrap">
+                          <div className="mc-progress-label-row">
+                            <span className="mc-progress-label">Progress</span>
+                            <span className="mc-progress-pct" style={{ color: course.progress >= 80 ? '#10b981' : '#3b5fe2' }}>{course.progress}%</span>
+                          </div>
+                          <div className="mc-progress-track">
+                            <div className="mc-progress-fill" style={{ width: `${course.progress}%`, background: course.progress >= 80 ? '#10b981' : '#3b5fe2' }} />
+                          </div>
+                        </div>
+
+                        {/* CTA */}
+                        <button className="mc-continue-btn" onClick={() => setActiveNav('module_view')}>
+                          Continue Module <ChevronRight size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Enroll CTA card */}
+                  <div className="mc-enroll-card">
+                    <div className="mc-enroll-icon">
+                      <Plus size={28} />
+                    </div>
+                    <h4 className="mc-enroll-title">Enroll in New Course</h4>
+                    <p className="mc-enroll-sub">Explore 200+ technical modules in our catalog.</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* ═══════════════════════════════
+               DASHBOARD VIEW
+          ═══════════════════════════════ */}
+          {activeNav === 'dashboard' && (
+          <>
           {/* Greeting row */}
           <div className="ld-greeting-row">
             <div className="ld-greeting-text">
@@ -248,7 +415,7 @@ const LearnerDashboard = ({ setActivePage }) => {
                 <h2 className="ld-course-title">Introduction to Web Development</h2>
                 <p className="ld-course-mastering">Currently Mastering: <strong>CSS Flexbox</strong></p>
                 <button className="ld-resume-btn">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3" /></svg>
+                  <Play size={14} fill="currentColor" />
                   Resume Learning
                 </button>
               </div>
@@ -288,7 +455,7 @@ const LearnerDashboard = ({ setActivePage }) => {
             <div className="ld-milestones">
               {MILESTONES.map((m, i) => (
                 <div key={i} className={`ld-milestone ${m.done ? 'ld-milestone--done' : ''}`}>
-                  <span className="ld-milestone-icon">{m.icon}</span>
+                  <span className="ld-milestone-icon" style={{ color: m.color }}>{m.icon}</span>
                   <span className="ld-milestone-name">{m.name}</span>
                   <span className="ld-milestone-sub">{m.sub}</span>
                 </div>
@@ -302,10 +469,10 @@ const LearnerDashboard = ({ setActivePage }) => {
               <h3 className="ld-section-title">Handpicked for You</h3>
               <div className="ld-carousel-arrows">
                 <button className="ld-arrow" onClick={() => setResourceIdx((i) => (i - 1 + RESOURCES.length) % RESOURCES.length)}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+                  <ChevronLeft size={14} strokeWidth={2.5} />
                 </button>
                 <button className="ld-arrow" onClick={() => setResourceIdx((i) => (i + 1) % RESOURCES.length)}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                  <ChevronRight size={14} strokeWidth={2.5} />
                 </button>
               </div>
             </div>
@@ -329,6 +496,377 @@ const LearnerDashboard = ({ setActivePage }) => {
             </div>
           </div>
 
+          </>
+          )}
+
+          {/* ═══════════════════════════════
+               ASSIGNMENTS VIEW
+          ═══════════════════════════════ */}
+          {activeNav === 'assignments' && (
+            <div className="am-page">
+              {/* Header */}
+              <div className="am-header">
+                <h1 className="am-title">Assignments Management</h1>
+                <p className="am-subtitle">
+                  Streamline your academic progress. Manage active tasks, track real-time feedback, and maintain your submission workflow in one precision workspace.
+                </p>
+              </div>
+
+              {/* Active Assignments Section */}
+              <div className="am-section">
+                <div className="am-section-header">
+                  <h2 className="am-section-title">Active Assignments</h2>
+                  <a href="#" className="am-view-all">View All Schedule</a>
+                </div>
+                
+                <div className="am-assignments-grid">
+                  {/* Card 1 */}
+                  <div className="am-card">
+                    <div className="am-card-header">
+                      <div className="am-card-icon-box am-icon-code">
+                        <Code size={16} strokeWidth={2.5} />
+                      </div>
+                      <span className="am-badge am-badge-high">HIGH PRIORITY</span>
+                    </div>
+                    <div className="am-card-body">
+                      <h3 className="am-card-title">Neural Networks Lab</h3>
+                      <p className="am-card-subtitle">CS 402 • Dr. Aris Thorne</p>
+                      
+                      <div className="am-progress-container">
+                        <div className="am-progress-text">
+                          <span>Progress</span>
+                          <span className="am-progress-value am-val-high">65%</span>
+                        </div>
+                        <div className="am-progress-bar">
+                          <div className="am-progress-fill am-fill-high" style={{ width: '65%' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="am-card-footer">
+                      <Clock size={12} className="am-footer-icon" />
+                      <span>Due in 2 days (Oct 24, 11:59 PM)</span>
+                    </div>
+                    <div className="am-card-actions">
+                      <button className="am-btn-action am-btn-view" onClick={() => setShowPdfModal(true)}>View</button>
+                      <button className="am-btn-action am-btn-upload" onClick={() => setShowUploadModal(true)}>Upload</button>
+                    </div>
+                  </div>
+
+                  {/* Card 2 */}
+                  <div className="am-card">
+                    <div className="am-card-header">
+                      <div className="am-card-icon-box am-icon-db">
+                        <Database size={16} strokeWidth={2.5} />
+                      </div>
+                      <span className="am-badge am-badge-std">STANDARD</span>
+                    </div>
+                    <div className="am-card-body">
+                      <h3 className="am-card-title">Database Sharding</h3>
+                      <p className="am-card-subtitle">CS 305 • Prof. Liao</p>
+                      
+                      <div className="am-progress-container">
+                        <div className="am-progress-text">
+                          <span>Progress</span>
+                          <span className="am-progress-value am-val-std">20%</span>
+                        </div>
+                        <div className="am-progress-bar">
+                          <div className="am-progress-fill am-fill-std" style={{ width: '20%' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="am-card-footer">
+                      <Clock size={12} className="am-footer-icon" />
+                      <span>Due in 5 days (Oct 27, 09:00 AM)</span>
+                    </div>
+                    <div className="am-card-actions">
+                      <button className="am-btn-action am-btn-view" onClick={() => setShowPdfModal(true)}>View</button>
+                      <button className="am-btn-action am-btn-upload" onClick={() => setShowUploadModal(true)}>Upload</button>
+                    </div>
+                  </div>
+
+                  {/* Card 3 */}
+                  <div className="am-card">
+                    <div className="am-card-header">
+                      <div className="am-card-icon-box am-icon-code">
+                        <FileCode size={16} strokeWidth={2.5} />
+                      </div>
+                      <span className="am-badge am-badge-std">STANDARD</span>
+                    </div>
+                    <div className="am-card-body">
+                      <h3 className="am-card-title">Frontend Architecture</h3>
+                      <p className="am-card-subtitle">CS 210 • Dr. Roberts</p>
+                      
+                      <div className="am-progress-container">
+                        <div className="am-progress-text">
+                          <span>Progress</span>
+                          <span className="am-progress-value am-val-std">85%</span>
+                        </div>
+                        <div className="am-progress-bar">
+                          <div className="am-progress-fill am-fill-std" style={{ width: '85%' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="am-card-footer">
+                      <Clock size={12} className="am-footer-icon" />
+                      <span>Due tomorrow</span>
+                    </div>
+                    <div className="am-card-actions">
+                      <button className="am-btn-action am-btn-view" onClick={() => setShowPdfModal(true)}>View</button>
+                      <button className="am-btn-action am-btn-upload" onClick={() => setShowUploadModal(true)}>Upload</button>
+                    </div>
+                  </div>
+
+                  {/* Card 4 */}
+                  <div className="am-card">
+                    <div className="am-card-header">
+                      <div className="am-card-icon-box am-icon-db">
+                        <Database size={16} strokeWidth={2.5} />
+                      </div>
+                      <span className="am-badge am-badge-high">HIGH</span>
+                    </div>
+                    <div className="am-card-body">
+                      <h3 className="am-card-title">Distributed Systems</h3>
+                      <p className="am-card-subtitle">CS 501 • Prof. Kim</p>
+                      
+                      <div className="am-progress-container">
+                        <div className="am-progress-text">
+                          <span>Progress</span>
+                          <span className="am-progress-value am-val-high">0%</span>
+                        </div>
+                        <div className="am-progress-bar">
+                          <div className="am-progress-fill am-fill-high" style={{ width: '0%' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="am-card-footer">
+                      <Clock size={12} className="am-footer-icon" />
+                      <span>Due in 3 days</span>
+                    </div>
+                    <div className="am-card-actions">
+                      <button className="am-btn-action am-btn-view" onClick={() => setShowPdfModal(true)}>View</button>
+                      <button className="am-btn-action am-btn-upload">Upload</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Assignment PDF Modal */}
+              {showPdfModal && (
+                <div className="am-pdf-modal-overlay" onClick={() => setShowPdfModal(false)}>
+                  <div className="am-pdf-modal-content" onClick={(e) => e.stopPropagation()}>
+                    <div className="am-pdf-modal-header">
+                      <h3 className="am-pdf-modal-title">Assignment Details (PDF)</h3>
+                      <button className="am-pdf-modal-close" onClick={() => setShowPdfModal(false)}>
+                        <X size={20} />
+                      </button>
+                    </div>
+                    <div className="am-pdf-modal-body">
+                      {/* Generic dummy PDF embedding */}
+                      <iframe 
+                        src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" 
+                        title="Assignment Details" 
+                        className="am-pdf-iframe"
+                        style={{ border: 'none', width: '100%', height: '100%' }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* Assignment Upload Modal */}
+              {showUploadModal && (
+                <div className="am-pdf-modal-overlay" onClick={() => setShowUploadModal(false)}>
+                  <div className="am-upload-modal-content" onClick={(e) => e.stopPropagation()}>
+                    <div className="am-pdf-modal-header">
+                      <h3 className="am-pdf-modal-title">Submit Link</h3>
+                      <button className="am-pdf-modal-close" onClick={() => setShowUploadModal(false)}>
+                        <X size={20} />
+                      </button>
+                    </div>
+                    <div className="am-upload-modal-body">
+                      <p className="am-upload-desc">Please provide a link to your assignment. Accepted domains: <strong>github.com, docs.google.com, vercel.app, netlify.app</strong>.</p>
+                      <input 
+                        type="url" 
+                        placeholder="https://..." 
+                        className="am-upload-input"
+                        value={uploadUrl}
+                        onChange={(e) => {
+                          setUploadUrl(e.target.value);
+                          setUploadError('');
+                        }}
+                      />
+                      {uploadError && <div className="am-upload-error">{uploadError}</div>}
+                      <button className="am-upload-submit-btn" onClick={handleUploadSubmit}>Submit Assignment</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          {/* ═══════════════════════════════
+               MODULE VIEW
+          ═══════════════════════════════ */}
+          {activeNav === 'module_view' && (
+            <div className="mv-page">
+              <div className="mv-left">
+                {/* Video Player */}
+                <div className="mv-video-wrapper">
+                  <img src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Video Placeholder" className="mv-video-img" />
+                  <button className="mv-play-btn"><Play fill="currentColor" size={32} /></button>
+                  <div className="mv-video-progress"></div>
+                </div>
+
+                {/* Info Block */}
+                <div className="mv-info">
+                  <div className="mv-info-header">
+                    <div>
+                      <span className="mv-badge">INTERMEDIATE LEVEL</span>
+                      <h1 className="mv-title">Advanced Systems Architecture & Scalability: Distributed Databases</h1>
+                    </div>
+                    <div className="mv-actions">
+                      <button className="mv-btn-save"><Bookmark size={14} /> Save</button>
+                      <button className="mv-btn-share"><Share2 size={16} color="#475569" /></button>
+                    </div>
+                  </div>
+
+                  <div className="mv-meta-row">
+                    <div className="mv-instructor">
+                      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Instructor" className="mv-instructor-img" />
+                      <div>
+                        <div className="mv-instructor-name">Elena Petrova</div>
+                        <div className="mv-instructor-title">Senior Architect • 12k students</div>
+                      </div>
+                    </div>
+                    <div className="mv-meta-divider"></div>
+                    <div className="mv-meta-item">
+                      <div className="mv-meta-label">Published</div>
+                      <div className="mv-meta-val">Oct 14, 2023</div>
+                    </div>
+                    <div className="mv-meta-item">
+                      <div className="mv-meta-label">Progress</div>
+                      <div className="mv-meta-val mv-val-blue">75% Complete</div>
+                    </div>
+                  </div>
+
+                  {/* Tabs */}
+                  <div className="mv-tabs">
+                    <button className="mv-tab mv-tab-active">Description</button>
+                    <button className="mv-tab">Resources</button>
+                    <button className="mv-tab">Assignments (1)</button>
+                    <button className="mv-tab">Discussion (42)</button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="mv-desc">
+                    <p>In this module, we dive deep into the trade-offs of distributed storage systems. We'll explore the CAP theorem, eventual consistency vs. strong consistency, and how modern databases like Cassandra and DynamoDB handle massive scale.</p>
+                    <h4>What you'll learn:</h4>
+                    <ul>
+                      <li>Partitioning strategies and consistent hashing</li>
+                      <li>Quorum-based replication protocols</li>
+                      <li>Handling network partitions and conflict resolution</li>
+                    </ul>
+                  </div>
+
+                  {/* Ask AI */}
+                  <div className="mv-ask-ai">
+                    <Sparkles size={16} className="mv-ai-icon" />
+                    <input type="text" placeholder="Ask AI about this lesson..." className="mv-ai-input" />
+                    <button className="mv-ai-btn">ASK</button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mv-right">
+                {/* Curriculum */}
+                <div className="mv-curriculum">
+                  <div className="mv-curr-header">
+                    <h3>Course Curriculum</h3>
+                    <span className="mv-curr-progress">14 / 20 Lessons</span>
+                  </div>
+
+                  {/* Week 1 */}
+                  <div className="mv-week">
+                    <div className="mv-week-header mv-week-header-collapsed">
+                      <span>WEEK 1: FUNDAMENTALS</span>
+                      <ChevronDown size={14} />
+                    </div>
+                  </div>
+
+                  {/* Week 2 */}
+                  <div className="mv-week">
+                    <div className="mv-week-header mv-week-header-active">
+                      <span>WEEK 2: DISTRIBUTED DATABASES</span>
+                    </div>
+                    <div className="mv-week-content">
+                      {/* Sub-item 1 */}
+                      <div className="mv-lesson mv-lesson-active">
+                        <div className="mv-lesson-thumb">
+                          <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Lesson" />
+                          <div className="mv-lesson-play"><Play fill="currentColor" size={10} /></div>
+                        </div>
+                        <div className="mv-lesson-info">
+                          <span className="mv-lesson-label">LESSON 2.1</span>
+                          <h4 className="mv-lesson-title">Introduction to CAP Theorem</h4>
+                          <span className="mv-lesson-meta">45 mins • In Progress</span>
+                        </div>
+                      </div>
+                      
+                      {/* Sub-item 2 */}
+                      <div className="mv-lesson">
+                        <div className="mv-lesson-icon-box">
+                          <HelpCircle size={16} />
+                        </div>
+                        <div className="mv-lesson-info">
+                          <span className="mv-lesson-label">QUIZ</span>
+                          <h4 className="mv-lesson-title">Database Consistency Patterns</h4>
+                          <span className="mv-lesson-meta"><Lock size={10}/> Locked</span>
+                        </div>
+                      </div>
+
+                      {/* Sub-item 3 */}
+                      <div className="mv-lesson">
+                        <div className="mv-lesson-icon-box">
+                          <Clipboard size={16} />
+                        </div>
+                        <div className="mv-lesson-info">
+                          <span className="mv-lesson-label">ASSIGNMENT</span>
+                          <h4 className="mv-lesson-title">Fault-Tolerant System Design</h4>
+                          <span className="mv-lesson-meta mv-meta-red">Due: Friday</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Week 3 */}
+                  <div className="mv-week">
+                    <div className="mv-week-header mv-week-header-collapsed">
+                      <span>WEEK 3: MICROSERVICES</span>
+                      <Lock size={14} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Live Session */}
+                <div className="mv-live-card">
+                  <div className="mv-live-badge">LIVE SESSION <div className="mv-live-dot"></div></div>
+                  <h3 className="mv-live-title">Q&A: Architecture Review</h3>
+                  <p className="mv-live-time">Tomorrow at 10:00 AM</p>
+                  <button className="mv-live-btn">ADD TO CALENDAR</button>
+                </div>
+
+                {/* Recent Recordings */}
+                <div className="mv-recordings">
+                  <h3 className="mv-rec-head">Recent Recordings</h3>
+                  <div className="mv-recording-card">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Recording" />
+                    <span className="mv-rec-time">1:12:05</span>
+                  </div>
+                  <h4 className="mv-rec-title">NoSQL vs Relational Storage</h4>
+                  <span className="mv-rec-meta">1 week ago • 1.2k views</span>
+                </div>
+              </div>
+            </div>
+          )}
+
         </main>
 
         {/* ── Footer ── */}
@@ -344,6 +882,14 @@ const LearnerDashboard = ({ setActivePage }) => {
           </div>
         </footer>
       </div>
+      
+      {/* ── Success Toast ── */}
+      {showSuccessPopup && (
+        <div className="ld-toast-success">
+          <CheckCircle2 size={18} />
+          <span>Link submitted successfully!</span>
+        </div>
+      )}
     </div>
   );
 };

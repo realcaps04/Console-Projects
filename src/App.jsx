@@ -89,18 +89,29 @@ const faqs = [
 
 function App() {
   const [activePage, _setActivePage] = useState(() => {
-    // 1. Check ?page= query param first (used by modal "Proceed" links)
+    const pageToPathMap = {
+      'learnerlogin': '/learner-login',
+      'learnerregistration': '/learner-registration',
+      'learnerdashboard': '/learner-dashboard',
+      'signin': '/signin',
+      'getstarted': '/get-started',
+      'userdashboard': '/dashboard',
+      'documentation': '/documentation',
+      'solutions': '/solutions',
+      'resources': '/resources',
+      'jobs': '/jobs',
+      'openpositions': '/open-positions',
+    };
+
     const params = new URLSearchParams(window.location.search);
     const queryPage = params.get('page');
     if (queryPage) {
       if (window.history && window.history.replaceState) {
-        const newUrl = new URL(window.location.href);
-        newUrl.searchParams.delete('page');
-        window.history.replaceState({}, '', newUrl.toString());
+        const newPath = pageToPathMap[queryPage] || '/';
+        window.history.replaceState({}, '', newPath);
       }
       return queryPage;
     }
-    // 2. Map URL pathname → page key (so /learner-login reloads correctly)
     const pathMap = {
       '/learner-login':         'learnerlogin',
       '/learner-registration':  'learnerregistration',
@@ -114,16 +125,32 @@ function App() {
       '/resources':           'resources',
       '/jobs':                'jobs',
       '/open-positions':      'openpositions',
+      '/':                    'home'
     };
     const fromPath = pathMap[window.location.pathname];
     if (fromPath) return fromPath;
-    // 3. Fall back to sessionStorage (preserves SPA navigation across normal reloads)
     return sessionStorage.getItem('console_activePage') || 'home';
   });
   const [previousPage, setPreviousPage] = useState(() => sessionStorage.getItem('console_previousPage') || 'home');
   const [authBanner, setAuthBanner] = useState(null);
 
   const PROTECTED_PAGES = ['jobs', 'resources', 'openpositions'];
+
+  const pageToPath = {
+    'learnerlogin': '/learner-login',
+    'learnerregistration': '/learner-registration',
+    'learnerdashboard': '/learner-dashboard',
+    'signin': '/signin',
+    'getstarted': '/get-started',
+    'userdashboard': '/dashboard',
+    'userprojects': '/dashboard',
+    'documentation': '/documentation',
+    'solutions': '/solutions',
+    'resources': '/resources',
+    'jobs': '/jobs',
+    'openpositions': '/open-positions',
+    'home': '/',
+  };
 
   const setActivePage = (pageStr) => {
     // Auth guard — redirect unauthenticated users away from protected pages
@@ -132,6 +159,7 @@ function App() {
       setTimeout(() => setAuthBanner(null), 4000);
       _setActivePage('signin');
       sessionStorage.setItem('console_activePage', 'signin');
+      window.history.pushState({}, '', '/signin');
       return;
     }
     if (activePage !== 'notfound' && pageStr === 'notfound') {
@@ -143,7 +171,38 @@ function App() {
     }
     _setActivePage(pageStr);
     sessionStorage.setItem('console_activePage', pageStr);
+
+    // Sync URL
+    const newPath = pageToPath[pageStr] || '/';
+    if (window.location.pathname !== newPath) {
+      window.history.pushState({}, '', newPath);
+    }
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const pathMap = {
+        '/learner-login':         'learnerlogin',
+        '/learner-registration':  'learnerregistration',
+        '/learner-dashboard':     'learnerdashboard',
+        '/signin':              'signin',
+        '/sign-in':             'signin',
+        '/get-started':         'getstarted',
+        '/dashboard':           'userdashboard',
+        '/documentation':       'documentation',
+        '/solutions':           'solutions',
+        '/resources':           'resources',
+        '/jobs':                'jobs',
+        '/open-positions':      'openpositions',
+        '/':                    'home',
+      };
+      const page = pathMap[window.location.pathname] || 'home';
+      _setActivePage(page);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const [activeTab, setActiveTab] = useState('Dashboard');
   const [todos, setTodos] = useState([]);
@@ -317,7 +376,7 @@ function App() {
                   </p>
                   <div className="hero-actions">
                     <button className="btn-primary" onClick={() => setActivePage(session ? 'userprojects' : 'getstarted')}>Start Building</button>
-                    <button className="btn-secondary" onClick={() => setActivePage('notfound')}>View Platform Docs</button>
+                    <button className="btn-secondary" onClick={() => setActivePage('documentation')}>View Platform Docs</button>
                   </div>
                 </div>
 
@@ -739,9 +798,8 @@ function App() {
                     className="btn-primary"
                     onClick={() => {
                       setIsLearningModalOpen(false);
-                      const newUrl = new URL(window.location.href);
-                      newUrl.searchParams.set('page', 'learnerlogin');
-                      window.open(newUrl.toString(), '_blank');
+                      // Use the actual path for direct navigation
+                      window.open('/learner-login', '_blank');
                     }}
                     style={{ padding: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flex: 1, borderRadius: '0.5rem' }}
                   >

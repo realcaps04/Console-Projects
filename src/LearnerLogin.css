@@ -335,6 +335,46 @@
   box-shadow: 0 0 0 3px rgba(59, 95, 226, 0.12);
 }
 
+/* Password eye toggle */
+.ll-password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ll-password-toggle {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.ll-password-toggle:hover {
+  color: #3b5fe2;
+}
+
+/* Error Message */
+.ll-error-msg {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #b91c1c;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .ll-submit-btn {
   width: 100%;
   padding: 0.95rem;

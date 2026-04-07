@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal } from 'lucide-react';
+import { Terminal, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { supabase } from './utils/supabase';
 import './LearnerLogin.css';
 
 const LearnerLogin = ({ setActivePage }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [animText, setAnimText] = useState('');
   const fullText = 'Learning Path';
 
@@ -17,6 +21,46 @@ const LearnerLogin = ({ setActivePage }) => {
     }, 80);
     return () => clearInterval(interval);
   }, []);
+
+  const validate = () => {
+    if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) {
+      setError('Please enter a valid email address.');
+      return false;
+    }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!validate()) return;
+
+    setLoading(true);
+    try {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+
+      if (authError) throw authError;
+
+      if (data.session) {
+        // Redirection logic can be handled here or in App level
+        // For now, let's just go to the dashboard if successful
+        setActivePage('learnerdashboard');
+      }
+    } catch (err) {
+      console.error('Auth Error:', err.message);
+      setError(err.message || 'Authentication failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="ll-page">
@@ -57,8 +101,6 @@ const LearnerLogin = ({ setActivePage }) => {
                 <span>Learning right now</span>
               </div>
             </div>
-
-
           </div>
         </div>
 
@@ -72,7 +114,14 @@ const LearnerLogin = ({ setActivePage }) => {
             <h2 className="ll-form-title">Welcome Back, Learner</h2>
             <p className="ll-form-sub">Continue your path to technical mastery.</p>
 
-            <form className="ll-form" onSubmit={(e) => e.preventDefault()}>
+            {error && (
+              <div className="ll-error-msg">
+                <AlertCircle size={18} />
+                {error}
+              </div>
+            )}
+
+            <form className="ll-form" onSubmit={handleLogin}>
               <div className="ll-field">
                 <label htmlFor="ll-email">Email Address</label>
                 <input
@@ -82,6 +131,8 @@ const LearnerLogin = ({ setActivePage }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
+                  disabled={loading}
+                  required
                 />
               </div>
 
@@ -92,18 +143,34 @@ const LearnerLogin = ({ setActivePage }) => {
                     Forgot password?
                   </a>
                 </div>
-                <input
-                  id="ll-password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="current-password"
-                />
+                <div className="ll-password-wrap">
+                  <input
+                    id="ll-password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                    disabled={loading}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="ll-password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </div>
 
-              <button type="submit" className="ll-submit-btn">
-                Access Infrastructure
+              <button
+                type="submit"
+                className="ll-submit-btn"
+                disabled={loading}
+              >
+                {loading ? 'Authenticating...' : 'Access Infrastructure'}
               </button>
             </form>
 
@@ -112,7 +179,7 @@ const LearnerLogin = ({ setActivePage }) => {
             </div>
 
             <div className="ll-oauth-row">
-              <button className="ll-oauth-btn">
+              <button className="ll-oauth-btn" type="button" disabled={loading}>
                 {/* Google SVG */}
                 <svg width="18" height="18" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -123,7 +190,7 @@ const LearnerLogin = ({ setActivePage }) => {
                 Google
               </button>
 
-              <button className="ll-oauth-btn">
+              <button className="ll-oauth-btn" type="button" disabled={loading}>
                 {/* GitHub SVG */}
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.26c3 0 4.58-1.58 4.58-5.38 0-1.12-.3-2.12-1-3.05.1-.34.5-1.52-.1-3.26 0 0-1 0-3.3 1.54a11.4 11.4 0 0 0-6 0c-2.3-1.54-3.3-1.54-3.3-1.54-.5 1.74-.2 2.92-.1 3.26-.7.93-1 1.93-1 3.05 0 3.8 1.58 5.38 4.58 5.38a4.8 4.8 0 0 0-1 3.26v4" />
